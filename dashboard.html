@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 
 <html lang="en">
@@ -20,75 +22,33 @@ body {
 
   padding: 20px;
 
-  font-family: Arial, sans-serif;
-
   background: #07152e;
 
   color: white;
 
-}
-
-.container {
-
-  max-width: 650px;
-
-  margin: auto;
+  font-family: Arial, sans-serif;
 
 }
 
-header {
+.container { max-width: 650px; margin: auto; }
 
-  display: flex;
+header { text-align: center; }
 
-  justify-content: space-between;
+h1 { color: #e4b84e; }
 
-  align-items: center;
-
-}
-
-h1 {
-
-  color: #e4b84e;
-
-  margin-bottom: 4px;
-
-}
-
-.small {
-
-  color: #d4d9e2;
-
-  font-size: 13px;
-
-}
-
-h2 { margin-top: 30px; }
-
-.balance {
+.card {
 
   background: #122747;
 
-  border: 1px solid #e4b84e;
+  padding: 20px;
 
-  border-radius: 15px;
+  border-radius: 12px;
 
-  padding: 25px;
-
-  margin-top: 25px;
+  margin: 18px 0;
 
 }
 
-.amount {
-
-  color: #e4b84e;
-
-  font-size: 32px;
-
-  font-weight: bold;
-
-  margin: 12px 0;
-
-}
+.balance { font-size: 30px; color: #e4b84e; }
 
 .grid {
 
@@ -98,51 +58,29 @@ h2 { margin-top: 30px; }
 
   gap: 12px;
 
-  margin-top: 20px;
-
 }
 
-.action {
+a, button {
 
   display: block;
-
-  background: #122747;
-
-  padding: 22px 10px;
-
-  border-radius: 12px;
 
   text-align: center;
 
-  color: white;
+  padding: 15px;
+
+  border: 0;
+
+  border-radius: 8px;
+
+  background: #e4b84e;
+
+  color: #07152e;
+
+  font-weight: bold;
 
   text-decoration: none;
 
-  border: 1px solid #314765;
-
-}
-
-.action span {
-
-  display: block;
-
-  color: #e4b84e;
-
-  font-size: 25px;
-
-  margin-bottom: 10px;
-
-}
-
-.transactions {
-
-  background: #122747;
-
-  border-radius: 12px;
-
-  padding: 20px;
-
-  margin-top: 25px;
+  cursor: pointer;
 
 }
 
@@ -150,33 +88,19 @@ nav {
 
   display: flex;
 
-  justify-content: space-around;
+  flex-wrap: wrap;
 
-  padding: 20px 0;
+  justify-content: center;
 
-  margin-top: 25px;
+  gap: 15px;
 
-  border-top: 1px solid #314765;
-
-}
-
-nav a, .logout {
-
-  color: #e4b84e;
-
-  text-decoration: none;
+  margin: 20px 0;
 
 }
 
-.notice {
+nav a { padding: 10px; }
 
-  color: #d4d9e2;
-
-  font-size: 12px;
-
-  line-height: 1.5;
-
-}
+.notice { color: #ddd; font-size: 13px; }
 
 </style>
 
@@ -188,81 +112,57 @@ nav a, .logout {
 
 <header>
 
-  <div>
+  <h1>BEEPERPAY</h1>
 
-    <h1>BEEPERPAY</h1>
+  <p>MICROFINANCE BANK</p>
 
-    <div class="small">MICROFINANCE BANK</div>
-
-  </div>
-
-  <a href="profile.html" style="color:#e4b84e">My Profile</a>
+  <p>Your money. Your future. Our priority.</p>
 
 </header>
 
-<h2>Welcome, Customer</h2>
+<div class="card">
 
-<p class="small">Your money. Your future. Our priority.</p>
+  <h2>Welcome, <span id="customerName">Customer</span></h2>
 
-<div class="balance">
+  <p>Demo Wallet Balance</p>
 
-  <div>Available Wallet Balance</div>
+  <div class="balance">₦0.00</div>
 
-  <div class="amount">₦0.00</div>
-
-  <div class="notice">Demo balance — not a real account balance</div>
+  <p class="notice">Demo balance only. No real funds are held.</p>
 
 </div>
 
-<div class="grid">
+<div class="card">
 
-  <a class="action" href="#" onclick="demo('Transfers')">
+  <h3>Customer Services</h3>
 
-    <span>⇄</span>Transfer
+  <div class="grid">
 
-  </a>
+    <a href="#" onclick="demoNotice(event)">Transfer</a>
 
-  <a class="action" href="#" onclick="demo('Add Money')">
+    <a href="#" onclick="demoNotice(event)">Add Money</a>
 
-    <span>＋</span>Add Money
+    <a href="#" onclick="demoNotice(event)">Transactions</a>
 
-  </a>
+    <a href="#" onclick="demoNotice(event)">Buy Airtime</a>
 
-  <a class="action" href="#" onclick="demo('Transactions')">
+    <a href="#" onclick="demoNotice(event)">Pay Bills</a>
 
-    <span>▤</span>Transactions
+    <a href="profile.html">My Profile</a>
 
-  </a>
-
-  <a class="action" href="#" onclick="demo('Airtime')">
-
-    <span>▣</span>Buy Airtime
-
-  </a>
-
-  <a class="action" href="#" onclick="demo('Bill Payments')">
-
-    <span>₦</span>Pay Bills
-
-  </a>
-
-  <a class="action" href="profile.html">
-
-    <span>♙</span>My Profile
-
-  </a>
+  </div>
 
 </div>
 
-<div class="transactions">
+<div class="card">
 
   <h3>Recent Transactions</h3>
 
-  <p class="small">No transactions yet.</p>
+  <p>No transactions yet.</p>
 
 </div>
 
-<p id="message" class="notice"></p>
+<p id="notice" class="notice" role="status"></p>
 
 <nav>
 
@@ -272,33 +172,89 @@ nav a, .logout {
 
   <a href="profile.html">Profile</a>
 
+  <button id="logoutButton">Logout</button>
+
 </nav>
 
-<p style="text-align:center">
+<p class="notice">
 
-  <a class="logout" href="login.html">Logout</a>
-
-</p>
-
-<p class="notice" style="text-align:center">
-
-  Beeperpay demonstration interface. Wallet balances and financial services
-
-  are not connected to a live banking system.
+  Demonstration interface only. Banking services are not connected.
 
 </p>
 
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <script>
 
-function demo(service) {
+const SUPABASE_URL =
 
-  document.getElementById("message").textContent =
+  "https://wrjvcvxswdojpxzcwyqw.supabase.co";
 
-    service + " is not yet connected. Secure backend integration is required.";
+const SUPABASE_KEY =
+
+  "sb_publishable_zTksapAhIoJp_0-9w1twlQ_j7WECGcv";
+
+const client = window.supabase.createClient(
+
+  SUPABASE_URL,
+
+  SUPABASE_KEY
+
+);
+
+async function protectDashboard() {
+
+  const { data, error } = await client.auth.getUser();
+
+  if (error || !data.user) {
+
+    window.location.replace("login.html");
+
+    return;
+
+  }
+
+  const name = data.user.user_metadata?.full_name;
+
+  document.getElementById("customerName").textContent =
+
+    name || data.user.email || "Customer";
 
 }
+
+function demoNotice(event) {
+
+  event.preventDefault();
+
+  document.getElementById("notice").textContent =
+
+    "This service is not connected yet. Please check back after backend integration.";
+
+}
+
+document.getElementById("logoutButton").addEventListener(
+
+  "click", async function() {
+
+    const { error } = await client.auth.signOut();
+
+    if (error) {
+
+      document.getElementById("notice").textContent = error.message;
+
+      return;
+
+    }
+
+    window.location.replace("login.html");
+
+  }
+
+);
+
+protectDashboard();
 
 </script>
 
