@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 
 <html lang="en">
@@ -12,11 +14,7 @@
 
 <style>
 
-* {
-
-  box-sizing: border-box;
-
-}
+* { box-sizing: border-box; }
 
 body {
 
@@ -24,143 +22,49 @@ body {
 
   padding: 20px;
 
-  font-family: Arial, sans-serif;
-
   background: #07152e;
 
   color: white;
+
+  font-family: Arial, sans-serif;
 
 }
 
 .container {
 
-  max-width: 600px;
+  max-width: 550px;
 
-  margin: auto;
-
-}
-
-header {
-
-  text-align: center;
-
-  margin-bottom: 30px;
+  margin: 35px auto;
 
 }
 
-h1 {
-
-  color: #e4b84e;
-
-  margin-bottom: 5px;
-
-}
-
-.subtitle {
-
-  letter-spacing: 2px;
-
-  font-size: 13px;
-
-}
-
-.profile-card {
+.card {
 
   background: #122747;
 
-  border: 1px solid #e4b84e;
+  padding: 22px;
 
-  border-radius: 15px;
-
-  padding: 25px;
-
-}
-
-.avatar {
-
-  width: 85px;
-
-  height: 85px;
-
-  border-radius: 50%;
-
-  background: #e4b84e;
-
-  color: #07152e;
-
-  display: flex;
-
-  align-items: center;
-
-  justify-content: center;
-
-  font-size: 35px;
-
-  margin: auto;
-
-}
-
-h2 {
-
-  text-align: center;
-
-  color: #e4b84e;
-
-}
-
-.field {
-
-  margin-top: 22px;
-
-  border-bottom: 1px solid #52647e;
-
-  padding-bottom: 12px;
-
-}
-
-.label {
-
-  color: #b8c3d3;
-
-  font-size: 13px;
-
-  margin-bottom: 7px;
-
-}
-
-.value {
-
-  font-size: 16px;
-
-}
-
-.section {
-
-  background: #122747;
-
-  padding: 20px;
+  margin: 18px 0;
 
   border-radius: 12px;
 
-  margin-top: 20px;
-
 }
 
-.section h3 {
+h1 { color: #e4b84e; text-align: center; }
 
-  color: #e4b84e;
+h2 { color: #e4b84e; }
 
-  margin-top: 0;
+p { overflow-wrap: anywhere; }
 
-}
+.label { color: #c6d1e1; }
 
-button {
+a, button {
 
-  width: 100%;
+  display: inline-block;
 
-  padding: 14px;
+  padding: 12px 15px;
 
-  margin-top: 15px;
+  margin: 5px;
 
   border: none;
 
@@ -170,47 +74,15 @@ button {
 
   color: #07152e;
 
-  font-weight: bold;
+  text-decoration: none;
 
-  font-size: 15px;
+  font-weight: bold;
 
   cursor: pointer;
 
 }
 
-a {
-
-  color: #e4b84e;
-
-  text-decoration: none;
-
-}
-
-nav {
-
-  display: flex;
-
-  justify-content: space-around;
-
-  margin-top: 30px;
-
-  padding: 20px 0;
-
-  border-top: 1px solid #52647e;
-
-}
-
-.notice {
-
-  color: #b8c3d3;
-
-  font-size: 12px;
-
-  line-height: 1.5;
-
-  text-align: center;
-
-}
+.notice { color: #ddd; font-size: 13px; }
 
 </style>
 
@@ -220,109 +92,143 @@ nav {
 
 <div class="container">
 
-<header>
-
   <h1>BEEPERPAY</h1>
 
-  <div class="subtitle">MICROFINANCE BANK</div>
+  <p style="text-align:center">MICROFINANCE BANK</p>
 
-  <p>Your money. Your future. Our priority.</p>
+  <div class="card">
 
-</header>
+    <h2>My Profile</h2>
 
-<div class="profile-card">
+    <p><span class="label">Full Name:</span>
 
-  <div class="avatar">♙</div>
+      <strong id="fullName">Loading...</strong></p>
 
-  <h2>My Profile</h2>
+    <p><span class="label">Email Address:</span>
 
-  <div class="field">
+      <strong id="email">Loading...</strong></p>
 
-    <div class="label">Full Name</div>
+    <p><span class="label">Phone Number:</span>
 
-    <div class="value">Customer Name</div>
+      <strong id="phone">Loading...</strong></p>
 
-  </div>
+    <p><span class="label">Customer ID:</span>
 
-  <div class="field">
+      <strong id="customerId">Not yet assigned</strong></p>
 
-    <div class="label">Email Address</div>
+    <p><span class="label">Account Status:</span>
 
-    <div class="value">Not yet connected</div>
-
-  </div>
-
-  <div class="field">
-
-    <div class="label">Phone Number</div>
-
-    <div class="value">Not yet connected</div>
+      <strong>Demo profile</strong></p>
 
   </div>
 
-  <div class="field">
+  <div class="card">
 
-    <div class="label">Customer ID</div>
+    <h2>Account Information</h2>
 
-    <div class="value">Not yet assigned</div>
+    <p>Banking account details will be available after authorised backend integration.</p>
+
+  </div>
+
+  <div class="card">
+
+    <h2>Security Settings</h2>
+
+    <p>Password management and account security are managed through secure authentication.</p>
 
   </div>
 
-  <div class="field">
+  <p id="notice" class="notice" role="status"></p>
 
-    <div class="label">Account Status</div>
+  <p style="text-align:center">
 
-    <div class="value">Demo profile</div>
+    <a href="index.html">Home</a>
 
-  </div>
+    <a href="dashboard.html">Dashboard</a>
+
+    <button id="logoutButton">Logout</button>
+
+  </p>
+
+  <p class="notice" style="text-align:center">
+
+    Demonstration profile only. No live banking account is connected.
+
+  </p>
 
 </div>
 
-<div class="section">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-  <h3>Account Information</h3>
+<script>
 
-  <p>Account details will appear here after secure account registration is connected.</p>
+const SUPABASE_URL =
 
-</div>
+  "https://wrjvcvxswdojpxzcwyqw.supabase.co";
 
-<div class="section">
+const SUPABASE_KEY =
 
-  <h3>Security Settings</h3>
+  "sb_publishable_zTksapAhIoJp_0-9w1twlQ_j7WECGcv";
 
-  <p>Password management and account security will be available after backend integration.</p>
+const client = window.supabase.createClient(
 
-  <button onclick="alert('Security settings are not yet connected.')">
+  SUPABASE_URL,
 
-    SECURITY SETTINGS
+  SUPABASE_KEY
 
-  </button>
+);
 
-</div>
+async function loadProfile() {
 
-<nav>
+  const { data, error } = await client.auth.getUser();
 
-  <a href="index.html">Home</a>
+  if (error || !data.user) {
 
-  <a href="dashboard.html">Dashboard</a>
+    window.location.replace("login.html");
 
-  <a href="profile.html">Profile</a>
+    return;
 
-</nav>
+  }
 
-<p style="text-align:center">
+  const user = data.user;
 
-  <a href="login.html">Logout</a>
+  document.getElementById("fullName").textContent =
 
-</p>
+    user.user_metadata?.full_name || "Not provided";
 
-<p class="notice">
+  document.getElementById("email").textContent =
 
-  Demonstration profile only. No real customer information or banking account is connected.
+    user.email || "Not available";
 
-</p>
+  document.getElementById("phone").textContent =
 
-</div>
+    user.user_metadata?.phone_number || "Not provided";
+
+}
+
+document.getElementById("logoutButton").addEventListener(
+
+  "click", async function() {
+
+    const { error } = await client.auth.signOut();
+
+    if (error) {
+
+      document.getElementById("notice").textContent = error.message;
+
+      return;
+
+    }
+
+    window.location.replace("login.html");
+
+  }
+
+);
+
+loadProfile();
+
+</script>
 
 </body>
 
