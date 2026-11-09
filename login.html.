@@ -1,1 +1,155 @@
+<!DOCTYPE html>
 
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Beeperpay | Customer Login</title>
+
+<style>
+
+body {
+
+  margin: 0;
+
+  font-family: Arial, sans-serif;
+
+  background: #07152e;
+
+  color: white;
+
+  display: flex;
+
+  justify-content: center;
+
+  align-items: center;
+
+  min-height: 100vh;
+
+  padding: 20px;
+
+  box-sizing: border-box;
+
+}
+
+.container {
+
+  background: #122747;
+
+  padding: 30px;
+
+  border-radius: 15px;
+
+  width: 100%;
+
+  max-width: 400px;
+
+  box-sizing: border-box;
+
+}
+
+h1 { color: #e4b84e; text-align: center; }
+
+h2 { text-align: center; }
+
+p { text-align: center; color: #ddd; }
+
+label { display: block; margin-top: 18px; }
+
+input {
+
+  width: 100%;
+
+  padding: 13px;
+
+  margin-top: 7px;
+
+  border: 1px solid #52647e;
+
+  border-radius: 7px;
+
+  box-sizing: border-box;
+
+}
+
+button {
+
+  width: 100%;
+
+  padding: 14px;
+
+  margin-top: 24px;
+
+  background: #e4b84e;
+
+  border: none;
+
+  border-radius: 7px;
+
+  font-weight: bold;
+
+  cursor: pointer;
+
+}
+
+a { color: #e4b84e; }
+
+.message { margin-top: 15px; }
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+  <h1>BEEPERPAY</h1>
+
+  <p>MICROFINANCE BANK</p>
+
+  <h2>Customer Login</h2>
+
+  <form id="loginForm">
+
+    <label>Email Address</label>
+
+    <input type="email" required placeholder="Enter your email">
+
+    <label>Password</label>
+
+    <input type="password" required placeholder="Enter your password">
+
+    <button type="submit">LOGIN</button>
+
+  </form>
+
+  <p id="message" class="message"></p>
+
+  <p>Don't have an account? <a href="register.html">Register here</a></p>
+
+  <p><a href="index.html">← Back to Home</a></p>
+
+</div>
+
+<script>
+
+document.getElementById("loginForm").addEventListener("submit", function(event) {
+
+  event.preventDefault();
+
+  document.getElementById("message").textContent =
+
+    "Login is not yet connected. Secure account authentication must be set up first.";
+
+});
+
+</script>
+
+</body>
+
+</html>
