@@ -85,64 +85,45 @@ font-size:13px;
 </head>
 <body>
 <div class="container">
-
 <div class="logo">BEEPERPAY</div>
 <div class="subtitle">MICROFINANCE BANK</div>
-
 <h2>Create Your Account</h2>
-
 <form id="registerForm">
-
 <label>Full Name</label>
 <input type="text" name="name" placeholder="Enter your full name" autocomplete="name" required>
-
 <label>Email Address</label>
 <input type="email" name="email" placeholder="Enter your email" autocomplete="email" required>
-
 <label>Phone Number</label>
 <input type="tel" name="phone" placeholder="Enter your phone number" autocomplete="tel" required>
-
 <label>Password</label>
 <input type="password" name="password" placeholder="Create a password" autocomplete="new-password" minlength="8" required>
-
 <label>Confirm Password</label>
 <input type="password" name="confirmPassword" placeholder="Confirm your password" autocomplete="new-password" minlength="8" required>
-
 <button type="submit">CREATE ACCOUNT</button>
-
 <div class="message" id="message"></div>
-
 </form>
-
 <div class="note">
 Already have an account?
 <a href="login.html">Login here</a>
 </div>
-
 <div class="note">
 <a href="index.html">← Back to Home</a>
 </div>
-
 </div>
-
 <script>
 document.getElementById("registerForm").addEventListener("submit",function(event){
 event.preventDefault();
-
 const password=this.password.value;
 const confirmPassword=this.confirmPassword.value;
 const message=document.getElementById("message");
-
 if(password.length<8){
 message.textContent="Password must contain at least 8 characters.";
 return;
 }
-
 if(password!==confirmPassword){
 message.textContent="Passwords do not match.";
 return;
 }
-
 message.textContent="Registration form is ready. Secure account registration will be activated when Beeperpay's backend is connected.";
 });
 </script>
