@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 
 <html lang="en">
@@ -10,7 +8,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Beeperpay | Customer Dashboard</title>
+<title>Beeperpay | Dashboard</title>
 
 <style>
 
@@ -20,7 +18,7 @@ body {
 
   margin: 0;
 
-  padding: 20px;
+  padding: 20px 15px;
 
   background: #07152e;
 
@@ -30,27 +28,47 @@ body {
 
 }
 
-.container { max-width: 650px; margin: auto; }
+.container {
 
-header { text-align: center; }
+  max-width: 500px;
 
-h1 { color: #e4b84e; }
-
-.card {
-
-  background: #122747;
-
-  padding: 20px;
-
-  border-radius: 12px;
-
-  margin: 18px 0;
+  margin: auto;
 
 }
 
-.balance { font-size: 30px; color: #e4b84e; }
+.header {
 
-.grid {
+  text-align: center;
+
+  padding: 15px;
+
+}
+
+.header h1 { color: #e4b84e; }
+
+.wallet {
+
+  background: #122747;
+
+  padding: 25px;
+
+  border-radius: 15px;
+
+  margin: 20px 0;
+
+}
+
+.balance {
+
+  font-size: 32px;
+
+  font-weight: bold;
+
+  color: #e4b84e;
+
+}
+
+.services {
 
   display: grid;
 
@@ -60,17 +78,51 @@ h1 { color: #e4b84e; }
 
 }
 
-a, button {
+.service {
 
-  display: block;
+  background: #122747;
+
+  border-radius: 12px;
+
+  padding: 22px 10px;
 
   text-align: center;
 
-  padding: 15px;
+  color: white;
 
-  border: 0;
+}
 
-  border-radius: 8px;
+.service span {
+
+  display: block;
+
+  color: #e4b84e;
+
+  font-size: 25px;
+
+  margin-bottom: 10px;
+
+}
+
+a {
+
+  text-decoration: none;
+
+  color: #e4b84e;
+
+}
+
+button {
+
+  width: 100%;
+
+  padding: 14px;
+
+  margin-top: 20px;
+
+  border: none;
+
+  border-radius: 7px;
 
   background: #e4b84e;
 
@@ -78,29 +130,7 @@ a, button {
 
   font-weight: bold;
 
-  text-decoration: none;
-
-  cursor: pointer;
-
 }
-
-nav {
-
-  display: flex;
-
-  flex-wrap: wrap;
-
-  justify-content: center;
-
-  gap: 15px;
-
-  margin: 20px 0;
-
-}
-
-nav a { padding: 10px; }
-
-.notice { color: #ddd; font-size: 13px; }
 
 </style>
 
@@ -110,75 +140,75 @@ nav a { padding: 10px; }
 
 <div class="container">
 
-<header>
+<div class="header">
 
   <h1>BEEPERPAY</h1>
 
   <p>MICROFINANCE BANK</p>
 
-  <p>Your money. Your future. Our priority.</p>
-
-</header>
-
-<div class="card">
-
-  <h2>Welcome, <span id="customerName">Customer</span></h2>
-
-  <p>Demo Wallet Balance</p>
-
-  <div class="balance">₦0.00</div>
-
-  <p class="notice">Demo balance only. No real funds are held.</p>
+  <p id="welcome">Loading customer...</p>
 
 </div>
 
-<div class="card">
+<div class="wallet">
 
-  <h3>Customer Services</h3>
+  <p>My Wallet Balance</p>
 
-  <div class="grid">
+  <div class="balance">₦0.00</div>
 
-    <a href="#" onclick="demoNotice(event)">Transfer</a>
+  <p>Demo balance — no real funds</p>
 
-    <a href="#" onclick="demoNotice(event)">Add Money</a>
+</div>
 
-    <a href="#" onclick="demoNotice(event)">Transactions</a>
+<h3>Banking Services</h3>
 
-    <a href="#" onclick="demoNotice(event)">Buy Airtime</a>
+<div class="services">
 
-    <a href="#" onclick="demoNotice(event)">Pay Bills</a>
+  <div class="service">
 
-    <a href="profile.html">My Profile</a>
+    <span>＋</span>
+
+    Add Money
+
+  </div>
+
+  <div class="service">
+
+    <span>⇄</span>
+
+    Transfer Money
+
+  </div>
+
+  <div class="service">
+
+    <span>▤</span>
+
+    Transactions
+
+  </div>
+
+  <div class="service">
+
+    <span>▣</span>
+
+    Airtime & Bills
 
   </div>
 
 </div>
 
-<div class="card">
+<p style="margin-top:25px">
 
-  <h3>Recent Transactions</h3>
+  <a href="profile.html">My Profile</a>
 
-  <p>No transactions yet.</p>
+</p>
 
-</div>
+<button id="logoutButton">LOGOUT</button>
 
-<p id="notice" class="notice" role="status"></p>
+<p style="text-align:center;font-size:12px;color:#bbb">
 
-<nav>
-
-  <a href="index.html">Home</a>
-
-  <a href="dashboard.html">Dashboard</a>
-
-  <a href="profile.html">Profile</a>
-
-  <button id="logoutButton">Logout</button>
-
-</nav>
-
-<p class="notice">
-
-  Demonstration interface only. Banking services are not connected.
+  Beeperpay demonstration platform. No live banking transactions are available.
 
 </p>
 
@@ -188,73 +218,53 @@ nav a { padding: 10px; }
 
 <script>
 
-const SUPABASE_URL =
-
-  "https://wrjvcvxswdojpxzcwyqw.supabase.co";
-
-const SUPABASE_KEY =
-
-  "sb_publishable_zTksapAhIoJp_0-9w1twlQ_j7WECGcv";
-
 const client = window.supabase.createClient(
 
-  SUPABASE_URL,
+  "https://wrjvcvxswdojpxzcwyqw.supabase.co",
 
-  SUPABASE_KEY
+  "sb_publishable_zTksapAhIoJp_0-9w1twlQ_j7WECGcv"
 
 );
 
-async function protectDashboard() {
+async function loadDashboard() {
 
   const { data, error } = await client.auth.getUser();
 
   if (error || !data.user) {
 
-    window.location.replace("login.html");
+    window.location.href = "login.html";
 
     return;
 
   }
 
-  const name = data.user.user_metadata?.full_name;
+  const name = data.user.user_metadata.full_name ||
 
-  document.getElementById("customerName").textContent =
+               data.user.email;
 
-    name || data.user.email || "Customer";
+  document.getElementById("welcome").textContent =
 
-}
-
-function demoNotice(event) {
-
-  event.preventDefault();
-
-  document.getElementById("notice").textContent =
-
-    "This service is not connected yet. Please check back after backend integration.";
+    "Welcome, " + name;
 
 }
 
-document.getElementById("logoutButton").addEventListener(
+document.getElementById("logoutButton").addEventListener("click", async () => {
 
-  "click", async function() {
+  const { error } = await client.auth.signOut();
 
-    const { error } = await client.auth.signOut();
+  if (error) {
 
-    if (error) {
+    alert(error.message);
 
-      document.getElementById("notice").textContent = error.message;
-
-      return;
-
-    }
-
-    window.location.replace("login.html");
+    return;
 
   }
 
-);
+  window.location.href = "login.html";
 
-protectDashboard();
+});
+
+loadDashboard();
 
 </script>
 
