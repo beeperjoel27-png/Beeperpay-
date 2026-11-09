@@ -1,131 +1,233 @@
 <!DOCTYPE html>
+
 <html lang="en">
+
 <head>
+
 <meta charset="UTF-8">
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Beeperpay - Create Account</title>
+
+<title>Beeperpay | Customer Login</title>
+
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
-body{
-font-family:Arial,sans-serif;
-background:#07152e;
-color:white;
-min-height:100vh;
-display:flex;
-align-items:center;
-justify-content:center;
-padding:20px;
+
+* {
+
+  box-sizing: border-box;
+
 }
-.container{
-width:100%;
-max-width:450px;
-background:#122747;
-padding:32px;
-border-radius:15px;
-border:1px solid #d6a943;
+
+body {
+
+  margin: 0;
+
+  padding: 20px;
+
+  min-height: 100vh;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  font-family: Arial, sans-serif;
+
+  background: #07152e;
+
+  color: white;
+
 }
-.logo{
-text-align:center;
-font-size:28px;
-font-weight:bold;
-color:#e4b84e;
-margin-bottom:5px;
+
+.container {
+
+  width: 100%;
+
+  max-width: 400px;
+
+  padding: 30px;
+
+  background: #122747;
+
+  border-radius: 15px;
+
 }
-.subtitle{
-text-align:center;
-color:#dce3ef;
-font-size:13px;
-margin-bottom:25px;
+
+h1 {
+
+  color: #e4b84e;
+
+  text-align: center;
+
 }
-h2{
-text-align:center;
-color:#e4b84e;
-margin-bottom:22px;
+
+.subtitle {
+
+  text-align: center;
+
+  letter-spacing: 2px;
+
 }
-label{
-display:block;
-margin:13px 0 6px;
-font-size:14px;
+
+h2 {
+
+  text-align: center;
+
+  margin-top: 30px;
+
 }
-input{
-width:100%;
-padding:13px;
-border:1px solid #526581;
-border-radius:7px;
-background:#07152e;
-color:white;
-font-size:15px;
+
+label {
+
+  display: block;
+
+  margin-top: 20px;
+
 }
-button{
-width:100%;
-padding:14px;
-margin-top:23px;
-background:#e4b84e;
-color:#07152e;
-border:0;
-border-radius:7px;
-font-weight:bold;
-font-size:16px;
-cursor:pointer;
+
+input {
+
+  width: 100%;
+
+  padding: 14px;
+
+  margin-top: 8px;
+
+  border: 1px solid #52647e;
+
+  border-radius: 7px;
+
+  font-size: 16px;
+
 }
-.note{
-text-align:center;
-margin-top:18px;
-font-size:13px;
-color:#dce3ef;
+
+button {
+
+  width: 100%;
+
+  padding: 15px;
+
+  margin-top: 25px;
+
+  background: #e4b84e;
+
+  border: none;
+
+  border-radius: 7px;
+
+  font-weight: bold;
+
+  font-size: 16px;
+
+  cursor: pointer;
+
 }
-a{color:#e4b84e;text-decoration:none}
-.message{
-margin-top:15px;
-text-align:center;
-color:#e4b84e;
-font-size:13px;
+
+a {
+
+  color: #e4b84e;
+
+  text-decoration: none;
+
 }
+
+.footer {
+
+  text-align: center;
+
+  margin-top: 20px;
+
+  line-height: 1.8;
+
+}
+
+#message {
+
+  text-align: center;
+
+  margin-top: 15px;
+
+}
+
 </style>
+
 </head>
+
 <body>
+
 <div class="container">
-<div class="logo">BEEPERPAY</div>
-<div class="subtitle">MICROFINANCE BANK</div>
-<h2>Create Your Account</h2>
-<form id="registerForm">
-<label>Full Name</label>
-<input type="text" name="name" placeholder="Enter your full name" autocomplete="name" required>
-<label>Email Address</label>
-<input type="email" name="email" placeholder="Enter your email" autocomplete="email" required>
-<label>Phone Number</label>
-<input type="tel" name="phone" placeholder="Enter your phone number" autocomplete="tel" required>
-<label>Password</label>
-<input type="password" name="password" placeholder="Create a password" autocomplete="new-password" minlength="8" required>
-<label>Confirm Password</label>
-<input type="password" name="confirmPassword" placeholder="Confirm your password" autocomplete="new-password" minlength="8" required>
-<button type="submit">CREATE ACCOUNT</button>
-<div class="message" id="message"></div>
+
+<h1>BEEPERPAY</h1>
+
+<p class="subtitle">MICROFINANCE BANK</p>
+
+<h2>Customer Login</h2>
+
+<form id="loginForm">
+
+<label for="email">Email Address</label>
+
+<input
+
+  type="email"
+
+  id="email"
+
+  placeholder="Enter your email"
+
+  required
+
+>
+
+<label for="password">Password</label>
+
+<input
+
+  type="password"
+
+  id="password"
+
+  placeholder="Enter your password"
+
+  required
+
+>
+
+<button type="submit">LOGIN</button>
+
 </form>
-<div class="note">
-Already have an account?
-<a href="login.html">Login here</a>
+
+<p id="message"></p>
+
+<div class="footer">
+
+<p>Don't have an account?
+
+<a href="register.html">Register here</a></p>
+
+<p><a href="index.html">← Back to Home</a></p>
+
 </div>
-<div class="note">
-<a href="index.html">← Back to Home</a>
+
 </div>
-</div>
+
 <script>
-document.getElementById("registerForm").addEventListener("submit",function(event){
-event.preventDefault();
-const password=this.password.value;
-const confirmPassword=this.confirmPassword.value;
-const message=document.getElementById("message");
-if(password.length<8){
-message.textContent="Password must contain at least 8 characters.";
-return;
-}
-if(password!==confirmPassword){
-message.textContent="Passwords do not match.";
-return;
-}
-message.textContent="Registration form is ready. Secure account registration will be activated when Beeperpay's backend is connected.";
+
+document.getElementById("loginForm")
+
+.addEventListener("submit", function(event) {
+
+  event.preventDefault();
+
+  document.getElementById("message").textContent =
+
+  "Login is not yet connected. Secure authentication must be configured.";
+
 });
+
 </script>
+
 </body>
+
 </html>
