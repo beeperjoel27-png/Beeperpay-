@@ -20,7 +20,7 @@ body {
 
   margin: 0;
 
-  padding: 20px;
+  padding: 25px 15px;
 
   background: #07152e;
 
@@ -32,49 +32,61 @@ body {
 
 .container {
 
-  max-width: 550px;
+  max-width: 500px;
 
-  margin: 35px auto;
+  margin: 25px auto;
 
-}
-
-.card {
+  padding: 25px;
 
   background: #122747;
 
-  padding: 22px;
-
-  margin: 18px 0;
-
-  border-radius: 12px;
+  border-radius: 15px;
 
 }
 
-h1 { color: #e4b84e; text-align: center; }
+h1 {
+
+  color: #e4b84e;
+
+  text-align: center;
+
+}
 
 h2 { color: #e4b84e; }
 
 p { overflow-wrap: anywhere; }
 
-.label { color: #c6d1e1; }
+.detail {
 
-a, button {
+  padding: 12px 0;
 
-  display: inline-block;
+  border-bottom: 1px solid #40516a;
 
-  padding: 12px 15px;
+}
 
-  margin: 5px;
+.label {
 
-  border: none;
+  color: #b9c4d5;
 
-  border-radius: 7px;
+  font-size: 13px;
+
+}
+
+button {
+
+  width: 100%;
+
+  padding: 14px;
+
+  margin-top: 20px;
 
   background: #e4b84e;
 
   color: #07152e;
 
-  text-decoration: none;
+  border: none;
+
+  border-radius: 7px;
 
   font-weight: bold;
 
@@ -82,7 +94,7 @@ a, button {
 
 }
 
-.notice { color: #ddd; font-size: 13px; }
+a { color: #e4b84e; }
 
 </style>
 
@@ -92,69 +104,65 @@ a, button {
 
 <div class="container">
 
-  <h1>BEEPERPAY</h1>
+<h1>BEEPERPAY</h1>
 
-  <p style="text-align:center">MICROFINANCE BANK</p>
+<p style="text-align:center">MICROFINANCE BANK</p>
 
-  <div class="card">
+<h2>My Profile</h2>
 
-    <h2>My Profile</h2>
+<p id="status">Loading your profile...</p>
 
-    <p><span class="label">Full Name:</span>
+<div class="detail">
 
-      <strong id="fullName">Loading...</strong></p>
+  <div class="label">Full Name</div>
 
-    <p><span class="label">Email Address:</span>
+  <p id="name">Loading...</p>
 
-      <strong id="email">Loading...</strong></p>
+</div>
 
-    <p><span class="label">Phone Number:</span>
+<div class="detail">
 
-      <strong id="phone">Loading...</strong></p>
+  <div class="label">Email Address</div>
 
-    <p><span class="label">Customer ID:</span>
+  <p id="email">Loading...</p>
 
-      <strong id="customerId">Not yet assigned</strong></p>
+</div>
 
-    <p><span class="label">Account Status:</span>
+<div class="detail">
 
-      <strong>Demo profile</strong></p>
+  <div class="label">Phone Number</div>
 
-  </div>
+  <p id="phone">Loading...</p>
 
-  <div class="card">
+</div>
 
-    <h2>Account Information</h2>
+<div class="detail">
 
-    <p>Banking account details will be available after authorised backend integration.</p>
+  <div class="label">Customer ID</div>
 
-  </div>
+  <p id="customerId">Loading...</p>
 
-  <div class="card">
+</div>
 
-    <h2>Security Settings</h2>
+<div class="detail">
 
-    <p>Password management and account security are managed through secure authentication.</p>
+  <div class="label">Account Status</div>
 
-  </div>
+  <p>Demo Account</p>
 
-  <p id="notice" class="notice" role="status"></p>
+</div>
 
-  <p style="text-align:center">
+<h2>Account Information</h2>
 
-    <a href="index.html">Home</a>
+<p>This is a demonstration customer profile. Live banking services are not connected.</p>
 
-    <a href="dashboard.html">Dashboard</a>
+<button id="logoutButton">LOGOUT</button>
 
-    <button id="logoutButton">Logout</button>
+<p style="text-align:center">
 
-  </p>
+<a href="dashboard.html">Back to Dashboard</a>
 
-  <p class="notice" style="text-align:center">
-
-    Demonstration profile only. No live banking account is connected.
-
-  </p>
+</p>
 
 </div>
 
@@ -162,19 +170,11 @@ a, button {
 
 <script>
 
-const SUPABASE_URL =
-
-  "https://wrjvcvxswdojpxzcwyqw.supabase.co";
-
-const SUPABASE_KEY =
-
-  "sb_publishable_zTksapAhIoJp_0-9w1twlQ_j7WECGcv";
-
 const client = window.supabase.createClient(
 
-  SUPABASE_URL,
+  "https://wrjvcvxswdojpxzcwyqw.supabase.co",
 
-  SUPABASE_KEY
+  "sb_publishable_zTksapAhIoJp_0-9w1twlQ_j7WECGcv"
 
 );
 
@@ -184,7 +184,7 @@ async function loadProfile() {
 
   if (error || !data.user) {
 
-    window.location.replace("login.html");
+    window.location.href = "login.html";
 
     return;
 
@@ -192,9 +192,9 @@ async function loadProfile() {
 
   const user = data.user;
 
-  document.getElementById("fullName").textContent =
+  document.getElementById("name").textContent =
 
-    user.user_metadata?.full_name || "Not provided";
+    user.user_metadata.full_name || "Not provided";
 
   document.getElementById("email").textContent =
 
@@ -202,29 +202,33 @@ async function loadProfile() {
 
   document.getElementById("phone").textContent =
 
-    user.user_metadata?.phone_number || "Not provided";
+    user.user_metadata.phone_number || "Not provided";
+
+  document.getElementById("customerId").textContent =
+
+    user.id.toUpperCase();
+
+  document.getElementById("status").textContent =
+
+    "Your profile is connected successfully.";
 
 }
 
-document.getElementById("logoutButton").addEventListener(
+document.getElementById("logoutButton").addEventListener("click", async function() {
 
-  "click", async function() {
+  const { error } = await client.auth.signOut();
 
-    const { error } = await client.auth.signOut();
+  if (error) {
 
-    if (error) {
+    alert(error.message);
 
-      document.getElementById("notice").textContent = error.message;
-
-      return;
-
-    }
-
-    window.location.replace("login.html");
+    return;
 
   }
 
-);
+  window.location.href = "login.html";
+
+});
 
 loadProfile();
 
