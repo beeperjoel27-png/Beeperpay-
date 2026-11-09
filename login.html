@@ -1,154 +1,222 @@
+
+
 <!DOCTYPE html>
 
 <html lang="en">
 
 <head>
 
-<meta charset="UTF-8">
+  <meta charset="UTF-8">
 
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Beeperpay | Customer Login</title>
+  <title>Beeperpay | Customer Login</title>
 
-<style>
+  <style>
 
-body {
+    * { box-sizing: border-box; }
 
-  margin: 0;
+    body {
 
-  font-family: Arial, sans-serif;
+      margin: 0;
 
-  background: #07152e;
+      padding: 25px 15px;
 
-  color: white;
+      background: #07152e;
 
-  display: flex;
+      color: white;
 
-  justify-content: center;
+      font-family: Arial, sans-serif;
 
-  align-items: center;
+    }
 
-  min-height: 100vh;
+    .container {
 
-  padding: 20px;
+      max-width: 420px;
 
-  box-sizing: border-box;
+      margin: 45px auto;
 
-}
+      padding: 28px 22px;
 
-.container {
+      background: #122747;
 
-  background: #122747;
+      border-radius: 15px;
 
-  padding: 30px;
+    }
 
-  border-radius: 15px;
+    h1 { color: #e4b84e; text-align: center; }
 
-  width: 100%;
+    h2 { text-align: center; }
 
-  max-width: 400px;
+    p { text-align: center; color: #ddd; }
 
-  box-sizing: border-box;
+    label { display: block; margin-top: 18px; }
 
-}
+    input {
 
-h1 { color: #e4b84e; text-align: center; }
+      width: 100%;
 
-h2 { text-align: center; }
+      padding: 13px;
 
-p { text-align: center; color: #ddd; }
+      margin-top: 7px;
 
-label { display: block; margin-top: 18px; }
+      border: 1px solid #52627a;
 
-input {
+      border-radius: 7px;
 
-  width: 100%;
+      font-size: 16px;
 
-  padding: 13px;
+    }
 
-  margin-top: 7px;
+    button {
 
-  border: 1px solid #52647e;
+      width: 100%;
 
-  border-radius: 7px;
+      margin-top: 24px;
 
-  box-sizing: border-box;
+      padding: 14px;
 
-}
+      background: #e4b84e;
 
-button {
+      color: #07152e;
 
-  width: 100%;
+      border: none;
 
-  padding: 14px;
+      border-radius: 7px;
 
-  margin-top: 24px;
+      font-size: 16px;
 
-  background: #e4b84e;
+      font-weight: bold;
 
-  border: none;
+    }
 
-  border-radius: 7px;
+    button:disabled { opacity: .6; }
 
-  font-weight: bold;
+    a { color: #e4b84e; }
 
-  cursor: pointer;
+    #message { margin-top: 18px; overflow-wrap: anywhere; }
 
-}
-
-a { color: #e4b84e; }
-
-.message { margin-top: 15px; }
-
-</style>
+  </style>
 
 </head>
 
 <body>
 
-<div class="container">
+  <div class="container">
 
-  <h1>BEEPERPAY</h1>
+    <h1>BEEPERPAY</h1>
 
-  <p>MICROFINANCE BANK</p>
+    <p>MICROFINANCE BANK</p>
 
-  <h2>Customer Login</h2>
+    <h2>Customer Login</h2>
 
-  <form id="loginForm">
+    <form id="loginForm">
 
-    <label>Email Address</label>
+      <label>Email Address</label>
 
-    <input type="email" required placeholder="Enter your email">
+      <input id="email" type="email" required>
 
-    <label>Password</label>
+      <label>Password</label>
 
-    <input type="password" required placeholder="Enter your password">
+      <input id="password" type="password" required>
 
-    <button type="submit">LOGIN</button>
+      <button id="loginButton" type="submit">LOGIN</button>
 
-  </form>
+    </form>
 
-  <p id="message" class="message"></p>
+    <p id="message" role="status"></p>
 
-  <p>Don't have an account? <a href="register.html">Register here</a></p>
+    <p>Don't have an account?
 
-  <p><a href="index.html">← Back to Home</a></p>
+      <a href="register.html">Register here</a>
 
-</div>
+    </p>
 
-<script>
+    <p><a href="index.html">Back to Home</a></p>
 
-document.getElementById("loginForm").addEventListener("submit", function(event) {
+    <p>Your money. Your future. Our priority.</p>
 
-  event.preventDefault();
+    <p>Demo website. No live banking services are connected.</p>
 
-  document.getElementById("message").textContent =
+  </div>
 
-    "Login is not yet connected. Secure account authentication must be set up first.";
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-});
+  <script>
 
-</script>
+    const SUPABASE_URL =
+
+      "https://wrjvcvxswdojpxzcwyqw.supabase.co";
+
+    const SUPABASE_KEY =
+
+      "sb_publishable_zTksapAhIoJp_0-9w1twlQ_j7WECGcv";
+
+    const client = window.supabase.createClient(
+
+      SUPABASE_URL,
+
+      SUPABASE_KEY
+
+    );
+
+    const form = document.getElementById("loginForm");
+
+    const message = document.getElementById("message");
+
+    const button = document.getElementById("loginButton");
+
+    form.addEventListener("submit", async function(event) {
+
+      event.preventDefault();
+
+      const email = document.getElementById("email").value.trim();
+
+      const password = document.getElementById("password").value;
+
+      button.disabled = true;
+
+      button.textContent = "SIGNING IN...";
+
+      message.textContent = "";
+
+      try {
+
+        const { data, error } =
+
+          await client.auth.signInWithPassword({
+
+            email: email,
+
+            password: password
+
+          });
+
+        if (error) throw error;
+
+        window.location.href = "dashboard.html";
+
+      } catch (error) {
+
+        message.textContent =
+
+          error.message === "Invalid login credentials"
+
+            ? "Email or password is incorrect. Please check and try again."
+
+            : error.message;
+
+      } finally {
+
+        button.disabled = false;
+
+        button.textContent = "LOGIN";
+
+      }
+
+    });
+
+  </script>
 
 </body>
 
