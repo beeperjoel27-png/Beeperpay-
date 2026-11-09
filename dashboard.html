@@ -1,1 +1,307 @@
+<!DOCTYPE html>
 
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Beeperpay | Customer Dashboard</title>
+
+<style>
+
+* { box-sizing: border-box; }
+
+body {
+
+  margin: 0;
+
+  padding: 20px;
+
+  font-family: Arial, sans-serif;
+
+  background: #07152e;
+
+  color: white;
+
+}
+
+.container {
+
+  max-width: 650px;
+
+  margin: auto;
+
+}
+
+header {
+
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: center;
+
+}
+
+h1 {
+
+  color: #e4b84e;
+
+  margin-bottom: 4px;
+
+}
+
+.small {
+
+  color: #d4d9e2;
+
+  font-size: 13px;
+
+}
+
+h2 { margin-top: 30px; }
+
+.balance {
+
+  background: #122747;
+
+  border: 1px solid #e4b84e;
+
+  border-radius: 15px;
+
+  padding: 25px;
+
+  margin-top: 25px;
+
+}
+
+.amount {
+
+  color: #e4b84e;
+
+  font-size: 32px;
+
+  font-weight: bold;
+
+  margin: 12px 0;
+
+}
+
+.grid {
+
+  display: grid;
+
+  grid-template-columns: repeat(2, 1fr);
+
+  gap: 12px;
+
+  margin-top: 20px;
+
+}
+
+.action {
+
+  display: block;
+
+  background: #122747;
+
+  padding: 22px 10px;
+
+  border-radius: 12px;
+
+  text-align: center;
+
+  color: white;
+
+  text-decoration: none;
+
+  border: 1px solid #314765;
+
+}
+
+.action span {
+
+  display: block;
+
+  color: #e4b84e;
+
+  font-size: 25px;
+
+  margin-bottom: 10px;
+
+}
+
+.transactions {
+
+  background: #122747;
+
+  border-radius: 12px;
+
+  padding: 20px;
+
+  margin-top: 25px;
+
+}
+
+nav {
+
+  display: flex;
+
+  justify-content: space-around;
+
+  padding: 20px 0;
+
+  margin-top: 25px;
+
+  border-top: 1px solid #314765;
+
+}
+
+nav a, .logout {
+
+  color: #e4b84e;
+
+  text-decoration: none;
+
+}
+
+.notice {
+
+  color: #d4d9e2;
+
+  font-size: 12px;
+
+  line-height: 1.5;
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<header>
+
+  <div>
+
+    <h1>BEEPERPAY</h1>
+
+    <div class="small">MICROFINANCE BANK</div>
+
+  </div>
+
+  <a href="profile.html" style="color:#e4b84e">My Profile</a>
+
+</header>
+
+<h2>Welcome, Customer</h2>
+
+<p class="small">Your money. Your future. Our priority.</p>
+
+<div class="balance">
+
+  <div>Available Wallet Balance</div>
+
+  <div class="amount">₦0.00</div>
+
+  <div class="notice">Demo balance — not a real account balance</div>
+
+</div>
+
+<div class="grid">
+
+  <a class="action" href="#" onclick="demo('Transfers')">
+
+    <span>⇄</span>Transfer
+
+  </a>
+
+  <a class="action" href="#" onclick="demo('Add Money')">
+
+    <span>＋</span>Add Money
+
+  </a>
+
+  <a class="action" href="#" onclick="demo('Transactions')">
+
+    <span>▤</span>Transactions
+
+  </a>
+
+  <a class="action" href="#" onclick="demo('Airtime')">
+
+    <span>▣</span>Buy Airtime
+
+  </a>
+
+  <a class="action" href="#" onclick="demo('Bill Payments')">
+
+    <span>₦</span>Pay Bills
+
+  </a>
+
+  <a class="action" href="profile.html">
+
+    <span>♙</span>My Profile
+
+  </a>
+
+</div>
+
+<div class="transactions">
+
+  <h3>Recent Transactions</h3>
+
+  <p class="small">No transactions yet.</p>
+
+</div>
+
+<p id="message" class="notice"></p>
+
+<nav>
+
+  <a href="index.html">Home</a>
+
+  <a href="dashboard.html">Dashboard</a>
+
+  <a href="profile.html">Profile</a>
+
+</nav>
+
+<p style="text-align:center">
+
+  <a class="logout" href="login.html">Logout</a>
+
+</p>
+
+<p class="notice" style="text-align:center">
+
+  Beeperpay demonstration interface. Wallet balances and financial services
+
+  are not connected to a live banking system.
+
+</p>
+
+</div>
+
+<script>
+
+function demo(service) {
+
+  document.getElementById("message").textContent =
+
+    service + " is not yet connected. Secure backend integration is required.";
+
+}
+
+</script>
+
+</body>
+
+</html>
