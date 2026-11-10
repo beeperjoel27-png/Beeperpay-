@@ -4,503 +4,123 @@
 
 <head>
 
-  <meta charset="UTF-8">
+<meta charset="UTF-8">
 
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Beeperpay | Administration Portal</title>
+<title>Beeperpay | Administration Portal</title>
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-  <style>
+<style>
 
-    * {
+*{box-sizing:border-box;margin:0;padding:0}
 
-      box-sizing: border-box;
+body{font-family:Arial,sans-serif;background:#f2f5fa;color:#17233d}
 
-      margin: 0;
+header{background:#071b49;color:white;padding:22px 18px;border-bottom:4px solid #d6a83e}
 
-      padding: 0;
+.brand{font-size:27px;font-weight:bold;letter-spacing:1px}
 
-    }
+.brand span{color:#e2b54c}
 
-    body {
+header p{font-size:12px;letter-spacing:2px;margin-top:5px}
 
-      font-family: Arial, sans-serif;
+.tagline{font-size:12px;margin-top:8px;color:#e5eaf3}
 
-      background: #f2f5fa;
+main{max-width:1150px;margin:30px auto;padding:0 15px}
 
-      color: #17233d;
+#loginSection{max-width:430px;margin:55px auto;background:white;padding:28px;border-radius:12px;box-shadow:0 3px 15px #00000012}
 
-    }
+#loginSection h2{color:#071b49;margin-bottom:10px}
 
-    header {
+.description{color:#687386;font-size:13px;line-height:1.6;margin-bottom:22px}
 
-      background: #071b49;
+label{display:block;margin:15px 0 7px;font-size:13px;font-weight:bold}
 
-      color: white;
+input{width:100%;padding:13px;border:1px solid #d4dae4;border-radius:6px;font-size:14px;outline-color:#d6a83e}
 
-      padding: 22px 18px;
+button,.nav-link{display:inline-block;padding:12px 16px;border:none;border-radius:6px;font-size:13px;font-weight:bold;cursor:pointer;text-decoration:none;text-align:center}
 
-      border-bottom: 4px solid #d6a83e;
+.primary{background:#071b49;color:white}
 
-    }
+.gold{background:#d6a83e;color:#071b49}
 
-    .brand {
+.danger{background:#b42318;color:white}
 
-      font-size: 27px;
+#loginBtn{width:100%;margin-top:22px}
 
-      font-weight: bold;
+button:disabled{opacity:.6;cursor:wait}
 
-      letter-spacing: 1px;
+.message{font-size:13px;margin-top:15px;line-height:1.5;overflow-wrap:anywhere}
 
-    }
+.error{color:#b42318}
 
-    .brand span {
+.success{color:#16803c}
 
-      color: #e2b54c;
+#adminSection{display:none}
 
-    }
+.welcome{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:15px;margin-bottom:22px}
 
-    header p {
+.welcome h1{font-size:24px;color:#071b49}
 
-      font-size: 12px;
+.welcome p{font-size:13px;color:#687386;margin-top:7px}
 
-      letter-spacing: 2px;
+.actions{display:flex;gap:9px;flex-wrap:wrap}
 
-      margin-top: 5px;
+.navigation{display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:12px;margin-bottom:25px}
 
-    }
+.navigation a{background:white;color:#071b49;padding:17px 12px;border-radius:8px;text-decoration:none;font-size:13px;font-weight:bold;border:1px solid #e3e8f0;text-align:center}
 
-    .tagline {
+.navigation a:hover{border-color:#d6a83e;background:#fffaf0}
 
-      font-size: 12px;
+.navigation .highlight{background:#071b49;color:white;border-color:#071b49}
 
-      letter-spacing: 0;
+.section-title{font-size:19px;color:#071b49;margin-bottom:15px}
 
-      margin-top: 8px;
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:15px;margin-bottom:25px}
 
-      color: #e5eaf3;
+.stat-card{background:white;padding:21px;border-radius:10px;border-left:4px solid #d6a83e;box-shadow:0 2px 9px #0000000c}
 
-    }
+.stat-card p{color:#687386;font-size:13px;margin-bottom:11px}
 
-    main {
+.stat-card h2{font-size:25px;color:#071b49}
 
-      max-width: 1150px;
+.stat-card small{display:block;margin-top:8px;color:#8490a1;font-size:11px}
 
-      margin: 30px auto;
+.panel{background:white;padding:22px;border-radius:10px;box-shadow:0 2px 9px #0000000c;margin-bottom:20px}
 
-      padding: 0 15px;
+.panel h2{color:#071b49;font-size:18px;margin-bottom:12px}
 
-    }
+.panel p{color:#687386;font-size:13px;line-height:1.7}
 
-    #loginSection {
+.status{margin-top:15px;font-size:13px;color:#536174}
 
-      max-width: 430px;
+.customer-link{margin-top:15px}
 
-      margin: 55px auto;
+.service-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px;margin-top:15px}
 
-      background: white;
+.service-grid a{display:block;background:#f3f5f9;padding:16px;border-radius:8px;color:#071b49;text-decoration:none;font-size:13px;font-weight:bold;border:1px solid #e3e8f0}
 
-      padding: 28px;
+.service-grid a:hover{border-color:#d6a83e;background:#fffaf0}
 
-      border-radius: 12px;
+.notice{background:#fff9e9;border-left:4px solid #d6a83e;padding:15px;border-radius:6px;margin-top:15px}
 
-      box-shadow: 0 3px 15px #00000012;
+.notice p{font-size:13px;color:#685323}
 
-    }
+footer{text-align:center;padding:25px 12px;color:#7b8493;font-size:12px;line-height:1.8}
 
-    #loginSection h2 {
+@media(max-width:600px){
 
-      color: #071b49;
+.welcome h1{font-size:21px}
 
-      margin-bottom: 10px;
+#loginSection{margin:35px auto;padding:22px}
 
-    }
+.panel{padding:17px}
 
-    .description {
+}
 
-      color: #687386;
-
-      font-size: 13px;
-
-      line-height: 1.6;
-
-      margin-bottom: 22px;
-
-    }
-
-    label {
-
-      display: block;
-
-      margin: 15px 0 7px;
-
-      font-size: 13px;
-
-      font-weight: bold;
-
-    }
-
-    input {
-
-      width: 100%;
-
-      padding: 13px;
-
-      border: 1px solid #d4dae4;
-
-      border-radius: 6px;
-
-      font-size: 14px;
-
-      outline-color: #d6a83e;
-
-    }
-
-    button, .nav-link {
-
-      display: inline-block;
-
-      padding: 12px 16px;
-
-      border: none;
-
-      border-radius: 6px;
-
-      font-size: 13px;
-
-      font-weight: bold;
-
-      cursor: pointer;
-
-      text-decoration: none;
-
-      text-align: center;
-
-    }
-
-    .primary {
-
-      background: #071b49;
-
-      color: white;
-
-    }
-
-    .gold {
-
-      background: #d6a83e;
-
-      color: #071b49;
-
-    }
-
-    .danger {
-
-      background: #b42318;
-
-      color: white;
-
-    }
-
-    #loginBtn {
-
-      width: 100%;
-
-      margin-top: 22px;
-
-    }
-
-    button:disabled {
-
-      opacity: 0.6;
-
-      cursor: wait;
-
-    }
-
-    .message {
-
-      font-size: 13px;
-
-      margin-top: 15px;
-
-      line-height: 1.5;
-
-      overflow-wrap: anywhere;
-
-    }
-
-    .error {
-
-      color: #b42318;
-
-    }
-
-    .success {
-
-      color: #16803c;
-
-    }
-
-    #adminSection {
-
-      display: none;
-
-    }
-
-    .welcome {
-
-      display: flex;
-
-      justify-content: space-between;
-
-      align-items: center;
-
-      flex-wrap: wrap;
-
-      gap: 15px;
-
-      margin-bottom: 22px;
-
-    }
-
-    .welcome h1 {
-
-      font-size: 24px;
-
-      color: #071b49;
-
-    }
-
-    .welcome p {
-
-      font-size: 13px;
-
-      color: #687386;
-
-      margin-top: 7px;
-
-    }
-
-    .actions {
-
-      display: flex;
-
-      gap: 9px;
-
-      flex-wrap: wrap;
-
-    }
-
-    .navigation {
-
-      display: grid;
-
-      grid-template-columns: repeat(auto-fit, minmax(155px, 1fr));
-
-      gap: 12px;
-
-      margin-bottom: 25px;
-
-    }
-
-    .navigation a {
-
-      background: white;
-
-      color: #071b49;
-
-      padding: 17px 12px;
-
-      border-radius: 8px;
-
-      text-decoration: none;
-
-      font-size: 13px;
-
-      font-weight: bold;
-
-      border: 1px solid #e3e8f0;
-
-      text-align: center;
-
-    }
-
-    .navigation a:hover {
-
-      border-color: #d6a83e;
-
-      background: #fffaf0;
-
-    }
-
-    .navigation .highlight {
-
-      background: #071b49;
-
-      color: white;
-
-      border-color: #071b49;
-
-    }
-
-    .section-title {
-
-      font-size: 19px;
-
-      color: #071b49;
-
-      margin-bottom: 15px;
-
-    }
-
-    .stats {
-
-      display: grid;
-
-      grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
-
-      gap: 15px;
-
-      margin-bottom: 25px;
-
-    }
-
-    .stat-card {
-
-      background: white;
-
-      padding: 21px;
-
-      border-radius: 10px;
-
-      border-left: 4px solid #d6a83e;
-
-      box-shadow: 0 2px 9px #0000000c;
-
-    }
-
-    .stat-card p {
-
-      color: #687386;
-
-      font-size: 13px;
-
-      margin-bottom: 11px;
-
-    }
-
-    .stat-card h2 {
-
-      font-size: 25px;
-
-      color: #071b49;
-
-    }
-
-    .stat-card small {
-
-      display: block;
-
-      margin-top: 8px;
-
-      color: #8490a1;
-
-      font-size: 11px;
-
-    }
-
-    .panel {
-
-      background: white;
-
-      padding: 22px;
-
-      border-radius: 10px;
-
-      box-shadow: 0 2px 9px #0000000c;
-
-      margin-bottom: 20px;
-
-    }
-
-    .panel h2 {
-
-      color: #071b49;
-
-      font-size: 18px;
-
-      margin-bottom: 12px;
-
-    }
-
-    .panel p {
-
-      color: #687386;
-
-      font-size: 13px;
-
-      line-height: 1.7;
-
-    }
-
-    .status {
-
-      margin-top: 15px;
-
-      font-size: 13px;
-
-      color: #536174;
-
-    }
-
-    .customer-link {
-
-      margin-top: 15px;
-
-    }
-
-    footer {
-
-      text-align: center;
-
-      padding: 25px 12px;
-
-      color: #7b8493;
-
-      font-size: 12px;
-
-      line-height: 1.8;
-
-    }
-
-    @media (max-width: 600px) {
-
-      .welcome h1 {
-
-        font-size: 21px;
-
-      }
-
-      #loginSection {
-
-        margin: 35px auto;
-
-        padding: 22px;
-
-      }
-
-      .panel {
-
-        padding: 17px;
-
-      }
-
-    }
-
-  </style>
+</style>
 
 </head>
 
@@ -508,623 +128,669 @@
 
 <header>
 
-  <div class="brand">BEEPER<span>PAY</span></div>
+<div class="brand">BEEPER<span>PAY</span></div>
 
-  <p>MICROFINANCE BANK</p>
+<p>MICROFINANCE BANK</p>
 
-  <div class="tagline">
-
-    Your money. Your future. Our priority.
-
-  </div>
+<div class="tagline">Your money. Your future. Our priority.</div>
 
 </header>
 
 <main>
 
-  <!-- ADMIN LOGIN -->
+<section id="loginSection">
 
-  <section id="loginSection">
+<h2>Administrator Login</h2>
 
-    <h2>Administrator Login</h2>
+<p class="description">
 
-    <p class="description">
+Sign in with your registered Beeperpay administrator account.
 
-      Sign in with your registered Beeperpay administrator account.
+Access is restricted to approved administrators.
 
-      Access is restricted to approved administrators.
+</p>
 
-    </p>
+<form id="loginForm">
 
-    <form id="loginForm">
+<label for="email">Email Address</label>
 
-      <label for="email">Email Address</label>
+<input type="email" id="email" placeholder="Administrator email" autocomplete="username" required>
 
-      <input
+<label for="password">Password</label>
 
-        type="email"
+<input type="password" id="password" placeholder="Enter your password" autocomplete="current-password" required>
 
-        id="email"
+<button type="submit" class="primary" id="loginBtn">SIGN IN</button>
 
-        placeholder="Administrator email"
+</form>
 
-        autocomplete="username"
+<p id="loginMessage" class="message"></p>
 
-        required
+</section>
 
-      >
+<section id="adminSection">
 
-      <label for="password">Password</label>
+<div class="welcome">
 
-      <input
+<div>
 
-        type="password"
+<h1>Administration Portal</h1>
 
-        id="password"
+<p id="welcomeMessage">Welcome, Administrator</p>
 
-        placeholder="Enter your password"
+<p id="adminEmail"></p>
 
-        autocomplete="current-password"
+</div>
 
-        required
+<div class="actions">
 
-      >
+<button class="gold" id="refreshBtn">Refresh Dashboard</button>
 
-      <button type="submit" class="primary" id="loginBtn">
+<button class="danger" id="logoutBtn">Logout</button>
 
-        SIGN IN
+</div>
 
-      </button>
+</div>
 
-    </form>
+<nav class="navigation">
 
-    <p id="loginMessage" class="message"></p>
+<a href="admin.html">Dashboard</a>
 
-  </section>
+<a href="customers.html" class="highlight">Customer Management</a>
 
-  <!-- ADMIN DASHBOARD -->
+<a href="transactions.html">Transaction History</a>
 
-  <section id="adminSection">
+<a href="support-history.html">Support Ticket History</a>
 
-    <div class="welcome">
+<a href="customer-support.html">Customer Support</a>
 
-      <div>
+<a href="dashboard.html">Customer Dashboard</a>
 
-        <h1>Administration Portal</h1>
+<a href="profile.html">Customer Profile</a>
 
-        <p id="welcomeMessage">Welcome, Administrator</p>
+<a href="statement.html">Account Statement</a>
 
-      </div>
+<a href="add-money.html">Add Money</a>
 
-      <div class="actions">
+<a href="transfer.html">Transfer Money</a>
 
-        <button class="gold" id="refreshBtn">
+</nav>
 
-          Refresh Dashboard
+<h2 class="section-title">Beeperpay Administration Overview</h2>
 
-        </button>
+<div class="notice">
 
-        <button class="danger" id="logoutBtn">
+<p>
 
-          Logout
+<strong>DEMONSTRATION ADMIN PORTAL.</strong>
 
-        </button>
+The figures below are local demo records, not live banking
 
-      </div>
+or customer account data.
 
-    </div>
+</p>
 
-    <!-- ADMIN NAVIGATION -->
+</div>
 
-    <nav class="navigation">
+<h2 class="section-title" style="margin-top:22px">Transaction Overview</h2>
 
-      <a href="admin.html">Dashboard</a>
+<div class="stats">
 
-      <a href="customers.html" class="highlight">
+<div class="stat-card">
 
-        Customer Management
+<p>Registered Customers</p>
 
-      </a>
+<h2 id="customerCount">0</h2>
 
-      <a href="transactions.html">
+<small>Supabase customer profiles</small>
 
-        Transaction History
+</div>
 
-      </a>
+<div class="stat-card">
 
-      <a href="add-money.html">
+<p>Add Money Requests</p>
 
-        Add Money
+<h2 id="addMoneyTotal">₦0.00</h2>
 
-      </a>
+<small>Browser-local demo records</small>
 
-      <a href="transfer.html">
+</div>
 
-        Transfer Money
+<div class="stat-card">
 
-      </a>
+<p>Transfer Requests</p>
 
-      <a href="dashboard.html">
+<h2 id="transferTotal">₦0.00</h2>
 
-        Customer Portal
+<small>Browser-local demo records</small>
 
-      </a>
+</div>
 
-    </nav>
+<div class="stat-card">
 
-    <!-- OVERVIEW -->
+<p>Total Transaction Records</p>
 
-    <h2 class="section-title">
+<h2 id="transactionCount">0</h2>
 
-      Beeperpay Administration Overview
+<small>Browser-local demo records</small>
 
-    </h2>
+</div>
 
-    <div class="stats">
+<div class="stat-card">
 
-      <div class="stat-card">
+<p>Support Tickets</p>
 
-        <p>Registered Customers</p>
+<h2 id="supportCount">0</h2>
 
-        <h2 id="customerCount">0</h2>
+<small>Browser-local demo records</small>
 
-        <small>Supabase customer records</small>
+</div>
 
-      </div>
+</div>
 
-      <div class="stat-card">
+<section class="panel">
 
-        <p>Add Money Requests</p>
+<h2>Administration Services</h2>
 
-        <h2>Demo</h2>
+<p>Access Beeperpay customer and administration services.</p>
 
-        <small>Not connected to live banking</small>
+<div class="service-grid">
 
-      </div>
+<a href="customers.html">Customer Management</a>
 
-      <div class="stat-card">
+<a href="dashboard.html">Customer Dashboard</a>
 
-        <p>Transfer Requests</p>
+<a href="transactions.html">Transaction History</a>
 
-        <h2>Demo</h2>
+<a href="support-history.html">Support Ticket History</a>
 
-        <small>Not connected to live banking</small>
+<a href="customer-support.html">Customer Support</a>
 
-      </div>
+<a href="profile.html">Customer Profile</a>
 
-      <div class="stat-card">
+<a href="statement.html">Account Statement</a>
 
-        <p>Transaction Records</p>
+<a href="add-money.html">Add Money Requests</a>
 
-        <h2>Demo</h2>
+<a href="transfer.html">Transfer Requests</a>
 
-        <small>Demonstration records only</small>
+</div>
 
-      </div>
+</section>
 
-    </div>
+<section class="panel">
 
-    <!-- CUSTOMER MANAGEMENT -->
+<h2>Administrator Actions</h2>
 
-    <section class="panel">
+<p>Transaction monitoring: Demo records only.</p>
 
-      <h2>Customer Management</h2>
+<p>Customer support: Demo records only.</p>
 
-      <p>
+<p>Account management: Not enabled.</p>
 
-        View registered customer profiles, email addresses,
+<p id="dashboardStatus" class="status">
 
-        phone numbers, customer IDs and registration dates.
+Checking database connection...
 
-      </p>
+</p>
 
-      <a href="customers.html"
+</section>
 
-         class="nav-link primary customer-link">
+<section class="panel">
 
-        OPEN CUSTOMER MANAGEMENT
+<h2>Security Information</h2>
 
-      </a>
+<p>
 
-    </section>
+This portal verifies administrator identity through Supabase.
 
-    <!-- TRANSACTION MODULE -->
+Customer profile access is controlled by database Row Level
 
-    <section class="panel">
+Security policies.
 
-      <h2>Transaction Administration</h2>
+</p>
 
-      <p>
+<p>
 
-        Access the demonstration transaction history and
+Transaction and support figures remain browser-local
 
-        customer transaction pages.
+demonstration records. No real banking services are enabled.
 
-        No real deposits, transfers or payments are processed.
+</p>
 
-      </p>
+</section>
 
-      <a href="transactions.html"
-
-         class="nav-link primary customer-link">
-
-        VIEW TRANSACTIONS
-
-      </a>
-
-    </section>
-
-    <!-- SECURITY INFORMATION -->
-
-    <section class="panel">
-
-      <h2>Administrator Security</h2>
-
-      <p>
-
-        Your administrator access is checked against the
-
-        Beeperpay Supabase user_roles table.
-
-        Customer records are protected by database
-
-        Row Level Security policies.
-
-      </p>
-
-      <p id="adminEmail" class="status"></p>
-
-      <p id="dashboardStatus" class="status">
-
-        Checking database connection...
-
-      </p>
-
-    </section>
-
-  </section>
+</section>
 
 </main>
 
 <footer>
 
-  BEEPERPAY MICROFINANCE BANK<br>
+BEEPERPAY MICROFINANCE BANK<br>
 
-  Your money. Your future. Our priority.<br>
+Your money. Your future. Our priority.<br>
 
-  Demonstration administration portal.
-
-  No real banking services are active.
+Demonstration portal only. No real banking services are active.
 
 </footer>
 
 <script>
 
-  // SUPABASE CONNECTION
+// SUPABASE CONNECTION
 
-  const SUPABASE_URL =
+const SUPABASE_URL =
 
-    "https://wrjvcvxswdojpxzcwyqw.supabase.co";
+"https://wrjvcvxswdojpxzcwyqw.supabase.co";
 
-  const SUPABASE_KEY =
+const SUPABASE_KEY =
 
-    "sb_publishable_zTksapAhIoJp_0-9w1twlQ_j7WECGcv";
+"sb_publishable_zTksapAhIoJp_0-9w1twlQ_j7WECGcv";
 
-  const client = window.supabase.createClient(
+const client = window.supabase.createClient(
 
-    SUPABASE_URL,
+SUPABASE_URL,
 
-    SUPABASE_KEY
+SUPABASE_KEY
 
-  );
+);
 
-  // PAGE ELEMENTS
+// ELEMENTS
 
-  const loginSection =
+const loginSection = document.getElementById("loginSection");
 
-    document.getElementById("loginSection");
+const adminSection = document.getElementById("adminSection");
 
-  const adminSection =
+const loginMessage = document.getElementById("loginMessage");
 
-    document.getElementById("adminSection");
+const loginBtn = document.getElementById("loginBtn");
 
-  const loginMessage =
+function showLoginMessage(message,type){
 
-    document.getElementById("loginMessage");
+loginMessage.textContent = message;
 
-  const loginBtn =
+loginMessage.className = "message " + type;
 
-    document.getElementById("loginBtn");
+}
 
-  function showLoginMessage(message, type) {
+// ADMIN ROLE VERIFICATION
 
-    loginMessage.textContent = message;
+async function verifyAdministrator(user){
 
-    loginMessage.className = "message " + type;
+const {data,error} = await client
 
-  }
+.from("user_roles")
 
-  // CHECK ADMINISTRATOR ROLE
+.select("role")
 
-  async function verifyAdministrator(user) {
+.eq("user_id",user.id)
 
-    const { data, error } = await client
+.eq("role","admin")
 
-      .from("user_roles")
+.maybeSingle();
 
-      .select("role")
+if(error){
 
-      .eq("user_id", user.id)
+throw new Error("Administrator verification failed: "+error.message);
 
-      .eq("role", "admin")
+}
 
-      .maybeSingle();
+if(!data){
 
-    if (error) {
+throw new Error("Access denied. Administrator permission required.");
 
-      throw new Error(
+}
 
-        "Could not verify administrator role: " +
+return true;
 
-        error.message
+}
 
-      );
+// SAFE DEMO STORAGE READER
 
-    }
+function readDemoRecords(keys){
 
-    if (!data) {
+for(const key of keys){
 
-      throw new Error(
+try{
 
-        "Access denied. This account is not an administrator."
+const value = localStorage.getItem(key);
 
-      );
+if(!value) continue;
 
-    }
+const parsed = JSON.parse(value);
 
-    return true;
+if(Array.isArray(parsed)) return parsed;
 
-  }
+if(parsed && Array.isArray(parsed.records)) return parsed.records;
 
-  // LOAD ADMIN DASHBOARD
+if(parsed && Array.isArray(parsed.transactions)) return parsed.transactions;
 
-  async function openAdminDashboard(user) {
+}catch(error){
 
-    await verifyAdministrator(user);
+console.warn("Demo storage could not be read:",key,error);
 
-    loginSection.style.display = "none";
+}
 
-    adminSection.style.display = "block";
+}
 
-    document.getElementById("welcomeMessage").textContent =
+return [];
 
-      "Welcome, Administrator";
+}
 
-    document.getElementById("adminEmail").textContent =
+// FORMAT NAIRA
 
-      "Signed in as: " + user.email;
+function formatNaira(value){
 
-    await loadDashboardData();
+const amount = Number(value) || 0;
 
-  }
+return "₦" + amount.toLocaleString("en-NG",{
 
-  // LOAD CUSTOMER COUNT
+minimumFractionDigits:2,
 
-  async function loadDashboardData() {
+maximumFractionDigits:2
 
-    const status =
+});
 
-      document.getElementById("dashboardStatus");
+}
 
-    status.textContent = "Loading database information...";
+// GET AMOUNT FROM DEMO RECORD
 
-    const { count, error } = await client
+function getAmount(record){
 
-      .from("customer_profiles")
+return Number(
 
-      .select("id", {
+record.amount ??
 
-        count: "exact",
+record.transfer_amount ??
 
-        head: true
+record.add_money_amount ??
 
-      });
+record.value ??
 
-    if (error) {
+0
 
-      status.textContent =
+) || 0;
 
-        "Customer database error: " + error.message;
+}
 
-      status.className = "status error";
+// DEMO TRANSACTION OVERVIEW
 
-      return;
+function loadDemoOverview(){
 
-    }
+const addRecords = readDemoRecords([
 
-    document.getElementById("customerCount").textContent =
+"beeperpay_add_money_requests",
 
-      count ?? 0;
+"beeperpayAddMoneyRequests",
 
-    status.textContent =
+"addMoneyRequests",
 
-      "Database connected. Customer information loaded successfully.";
+"add_money_requests"
 
-    status.className = "status success";
+]);
 
-  }
+const transferRecords = readDemoRecords([
 
-  // ADMINISTRATOR LOGIN
+"beeperpay_transfer_requests",
 
-  document.getElementById("loginForm")
+"beeperpayTransferRequests",
 
-    .addEventListener("submit", async function(event) {
+"transferRequests",
 
-      event.preventDefault();
+"transfer_requests"
 
-      loginBtn.disabled = true;
+]);
 
-      loginBtn.textContent = "VERIFYING...";
+const transactionRecords = readDemoRecords([
 
-      showLoginMessage(
+"beeperpay_transactions",
 
-        "Checking administrator credentials...",
+"beeperpayTransactions",
 
-        ""
+"transactions",
 
-      );
+"transactionHistory"
 
-      const email =
+]);
 
-        document.getElementById("email").value.trim();
+const supportRecords = readDemoRecords([
 
-      const password =
+"beeperpay_support_tickets",
 
-        document.getElementById("password").value;
+"beeperpaySupportTickets",
 
-      try {
+"supportTickets",
 
-        const { data, error } =
+"support_tickets"
 
-          await client.auth.signInWithPassword({
+]);
 
-            email: email,
+const addTotal = addRecords.reduce(
 
-            password: password
+(total,item)=>total+getAmount(item),0
 
-          });
+);
 
-        if (error) {
+const transferTotal = transferRecords.reduce(
 
-          throw new Error(error.message);
+(total,item)=>total+getAmount(item),0
 
-        }
+);
 
-        if (!data.user) {
+document.getElementById("addMoneyTotal").textContent =
 
-          throw new Error("Unable to identify administrator.");
+formatNaira(addTotal);
 
-        }
+document.getElementById("transferTotal").textContent =
 
-        await openAdminDashboard(data.user);
+formatNaira(transferTotal);
 
-      } catch (error) {
+document.getElementById("transactionCount").textContent =
 
-        console.error(error);
+transactionRecords.length;
 
-        showLoginMessage(
+document.getElementById("supportCount").textContent =
 
-          error.message,
+supportRecords.length;
 
-          "error"
+}
 
-        );
+// LOAD CUSTOMER COUNT FROM SUPABASE
 
-        await client.auth.signOut();
+async function loadDashboardData(){
 
-      } finally {
+const status = document.getElementById("dashboardStatus");
 
-        loginBtn.disabled = false;
+status.textContent = "Loading database information...";
 
-        loginBtn.textContent = "SIGN IN";
+const {count,error} = await client
 
-      }
+.from("customer_profiles")
 
-    });
+.select("id",{count:"exact",head:true});
 
-  // CHECK EXISTING LOGIN SESSION
+if(error){
 
-  async function checkExistingSession() {
+status.textContent =
 
-    try {
+"Customer database error: "+error.message;
 
-      const { data, error } =
+status.className = "status error";
 
-        await client.auth.getUser();
+return;
 
-      if (error || !data.user) {
+}
 
-        return;
+document.getElementById("customerCount").textContent =
 
-      }
+count ?? 0;
 
-      await openAdminDashboard(data.user);
+status.textContent =
 
-    } catch (error) {
+"Supabase connected. Customer records loaded successfully.";
 
-      console.error(error);
+status.className = "status success";
 
-      loginSection.style.display = "block";
+loadDemoOverview();
 
-      adminSection.style.display = "none";
+}
 
-      showLoginMessage(
+// OPEN ADMIN DASHBOARD
 
-        error.message,
+async function openAdminDashboard(user){
 
-        "error"
+await verifyAdministrator(user);
 
-      );
+loginSection.style.display = "none";
 
-    }
+adminSection.style.display = "block";
 
-  }
+document.getElementById("welcomeMessage").textContent =
 
-  // REFRESH DASHBOARD
+"Welcome, Administrator";
 
-  document.getElementById("refreshBtn")
+document.getElementById("adminEmail").textContent =
 
-    .addEventListener("click", async function() {
+"Signed in as: "+user.email;
 
-      const { data, error } =
+await loadDashboardData();
 
-        await client.auth.getUser();
+}
 
-      if (error || !data.user) {
+// LOGIN
 
-        window.location.reload();
+document.getElementById("loginForm")
 
-        return;
+.addEventListener("submit",async function(event){
 
-      }
+event.preventDefault();
 
-      try {
+loginBtn.disabled = true;
 
-        await verifyAdministrator(data.user);
+loginBtn.textContent = "VERIFYING...";
 
-        await loadDashboardData();
+showLoginMessage("Checking administrator credentials...","");
 
-      } catch (error) {
+const email = document.getElementById("email").value.trim();
 
-        alert(error.message);
+const password = document.getElementById("password").value;
 
-      }
+try{
 
-    });
+const {data,error} = await client.auth.signInWithPassword({
 
-  // LOGOUT
+email:email,
 
-  document.getElementById("logoutBtn")
+password:password
 
-    .addEventListener("click", async function() {
+});
 
-      const { error } = await client.auth.signOut();
+if(error) throw new Error(error.message);
 
-      if (error) {
+if(!data.user){
 
-        alert("Logout failed: " + error.message);
+throw new Error("Unable to identify administrator.");
 
-        return;
+}
 
-      }
+await openAdminDashboard(data.user);
 
-      window.location.reload();
+}catch(error){
 
-    });
+console.error(error);
 
-  // START
+showLoginMessage(error.message,"error");
 
-  checkExistingSession();
+await client.auth.signOut();
+
+}finally{
+
+loginBtn.disabled = false;
+
+loginBtn.textContent = "SIGN IN";
+
+}
+
+});
+
+// EXISTING SESSION
+
+async function checkExistingSession(){
+
+try{
+
+const {data,error} = await client.auth.getUser();
+
+if(error || !data.user) return;
+
+await openAdminDashboard(data.user);
+
+}catch(error){
+
+console.error(error);
+
+loginSection.style.display = "block";
+
+adminSection.style.display = "none";
+
+showLoginMessage(error.message,"error");
+
+}
+
+}
+
+// REFRESH
+
+document.getElementById("refreshBtn")
+
+.addEventListener("click",async function(){
+
+const {data,error} = await client.auth.getUser();
+
+if(error || !data.user){
+
+window.location.reload();
+
+return;
+
+}
+
+try{
+
+await verifyAdministrator(data.user);
+
+await loadDashboardData();
+
+}catch(error){
+
+alert(error.message);
+
+}
+
+});
+
+// LOGOUT
+
+document.getElementById("logoutBtn")
+
+.addEventListener("click",async function(){
+
+const {error} = await client.auth.signOut();
+
+if(error){
+
+alert("Logout failed: "+error.message);
+
+return;
+
+}
+
+window.location.reload();
+
+});
+
+// START
+
+checkExistingSession();
 
 </script>
 
