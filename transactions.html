@@ -44,6 +44,8 @@ button{padding:11px 16px;border:0;border-radius:6px;background:#07152e;color:whi
 
 .notice{font-size:12px;color:#666;line-height:1.5;margin-top:22px}
 
+.message{font-size:13px;color:#555;text-align:center;padding:12px}
+
 </style>
 
 </head>
@@ -58,21 +60,25 @@ button{padding:11px 16px;border:0;border-radius:6px;background:#07152e;color:whi
 
 <p>MICROFINANCE BANK</p>
 
+<p>Your money. Your future. Our priority.</p>
+
 </div>
 
 <h3>Transaction History</h3>
 
 <h4>My Transactions</h4>
 
-<div id="transactions"></div>
+<button type="button" onclick="loadTransactions()">Refresh</button>
+
+<div id="transactions" class="message">Loading transactions...</div>
 
 <p><a href="dashboard.html">Back to Dashboard</a></p>
 
 <p class="notice">
 
-Demo transaction records only. No real banking transactions have occurred.
+Demonstration transaction records only. No real banking transactions have occurred.
 
-Records are stored in this browser and are not a real bank ledger.
+Records are retrieved from Beeperpay's demonstration database.
 
 </p>
 
@@ -106,9 +112,11 @@ parent.appendChild(line);
 
 async function loadTransactions(){
 
-const {data,error}=await client.auth.getUser();
+container.textContent="Loading transactions...";
 
-if(error||!data.user){
+const {data:authData,error:authError}=await client.auth.getUser();
+
+if(authError||!authData.user){
 
 window.location.href="login.html";
 
@@ -116,27 +124,29 @@ return;
 
 }
 
-const key="beeperpay_demo_transactions_"+data.user.id;
+const {data:records,error}=await client
 
-let records=[];
+.from("transaction_requests")
 
-try{
+.select("id,transaction_type,amount,description,status,created_at")
 
-records=JSON.parse(localStorage.getItem(key)||"[]");
+.eq("user_id",authData.user.id)
 
-if(!Array.isArray(records))records=[];
+.order("created_at",{ascending:false});
 
-}catch(e){
+if(error){
 
-records=[];
+console.error("Transaction loading error:",error);
+
+container.textContent="Unable to load transactions. Please refresh and try again.";
+
+return;
 
 }
 
-records.reverse();
-
 container.replaceChildren();
 
-if(records.length===0){
+if(!records||records.length===0){
 
 const empty=document.createElement("div");
 
@@ -158,7 +168,7 @@ card.className="transaction";
 
 const heading=document.createElement("h4");
 
-heading.textContent=record.type||"Transaction";
+heading.textContent=record.transaction_type||"Transaction";
 
 card.appendChild(heading);
 
@@ -170,19 +180,27 @@ amount.textContent="₦"+Number(record.amount||0).toLocaleString("en-NG");
 
 card.appendChild(amount);
 
-addDetail(card,"Reference",record.reference);
+addDetail(card,"Reference",record.id);
 
-addDetail(card,"Date",record.date);
+addDetail(card,"Date",
 
-if(record.type==="Add Money"){
+record.created_at
 
-addDetail(card,"Payment Method",record.method);
+?new Date(record.created_at).toLocaleString("en-NG")
 
-}
+:"Not provided"
 
-if(record.type==="Transfer"){
+);
 
-addDetail(card,"Recipient Bank",record.bank);
+if(record.description){
+
+const description=document.createElement("div");
+
+description.className="detail";
+
+description.textContent=record.description;
+
+card.appendChild(description);
 
 }
 
@@ -190,7 +208,7 @@ const status=document.createElement("span");
 
 status.className="status";
 
-status.textContent=record.status||"Demo request only";
+status.textContent=record.status||"Pending";
 
 card.appendChild(status);
 
