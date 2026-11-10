@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Customer Activity | Beeperpay</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+
+*{box-sizing:border-box;margin:0;padding:0}
+
+body{font-family:Arial,sans-serif;background:#f3f5f9;color:#17233d}
+
+header{background:#071b49;color:white;padding:22px 18px;border-bottom:4px solid #d6a83e}
+
+.brand{font-size:25px;font-weight:bold}
+
+.brand span{color:#e2b54c}
+
+header p{font-size:12px;margin-top:6px;letter-spacing:2px}
+
+main{max-width:1150px;margin:25px auto;padding:0 15px}
+
+.topbar{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-bottom:20px}
+
+h1{font-size:24px;color:#071b49}
+
+h2{font-size:19px;color:#071b49;margin-bottom:15px}
+
+.subtitle{color:#6b7280;margin-top:7px;font-size:14px}
+
+.actions{display:flex;gap:9px;flex-wrap:wrap}
+
+button,.link{border:0;border-radius:6px;padding:11px 15px;font-size:13px;font-weight:bold;cursor:pointer;text-decoration:none}
+
+button{background:#071b49;color:white}
+
+.link{background:#e8edf5;color:#071b49}
+
+.panel,.stat{background:white;padding:20px;border-radius:10px;box-shadow:0 2px 9px #0000000c;margin-bottom:20px}
+
+.stat{border-left:4px solid #d6a83e}
+
+.stat p{font-size:13px;color:#687386;margin-bottom:10px}
+
+.stat h2{font-size:27px;margin:0}
+
+.status{font-size:13px;color:#536174;margin:12px 0}
+
+.error{color:#b42318}
+
+.success{color:#16803c}
+
+.table-wrap{overflow-x:auto}
+
+table{width:100%;border-collapse:collapse;min-width:850px}
+
+th,td{padding:13px 11px;text-align:left;border-bottom:1px solid #e9edf3;font-size:13px}
+
+th{background:#f3f5f9;color:#071b49}
+
+td{color:#465166}
+
+.empty{text-align:center;padding:25px;color:#7b8493}
+
+footer{text-align:center;padding:25px 12px;color:#778092;font-size:12px;line-height:1.8}
+
+#app{display:none}
+
+#loading{text-align:center;margin:70px auto;padding:20px;color:#071b49}
+
+@media(max-width:600px){h1{font-size:21px}.panel{padding:13px}}
+
+</style>
+
+</head>
+
+<body>
+
+<header>
+
+<div class="brand">BEEPER<span>PAY</span></div>
+
+<p>MICROFINANCE BANK</p>
+
+</header>
+
+<div id="loading">Checking administrator access...</div>
+
+<main id="app">
+
+<div class="topbar">
+
+<div>
+
+<h1>Customer Activity Monitoring</h1>
+
+<p class="subtitle">Review recorded customer account and verification changes.</p>
+
+</div>
+
+<div class="actions">
+
+<a class="link" href="admin.html">Admin Dashboard</a>
+
+<a class="link" href="customers.html">Customer Management</a>
+
+<button id="refreshBtn">Refresh</button>
+
+<button id="logoutBtn" style="background:#b42318">Logout</button>
+
+</div>
+
+</div>
+
+<div class="stat">
+
+<p>Total Recorded Activities</p>
+
+<h2 id="totalActivities">0</h2>
+
+</div>
+
+<section class="panel">
+
+<h2>Customer Activity History</h2>
+
+<p class="status" id="message">Loading activity records...</p>
+
+<div class="table-wrap">
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>Date and Time</th>
+
+<th>Customer ID</th>
+
+<th>Activity</th>
+
+<th>Previous Value</th>
+
+<th>New Value</th>
+
+</tr>
+
+</thead>
+
+<tbody id="activityTable">
+
+<tr><td colspan="5" class="empty">Loading records...</td></tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+</section>
+
+<footer>
+
+BEEPERPAY MICROFINANCE BANK<br>
+
+Your money. Your future. Our priority.<br>
+
+Demonstration activity records only. No real banking transactions are monitored.
+
+</footer>
+
+</main>
+
+<script>
+
+const SUPABASE_URL="https://wrjvcvxswdojpxzcwyqw.supabase.co";
+
+const SUPABASE_KEY="sb_publishable_zTksapAhIoJp_0-9w1twlQ_j7WECGcv";
+
+const client=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+
+const $=id=>document.getElementById(id);
+
+function escapeHTML(value){
+
+return String(value??"").replace(/[&<>"']/g,char=>({
+
+"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+
+})[char]);
+
+}
+
+function formatDate(value){
+
+const date=new Date(value);
+
+return isNaN(date)?"Not available":date.toLocaleString();
+
+}
+
+async function checkAdministrator(){
+
+const {data:{user},error:userError}=await client.auth.getUser();
+
+if(userError||!user){
+
+location.replace("index.html");
+
+return false;
+
+}
+
+const {data:role,error}=await client
+
+.from("user_roles")
+
+.select("role")
+
+.eq("user_id",user.id)
+
+.eq("role","admin")
+
+.maybeSingle();
+
+if(error||!role){
+
+$("loading").textContent="Administrator access required.";
+
+await client.auth.signOut();
+
+return false;
+
+}
+
+$("loading").style.display="none";
+
+$("app").style.display="block";
+
+return true;
+
+}
+
+async function loadActivities(){
+
+$("message").textContent="Loading activity records...";
+
+$("message").className="status";
+
+$("activityTable").innerHTML=
+
+'<tr><td colspan="5" class="empty">Loading...</td></tr>';
+
+const {data,error}=await client
+
+.from("customer_activity")
+
+.select("id,customer_id,activity_type,old_value,new_value,created_at")
+
+.order("created_at",{ascending:false});
+
+if(error){
+
+$("totalActivities").textContent="0";
+
+$("activityTable").innerHTML=
+
+'<tr><td colspan="5" class="empty">Unable to load activity records.</td></tr>';
+
+$("message").textContent="Error: "+error.message;
+
+$("message").className="status error";
+
+return;
+
+}
+
+const records=data||[];
+
+$("totalActivities").textContent=records.length;
+
+if(!records.length){
+
+$("activityTable").innerHTML=
+
+'<tr><td colspan="5" class="empty">No customer activities recorded yet. Changes made after activity monitoring was enabled will appear here.</td></tr>';
+
+$("message").textContent="Activity records loaded successfully.";
+
+$("message").className="status success";
+
+return;
+
+}
+
+$("activityTable").innerHTML=records.map(record=>`
+
+<tr>
+
+<td>${escapeHTML(formatDate(record.created_at))}</td>
+
+<td>${escapeHTML(record.customer_id||"Customer record unavailable")}</td>
+
+<td>${escapeHTML(record.activity_type)}</td>
+
+<td>${escapeHTML(record.old_value||"Not available")}</td>
+
+<td>${escapeHTML(record.new_value||"Not available")}</td>
+
+</tr>
+
+`).join("");
+
+$("message").textContent="Activity records loaded successfully.";
+
+$("message").className="status success";
+
+}
+
+$("refreshBtn").addEventListener("click",loadActivities);
+
+$("logoutBtn").addEventListener("click",async()=>{
+
+await client.auth.signOut();
+
+location.replace("index.html");
+
+});
+
+(async()=>{
+
+if(await checkAdministrator())await loadActivities();
+
+})();
+
+</script>
+
+</body>
+
+</html>
