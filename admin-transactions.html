@@ -46,7 +46,7 @@ h3{margin-top:28px}
 
 .status{display:inline-block;background:#fff3d5;color:#76520b;padding:6px 9px;border-radius:5px;font-size:11px;margin:10px 0}
 
-select,button{padding:11px;border-radius:6px;border:1px solid #ccd2dc;margin:5px 5px 5px 0}
+select,button,input{padding:11px;border-radius:6px;border:1px solid #ccd2dc;margin:5px 5px 5px 0;font-size:14px}
 
 button{background:#07152e;color:white;border:0;cursor:pointer}
 
@@ -55,6 +55,16 @@ button:disabled{opacity:.6}
 .message{padding:15px;color:#555;text-align:center}
 
 .warning{color:#a15c00;background:#fff3d5;padding:10px;border-radius:6px;margin:10px 0;font-size:13px}
+
+.search-area{background:#f3f5f9;padding:15px;border-radius:8px;margin:18px 0}
+
+.search-area input{width:100%;margin:8px 0}
+
+.search-area select{width:100%;background:white}
+
+.search-label{font-size:13px;font-weight:bold}
+
+.result-count{font-size:13px;color:#555;margin:12px 0}
 
 a{color:#07152e;font-weight:bold}
 
@@ -102,7 +112,43 @@ a{color:#07152e;font-weight:bold}
 
 <button type="button" onclick="loadTransactions()">Refresh Transactions</button>
 
+<div class="search-area">
+
+<label class="search-label" for="search">Search Transactions</label>
+
+<input
+
+type="search"
+
+id="search"
+
+placeholder="Search customer name, email, phone, transaction ID or reference..."
+
+oninput="displayTransactions()"
+
+>
+
+<label class="search-label" for="statusFilter">Filter by Transaction Status</label>
+
+<select id="statusFilter" onchange="displayTransactions()">
+
+<option value="All">All Transactions</option>
+
+<option value="Pending">Pending</option>
+
+<option value="Approved">Approved</option>
+
+<option value="Rejected">Rejected</option>
+
+</select>
+
+<button type="button" onclick="clearFilters()">Clear Search and Filters</button>
+
+</div>
+
 <div id="warning"></div>
+
+<div id="resultCount" class="result-count"></div>
 
 <div id="transactions" class="message">Loading transactions...</div>
 
@@ -131,6 +177,10 @@ const client=window.supabase.createClient(
 const container=document.getElementById("transactions");
 
 const warning=document.getElementById("warning");
+
+let allTransactions=[];
+
+let profileMap={};
 
 async function checkAdmin(){
 
@@ -206,39 +256,29 @@ return;
 
 }
 
-const total=records.length;
+allTransactions=records||[];
 
-document.getElementById("total").textContent=total;
+document.getElementById("total").textContent=allTransactions.length;
 
 document.getElementById("pending").textContent=
 
-records.filter(r=>r.status==="Pending").length;
+allTransactions.filter(r=>r.status==="Pending").length;
 
 document.getElementById("approved").textContent=
 
-records.filter(r=>r.status==="Approved").length;
+allTransactions.filter(r=>r.status==="Approved").length;
 
 document.getElementById("rejected").textContent=
 
-records.filter(r=>r.status==="Rejected").length;
+allTransactions.filter(r=>r.status==="Rejected").length;
 
-container.replaceChildren();
+profileMap={};
 
-if(!total){
+const customerIds=[
 
-container.textContent="No transaction requests found.";
+...new Set(allTransactions.map(r=>r.user_id).filter(Boolean))
 
-return;
-
-}
-
-/* Fetch customer profiles */
-
-const customerIds=[...new Set(records.map(r=>r.user_id).filter(Boolean))];
-
-let profiles=[];
-
-let profileError=null;
+];
 
 if(customerIds.length){
 
@@ -250,37 +290,97 @@ const result=await client
 
 .in("id",customerIds);
 
-profiles=result.data||[];
+if(result.error){
 
-profileError=result.error;
-
-}
-
-if(profileError){
-
-console.error("Customer profile error:",profileError);
+console.error("Customer profile error:",result.error);
 
 const message=document.createElement("div");
 
 message.className="warning";
 
-message.textContent="Customer details could not be loaded. Customer IDs are shown instead. "+profileError.message;
+message.textContent="Customer details could not be loaded: "+result.error.message;
 
 warning.appendChild(message);
 
-}
+}else{
 
-const profileMap={};
-
-profiles.forEach(profile=>{
+(result.data||[]).forEach(profile=>{
 
 profileMap[profile.id]=profile;
 
 });
 
-/* Display transaction records */
+}
 
-records.forEach(record=>{
+}
+
+displayTransactions();
+
+}
+
+function displayTransactions(){
+
+container.replaceChildren();
+
+const search=document.getElementById("search").value
+
+.trim().toLowerCase();
+
+const selectedStatus=document.getElementById("statusFilter").value;
+
+const filtered=allTransactions.filter(record=>{
+
+const profile=profileMap[record.user_id]||{};
+
+const searchableText=[
+
+record.id,
+
+record.user_id,
+
+record.transaction_type,
+
+record.amount,
+
+record.description,
+
+record.status,
+
+profile.full_name,
+
+profile.email,
+
+profile.phone_number
+
+].join(" ").toLowerCase();
+
+const matchesSearch=searchableText.includes(search);
+
+const matchesStatus=
+
+selectedStatus==="All"||record.status===selectedStatus;
+
+return matchesSearch&&matchesStatus;
+
+});
+
+document.getElementById("resultCount").textContent=
+
+"Showing "+filtered.length+" of "+allTransactions.length+" transactions.";
+
+if(!filtered.length){
+
+container.className="message";
+
+container.textContent="No matching transactions found.";
+
+return;
+
+}
+
+container.className="";
+
+filtered.forEach(record=>{
 
 const card=document.createElement("div");
 
@@ -299,8 +399,6 @@ amount.className="amount";
 amount.textContent="₦"+Number(record.amount).toLocaleString("en-NG");
 
 card.appendChild(amount);
-
-/* Customer information */
 
 const profile=profileMap[record.user_id];
 
@@ -377,6 +475,16 @@ card.appendChild(controls);
 container.appendChild(card);
 
 });
+
+}
+
+function clearFilters(){
+
+document.getElementById("search").value="";
+
+document.getElementById("statusFilter").value="All";
+
+displayTransactions();
 
 }
 
