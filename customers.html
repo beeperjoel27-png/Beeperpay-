@@ -20,7 +20,7 @@ body{font-family:Arial,sans-serif;background:#f3f5f9;color:#17233d}
 
 header{background:#071b49;color:white;padding:22px 18px;border-bottom:4px solid #d6a83e}
 
-.brand{font-size:25px;font-weight:bold;letter-spacing:1px}
+.brand{font-size:25px;font-weight:bold}
 
 .brand span{color:#e2b54c}
 
@@ -28,47 +28,53 @@ header p{font-size:12px;margin-top:6px;letter-spacing:2px}
 
 main{max-width:1150px;margin:25px auto;padding:0 15px}
 
-.topbar{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-bottom:22px}
+.topbar{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-bottom:20px}
 
 h1{font-size:24px;color:#071b49}
+
+h2{font-size:19px;color:#071b49;margin-bottom:15px}
 
 .subtitle{color:#6b7280;margin-top:7px;font-size:14px}
 
 .actions{display:flex;gap:9px;flex-wrap:wrap}
 
-button,.back-link{border:none;border-radius:6px;padding:11px 15px;font-size:13px;font-weight:bold;cursor:pointer;text-decoration:none}
+button,.back-link{border:0;border-radius:6px;padding:11px 15px;font-size:13px;font-weight:bold;cursor:pointer;text-decoration:none}
 
-.refresh{background:#071b49;color:white}
+.refresh,.view-btn{background:#071b49;color:white}
 
-.logout{background:#b42318;color:white}
+.logout,.suspend-btn{background:#b42318;color:white}
 
-.back-link{background:#e8edf5;color:#071b49;display:inline-block}
+.activate-btn{background:#16803c;color:white}
+
+.back-link,.close-btn{background:#e8edf5;color:#071b49}
+
+button:disabled{opacity:.6;cursor:not-allowed}
 
 .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:15px;margin-bottom:22px}
 
-.stat-card{background:white;padding:20px;border-radius:10px;box-shadow:0 2px 9px #0000000c;border-left:4px solid #d6a83e}
+.stat-card,.panel{background:white;padding:20px;border-radius:10px;box-shadow:0 2px 9px #0000000c}
+
+.stat-card{border-left:4px solid #d6a83e}
 
 .stat-card p{font-size:13px;color:#687386;margin-bottom:10px}
 
-.stat-card h2{color:#071b49;font-size:27px}
+.stat-card h2{font-size:27px;margin:0}
 
-.panel{background:white;padding:20px;border-radius:10px;box-shadow:0 2px 9px #0000000c;margin-bottom:20px}
+.panel{margin-bottom:20px}
 
-.panel h2{font-size:19px;margin-bottom:15px;color:#071b49}
-
-input{width:100%;padding:13px;border:1px solid #d4dae4;border-radius:6px;font-size:14px;margin-bottom:17px;outline-color:#d6a83e}
+input{width:100%;padding:13px;border:1px solid #d4dae4;border-radius:6px;font-size:14px;margin-bottom:17px}
 
 .table-wrap{width:100%;overflow-x:auto}
 
-table{width:100%;border-collapse:collapse;min-width:850px}
+table{width:100%;border-collapse:collapse;min-width:1050px}
 
 th,td{padding:13px 11px;text-align:left;border-bottom:1px solid #e9edf3;font-size:13px}
 
-th{background:#f3f5f9;color:#071b49;font-weight:bold}
+th{background:#f3f5f9;color:#071b49}
 
 td{color:#465166}
 
-.status{margin:14px 0;font-size:13px;color:#536174}
+.status{margin:12px 0;font-size:13px;color:#536174}
 
 .error{color:#b42318}
 
@@ -76,11 +82,15 @@ td{color:#465166}
 
 .empty{text-align:center;padding:25px;color:#7b8493}
 
-.view-btn{background:#071b49;color:white;padding:9px 12px}
+.badge-status{font-weight:bold}
 
-.close-btn{background:#e8edf5;color:#071b49}
+.active-status{color:#16803c}
 
-.detail-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}
+.suspended-status{color:#b42318}
+
+#detailsPanel{display:none}
+
+.detail-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:15px}
 
 .detail-item{background:#f3f5f9;padding:15px;border-radius:7px;overflow-wrap:anywhere}
 
@@ -88,23 +98,15 @@ td{color:#465166}
 
 .detail-item strong{display:block;color:#071b49;font-size:14px}
 
-#detailsPanel{display:none}
+#accountActions{margin-top:20px}
 
 footer{text-align:center;padding:25px 12px;color:#778092;font-size:12px;line-height:1.8}
 
 #app{display:none}
 
-#loading{max-width:600px;margin:70px auto;padding:20px;text-align:center;color:#071b49}
+#loading{text-align:center;margin:70px auto;padding:20px;color:#071b49}
 
-@media(max-width:600px){
-
-h1{font-size:21px}
-
-.topbar{align-items:flex-start}
-
-.panel{padding:13px}
-
-}
+@media(max-width:600px){h1{font-size:21px}.panel{padding:13px}}
 
 </style>
 
@@ -130,7 +132,7 @@ h1{font-size:21px}
 
 <h1>Customer Management</h1>
 
-<p class="subtitle">View and search registered Beeperpay customers.</p>
+<p class="subtitle">View and manage registered Beeperpay demo customers.</p>
 
 </div>
 
@@ -170,17 +172,7 @@ h1{font-size:21px}
 
 <h2>Registered Customers</h2>
 
-<input
-
-type="search"
-
-id="searchInput"
-
-placeholder="Search by name, email, phone or customer ID..."
-
-autocomplete="off"
-
->
+<input type="search" id="searchInput" placeholder="Search by name, email, phone or customer ID..." autocomplete="off">
 
 <p class="status" id="statusMessage">Loading customer records...</p>
 
@@ -202,6 +194,8 @@ autocomplete="off"
 
 <th>Registration Date</th>
 
+<th>Account Status</th>
+
 <th>Action</th>
 
 </tr>
@@ -210,11 +204,7 @@ autocomplete="off"
 
 <tbody id="customerTable">
 
-<tr>
-
-<td colspan="6" class="empty">Loading customers...</td>
-
-</tr>
+<tr><td colspan="7" class="empty">Loading customers...</td></tr>
 
 </tbody>
 
@@ -236,53 +226,25 @@ autocomplete="off"
 
 <div class="detail-grid">
 
-<div class="detail-item">
+<div class="detail-item"><small>Full Name</small><strong id="detailName"></strong></div>
 
-<small>Full Name</small>
+<div class="detail-item"><small>Email Address</small><strong id="detailEmail"></strong></div>
 
-<strong id="detailName">Not available</strong>
+<div class="detail-item"><small>Phone Number</small><strong id="detailPhone"></strong></div>
 
-</div>
+<div class="detail-item"><small>Customer ID</small><strong id="detailId"></strong></div>
 
-<div class="detail-item">
+<div class="detail-item"><small>Registration Date</small><strong id="detailDate"></strong></div>
 
-<small>Email Address</small>
-
-<strong id="detailEmail">Not available</strong>
+<div class="detail-item"><small>Account Status</small><strong id="detailStatus"></strong></div>
 
 </div>
 
-<div class="detail-item">
+<div id="accountActions">
 
-<small>Phone Number</small>
+<p class="status" id="accountMessage">Demo account management.</p>
 
-<strong id="detailPhone">Not available</strong>
-
-</div>
-
-<div class="detail-item">
-
-<small>Customer ID</small>
-
-<strong id="detailId">Not available</strong>
-
-</div>
-
-<div class="detail-item">
-
-<small>Registration Date</small>
-
-<strong id="detailDate">Not available</strong>
-
-</div>
-
-<div class="detail-item">
-
-<small>Account Status</small>
-
-<strong id="detailStatus">Demo Account</strong>
-
-</div>
+<button id="statusActionBtn" class="suspend-btn">Suspend Account</button>
 
 </div>
 
@@ -302,279 +264,59 @@ Demonstration customer management portal. No real banking services are active.
 
 <script>
 
-const SUPABASE_URL = "https://wrjvcvxswdojpxzcwyqw.supabase.co";
+const SUPABASE_URL="https://wrjvcvxswdojpxzcwyqw.supabase.co";
 
-const SUPABASE_KEY = "sb_publishable_zTksapAhIoJp_0-9w1twlQ_j7WECGcv";
+const SUPABASE_KEY="sb_publishable_zTksapAhIoJp_0-9w1twlQ_j7WECGcv";
 
-const client = window.supabase.createClient(
+const client=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
 
-SUPABASE_URL,
+let customers=[];
 
-SUPABASE_KEY
+let selectedCustomer=null;
 
-);
+const $=id=>document.getElementById(id);
 
-let customers = [];
+function showMessage(message,type=""){
 
-const loading = document.getElementById("loading");
+$("statusMessage").textContent=message;
 
-const app = document.getElementById("app");
-
-const statusMessage = document.getElementById("statusMessage");
-
-const customerTable = document.getElementById("customerTable");
-
-const searchInput = document.getElementById("searchInput");
-
-const detailsPanel = document.getElementById("detailsPanel");
-
-function setStatus(message,type=""){
-
-statusMessage.textContent = message;
-
-statusMessage.className = "status " + type;
+$("statusMessage").className="status "+type;
 
 }
 
 function formatDate(value){
 
-if(!value) return "Not available";
+if(!value)return "Not available";
 
-const date = new Date(value);
+const date=new Date(value);
 
-if(Number.isNaN(date.getTime())){
-
-return "Not available";
+return isNaN(date)?"Not available":date.toLocaleDateString();
 
 }
 
-return date.toLocaleDateString("en-NG",{
+function escapeHTML(value){
 
-day:"2-digit",
+return String(value??"").replace(/[&<>"']/g,char=>({
 
-month:"short",
+"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
 
-year:"numeric"
-
-});
-
-}
-
-function addCell(row,value){
-
-const cell = document.createElement("td");
-
-cell.textContent = value || "Not provided";
-
-row.appendChild(cell);
-
-}
-
-function showCustomerDetails(customer){
-
-document.getElementById("detailName").textContent =
-
-customer.full_name || "Not provided";
-
-document.getElementById("detailEmail").textContent =
-
-customer.email || "Not provided";
-
-document.getElementById("detailPhone").textContent =
-
-customer.phone_number || "Not provided";
-
-document.getElementById("detailId").textContent =
-
-customer.id || "Not available";
-
-document.getElementById("detailDate").textContent =
-
-formatDate(customer.created_at);
-
-document.getElementById("detailStatus").textContent =
-
-"Demo Account";
-
-detailsPanel.style.display = "block";
-
-detailsPanel.scrollIntoView({
-
-behavior:"smooth",
-
-block:"start"
-
-});
-
-}
-
-function renderCustomers(list){
-
-customerTable.replaceChildren();
-
-document.getElementById("totalCustomers").textContent =
-
-customers.length;
-
-document.getElementById("matchingCustomers").textContent =
-
-list.length;
-
-if(list.length === 0){
-
-const row = document.createElement("tr");
-
-const cell = document.createElement("td");
-
-cell.colSpan = 6;
-
-cell.className = "empty";
-
-cell.textContent = "No customer records found.";
-
-row.appendChild(cell);
-
-customerTable.appendChild(row);
-
-return;
-
-}
-
-list.forEach(customer=>{
-
-const row = document.createElement("tr");
-
-addCell(row,customer.full_name);
-
-addCell(row,customer.email);
-
-addCell(row,customer.phone_number);
-
-addCell(row,customer.id);
-
-addCell(row,formatDate(customer.created_at));
-
-const actionCell = document.createElement("td");
-
-const viewButton = document.createElement("button");
-
-viewButton.type = "button";
-
-viewButton.className = "view-btn";
-
-viewButton.textContent = "View Details";
-
-viewButton.addEventListener("click",()=>{
-
-showCustomerDetails(customer);
-
-});
-
-actionCell.appendChild(viewButton);
-
-row.appendChild(actionCell);
-
-customerTable.appendChild(row);
-
-});
-
-}
-
-function filterCustomers(){
-
-const term = searchInput.value.trim().toLowerCase();
-
-const filtered = customers.filter(customer=>{
-
-return [
-
-customer.full_name,
-
-customer.email,
-
-customer.phone_number,
-
-customer.id
-
-].some(value=>
-
-String(value || "").toLowerCase().includes(term)
-
-);
-
-});
-
-renderCustomers(filtered);
-
-}
-
-async function loadCustomers(){
-
-setStatus("Loading customer records...");
-
-detailsPanel.style.display = "none";
-
-const {data,error} = await client
-
-.from("customer_profiles")
-
-.select("id, email, full_name, phone_number, created_at")
-
-.order("created_at",{ascending:false});
-
-if(error){
-
-console.error(error);
-
-customers = [];
-
-renderCustomers([]);
-
-setStatus(
-
-"Could not load customers: " + error.message,
-
-"error"
-
-);
-
-return;
-
-}
-
-customers = data || [];
-
-filterCustomers();
-
-setStatus(
-
-"Customer records loaded successfully.",
-
-"success"
-
-);
+})[char]);
 
 }
 
 async function checkAdministrator(){
 
-try{
+const {data:{user},error:userError}=await client.auth.getUser();
 
-const {data:userData,error:userError} =
+if(userError||!user){
 
-await client.auth.getUser();
+location.replace("index.html");
 
-if(userError || !userData.user){
-
-window.location.replace("admin.html");
-
-return;
+return false;
 
 }
 
-const user = userData.user;
-
-const {data:roleData,error:roleError} = await client
+const {data:role,error}=await client
 
 .from("user_roles")
 
@@ -586,67 +328,299 @@ const {data:roleData,error:roleError} = await client
 
 .maybeSingle();
 
-if(roleError || !roleData){
+if(error||!role){
 
-loading.textContent =
+$("loading").textContent="Administrator access required.";
 
-"Access denied. Administrator permission is required.";
+await client.auth.signOut();
+
+return false;
+
+}
+
+$("loading").style.display="none";
+
+$("app").style.display="block";
+
+return true;
+
+}
+
+function renderCustomers(list){
+
+$("totalCustomers").textContent=customers.length;
+
+$("matchingCustomers").textContent=list.length;
+
+if(!list.length){
+
+$("customerTable").innerHTML=
+
+'<tr><td colspan="7" class="empty">No matching customers found.</td></tr>';
 
 return;
 
 }
 
-loading.style.display = "none";
+$("customerTable").innerHTML=list.map(customer=>{
 
-app.style.display = "block";
+const accountStatus=customer.account_status||"Active";
 
-await loadCustomers();
+const statusClass=accountStatus==="Suspended"?"suspended-status":"active-status";
 
-}catch(error){
+return `
 
-console.error(error);
+<tr>
 
-loading.textContent =
+<td>${escapeHTML(customer.full_name||"Not provided")}</td>
 
-"Unable to verify administrator access. Please try again.";
+<td>${escapeHTML(customer.email||"Not provided")}</td>
 
-}
+<td>${escapeHTML(customer.phone_number||"Not provided")}</td>
 
-}
+<td>${escapeHTML(customer.id)}</td>
 
-searchInput.addEventListener("input",filterCustomers);
+<td>${formatDate(customer.created_at)}</td>
 
-document.getElementById("refreshBtn")
+<td><span class="badge-status ${statusClass}">${escapeHTML(accountStatus)}</span></td>
 
-.addEventListener("click",loadCustomers);
+<td><button class="view-btn" data-view="${escapeHTML(customer.id)}">View Details</button></td>
 
-document.getElementById("closeDetailsBtn")
+</tr>`;
 
-.addEventListener("click",()=>{
+}).join("");
 
-detailsPanel.style.display = "none";
+document.querySelectorAll("[data-view]").forEach(button=>{
+
+button.addEventListener("click",()=>showCustomerDetails(button.dataset.view));
 
 });
 
-document.getElementById("logoutBtn")
+}
 
-.addEventListener("click",async()=>{
+function filterCustomers(){
 
-const {error} = await client.auth.signOut();
+const term=$("searchInput").value.toLowerCase().trim();
+
+const filtered=customers.filter(customer=>
+
+[
+
+customer.full_name,
+
+customer.email,
+
+customer.phone_number,
+
+customer.id
+
+].some(value=>String(value||"").toLowerCase().includes(term))
+
+);
+
+renderCustomers(filtered);
+
+}
+
+async function loadCustomers(){
+
+showMessage("Loading customer records...");
+
+$("customerTable").innerHTML=
+
+'<tr><td colspan="7" class="empty">Loading customers...</td></tr>';
+
+const {data,error}=await client
+
+.from("customer_profiles")
+
+.select("id,email,full_name,phone_number,created_at,account_status")
+
+.order("created_at",{ascending:false});
 
 if(error){
 
-alert("Logout failed: " + error.message);
+customers=[];
+
+renderCustomers([]);
+
+showMessage("Unable to load customers: "+error.message,"error");
 
 return;
 
 }
 
-window.location.replace("admin.html");
+customers=data||[];
+
+customers.forEach(customer=>{
+
+if(!customer.account_status)customer.account_status="Active";
 
 });
 
-checkAdministrator();
+filterCustomers();
+
+showMessage("Customer records loaded successfully.","success");
+
+}
+
+function showCustomerDetails(id){
+
+selectedCustomer=customers.find(customer=>customer.id===id);
+
+if(!selectedCustomer)return;
+
+$("detailName").textContent=selectedCustomer.full_name||"Not provided";
+
+$("detailEmail").textContent=selectedCustomer.email||"Not provided";
+
+$("detailPhone").textContent=selectedCustomer.phone_number||"Not provided";
+
+$("detailId").textContent=selectedCustomer.id;
+
+$("detailDate").textContent=formatDate(selectedCustomer.created_at);
+
+updateDetailsStatus();
+
+$("detailsPanel").style.display="block";
+
+$("detailsPanel").scrollIntoView({behavior:"smooth",block:"start"});
+
+}
+
+function updateDetailsStatus(){
+
+if(!selectedCustomer)return;
+
+const status=selectedCustomer.account_status||"Active";
+
+$("detailStatus").textContent=status;
+
+$("detailStatus").className=status==="Suspended"?"suspended-status":"active-status";
+
+const button=$("statusActionBtn");
+
+if(status==="Suspended"){
+
+button.textContent="Activate Account";
+
+button.className="activate-btn";
+
+}else{
+
+button.textContent="Suspend Account";
+
+button.className="suspend-btn";
+
+}
+
+$("accountMessage").textContent="Current demo account status: "+status;
+
+$("accountMessage").className="status";
+
+}
+
+async function changeCustomerStatus(){
+
+if(!selectedCustomer)return;
+
+const oldStatus=selectedCustomer.account_status||"Active";
+
+const newStatus=oldStatus==="Active"?"Suspended":"Active";
+
+const confirmed=confirm(
+
+"Are you sure you want to "+newStatus.toLowerCase()+
+
+" this customer's demo account?"
+
+);
+
+if(!confirmed)return;
+
+const button=$("statusActionBtn");
+
+button.disabled=true;
+
+button.textContent="Updating...";
+
+const {data,error}=await client
+
+.from("customer_profiles")
+
+.update({account_status:newStatus})
+
+.eq("id",selectedCustomer.id)
+
+.select("id,account_status")
+
+.maybeSingle();
+
+button.disabled=false;
+
+if(error||!data){
+
+$("accountMessage").textContent=
+
+error?"Update failed: "+error.message:
+
+"No customer record was updated. Check administrator permissions.";
+
+$("accountMessage").className="status error";
+
+updateDetailsStatus();
+
+return;
+
+}
+
+selectedCustomer.account_status=data.account_status;
+
+const index=customers.findIndex(c=>c.id===selectedCustomer.id);
+
+if(index!==-1)customers[index].account_status=data.account_status;
+
+updateDetailsStatus();
+
+filterCustomers();
+
+$("accountMessage").textContent=
+
+"Customer demo account status updated to "+newStatus+".";
+
+$("accountMessage").className="status success";
+
+}
+
+$("searchInput").addEventListener("input",filterCustomers);
+
+$("refreshBtn").addEventListener("click",loadCustomers);
+
+$("closeDetailsBtn").addEventListener("click",()=>{
+
+$("detailsPanel").style.display="none";
+
+selectedCustomer=null;
+
+});
+
+$("statusActionBtn").addEventListener("click",changeCustomerStatus);
+
+$("logoutBtn").addEventListener("click",async()=>{
+
+await client.auth.signOut();
+
+location.replace("index.html");
+
+});
+
+(async()=>{
+
+const allowed=await checkAdministrator();
+
+if(allowed)await loadCustomers();
+
+})();
 
 </script>
 
