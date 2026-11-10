@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Beeperpay Account Statement</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+
+*{box-sizing:border-box}
+
+body{margin:0;background:#f3f5f9;font-family:Arial,sans-serif;color:#07152e}
+
+header{background:#07152e;color:white;text-align:center;padding:24px 15px}
+
+header h2{margin:0;color:#e4b84e}
+
+header p{margin:6px 0 0;font-size:13px}
+
+.container{max-width:950px;margin:25px auto;padding:20px}
+
+.card{background:white;padding:20px;border-radius:12px;margin-bottom:18px;box-shadow:0 2px 10px #0000000c}
+
+h3{margin-top:0}
+
+.summary{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+
+.summary div{background:#f3f5f9;padding:15px;border-radius:8px}
+
+.summary strong{display:block;margin-top:8px;font-size:18px}
+
+table{width:100%;border-collapse:collapse;min-width:650px}
+
+th,td{padding:12px;text-align:left;border-bottom:1px solid #eee;font-size:13px}
+
+th{background:#07152e;color:white}
+
+.table-wrap{overflow-x:auto}
+
+button,.link{display:inline-block;background:#07152e;color:white;padding:12px 18px;border:0;border-radius:6px;text-decoration:none;margin:5px;cursor:pointer}
+
+button{background:#b88a20}
+
+.notice{font-size:12px;color:#8a5b00;background:#fff5d9;padding:12px;border-radius:7px;line-height:1.6}
+
+#message{color:#b42318}
+
+@media(max-width:600px){.summary{grid-template-columns:1fr}}
+
+@media print{
+
+body{background:white}
+
+header{background:white;color:#07152e}
+
+.container{margin:0;padding:5px}
+
+.no-print{display:none!important}
+
+.card{box-shadow:none;border:1px solid #ddd}
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<header>
+
+<h2>BEEPERPAY</h2>
+
+<p>MICROFINANCE BANK</p>
+
+<p>Your money. Your future. Our priority.</p>
+
+</header>
+
+<div class="container">
+
+<div class="card">
+
+<h3>Account Statement</h3>
+
+<p>Customer: <strong id="customer">Loading...</strong></p>
+
+<p>Email: <span id="email">Loading...</span></p>
+
+<p>Statement Date: <span id="statementDate"></span></p>
+
+<p id="message"></p>
+
+</div>
+
+<div class="card">
+
+<h3>Transaction Summary</h3>
+
+<div class="summary">
+
+<div>Add Money Requests<strong id="addTotal">₦0.00</strong></div>
+
+<div>Transfer Requests<strong id="transferTotal">₦0.00</strong></div>
+
+<div>Total Records<strong id="totalRecords">0</strong></div>
+
+</div>
+
+</div>
+
+<div class="card">
+
+<h3>Transaction Records</h3>
+
+<div class="table-wrap">
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>Date</th>
+
+<th>Type</th>
+
+<th>Reference</th>
+
+<th>Details</th>
+
+<th>Amount</th>
+
+<th>Status</th>
+
+</tr>
+
+</thead>
+
+<tbody id="records">
+
+<tr><td colspan="6">Loading records...</td></tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+<div class="notice">
+
+<strong>Important:</strong> This is a demonstration statement based on records saved in this browser. It is not an official bank statement, proof of funds, or evidence of completed payments or transfers. No real banking transactions have occurred.
+
+</div>
+
+<div class="no-print" style="text-align:center;margin-top:20px">
+
+<button onclick="window.print()">PRINT STATEMENT</button>
+
+<a class="link" href="transactions.html">Transactions</a>
+
+<a class="link" href="dashboard.html">Dashboard</a>
+
+</div>
+
+</div>
+
+<script>
+
+const SUPABASE_URL = "https://wrjvcvxswdojpxzcwyqw.supabase.co";
+
+const SUPABASE_KEY = "sb_publishable_zTksapAhIoJp_0-9w1twlQ_j7WECGcv";
+
+const supabaseClient = window.supabase.createClient(
+
+SUPABASE_URL,
+
+SUPABASE_KEY
+
+);
+
+const money = amount => "₦" + (Number(amount) || 0).toLocaleString("en-NG", {
+
+minimumFractionDigits:2,
+
+maximumFractionDigits:2
+
+});
+
+async function loadStatement(){
+
+const message = document.getElementById("message");
+
+try{
+
+const {data:{user},error} = await supabaseClient.auth.getUser();
+
+if(error || !user){
+
+window.location.href = "login.html";
+
+return;
+
+}
+
+const metadata = user.user_metadata || {};
+
+document.getElementById("customer").textContent =
+
+metadata.full_name || "Customer";
+
+document.getElementById("email").textContent =
+
+user.email || "Not available";
+
+document.getElementById("statementDate").textContent =
+
+new Date().toLocaleString();
+
+const storageKey = "beeperpay_demo_transactions_" + user.id;
+
+const transactions = JSON.parse(localStorage.getItem(storageKey) || "[]");
+
+let addTotal = 0;
+
+let transferTotal = 0;
+
+const tbody = document.getElementById("records");
+
+tbody.replaceChildren();
+
+if(transactions.length === 0){
+
+const row = document.createElement("tr");
+
+const cell = document.createElement("td");
+
+cell.colSpan = 6;
+
+cell.textContent = "No transaction records yet.";
+
+row.appendChild(cell);
+
+tbody.appendChild(row);
+
+}
+
+transactions.forEach(item => {
+
+const amount = Number(item.amount) || 0;
+
+if(item.type === "Add Money") addTotal += amount;
+
+if(item.type === "Transfer") transferTotal += amount;
+
+const row = document.createElement("tr");
+
+[
+
+item.date || "Not available",
+
+item.type || "Transaction",
+
+item.reference || "Not available",
+
+item.method || item.bank || "Demo",
+
+money(amount),
+
+item.status || "Demo request only"
+
+].forEach(value => {
+
+const cell = document.createElement("td");
+
+cell.textContent = value;
+
+row.appendChild(cell);
+
+});
+
+tbody.appendChild(row);
+
+});
+
+document.getElementById("addTotal").textContent = money(addTotal);
+
+document.getElementById("transferTotal").textContent = money(transferTotal);
+
+document.getElementById("totalRecords").textContent = transactions.length;
+
+}catch(error){
+
+message.textContent = "Unable to load statement. Please log in again.";
+
+}
+
+}
+
+loadStatement();
+
+</script>
+
+</body>
+
+</html>
