@@ -14,35 +14,9 @@
 
 *{box-sizing:border-box}
 
-body{
+body{margin:0;padding:20px;background:#f3f5f9;color:#07152e;font-family:Arial,sans-serif}
 
-margin:0;
-
-padding:20px;
-
-background:#f3f5f9;
-
-color:#07152e;
-
-font-family:Arial,sans-serif
-
-}
-
-.container{
-
-max-width:900px;
-
-margin:25px auto;
-
-background:white;
-
-padding:24px;
-
-border-radius:12px;
-
-box-shadow:0 4px 18px rgba(0,0,0,.07)
-
-}
+.container{max-width:900px;margin:25px auto;background:white;padding:24px;border-radius:12px;box-shadow:0 4px 18px rgba(0,0,0,.07)}
 
 .brand{text-align:center}
 
@@ -52,209 +26,49 @@ box-shadow:0 4px 18px rgba(0,0,0,.07)
 
 h3{margin-top:28px}
 
-.stats{
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:20px 0}
 
-display:grid;
+.stat{background:#f3f5f9;padding:15px;border-radius:8px;text-align:center}
 
-grid-template-columns:repeat(4,1fr);
+.stat strong{display:block;font-size:23px;margin-top:8px}
 
-gap:10px;
-
-margin:20px 0
-
-}
-
-.stat{
-
-background:#f3f5f9;
-
-padding:15px;
-
-border-radius:8px;
-
-text-align:center
-
-}
-
-.stat strong{
-
-display:block;
-
-font-size:23px;
-
-margin-top:8px
-
-}
-
-.transaction{
-
-border:1px solid #e0e4eb;
-
-border-radius:9px;
-
-padding:16px;
-
-margin:14px 0
-
-}
+.transaction{border:1px solid #e0e4eb;border-radius:9px;padding:16px;margin:14px 0}
 
 .transaction h4{margin:0 0 10px}
 
 .amount{font-size:21px;font-weight:bold;margin:8px 0}
 
-.detail{
+.detail{font-size:13px;color:#555;line-height:1.8;overflow-wrap:anywhere}
 
-font-size:13px;
-
-color:#555;
-
-line-height:1.8;
-
-overflow-wrap:anywhere
-
-}
-
-.customer{
-
-background:#f3f5f9;
-
-padding:12px;
-
-border-radius:7px;
-
-margin:12px 0
-
-}
+.customer{background:#f3f5f9;padding:12px;border-radius:7px;margin:12px 0}
 
 .customer strong{color:#07152e}
 
-.status{
+.status{display:inline-block;background:#fff3d5;color:#76520b;padding:6px 9px;border-radius:5px;font-size:11px;margin:10px 0}
 
-display:inline-block;
+select,button,input{padding:11px;border-radius:6px;border:1px solid #ccd2dc;margin:5px 5px 5px 0;font-size:14px}
 
-background:#fff3d5;
-
-color:#76520b;
-
-padding:6px 9px;
-
-border-radius:5px;
-
-font-size:11px;
-
-margin:10px 0
-
-}
-
-select,button,input{
-
-padding:11px;
-
-border-radius:6px;
-
-border:1px solid #ccd2dc;
-
-margin:5px 5px 5px 0;
-
-font-size:14px
-
-}
-
-button{
-
-background:#07152e;
-
-color:white;
-
-border:0;
-
-cursor:pointer
-
-}
+button{background:#07152e;color:white;border:0;cursor:pointer}
 
 button:disabled{opacity:.6}
 
-.message{
+.export-button{background:#b58a2b;color:#07152e;font-weight:bold}
 
-padding:15px;
+.message{padding:15px;color:#555;text-align:center}
 
-color:#555;
+.warning{color:#a15c00;background:#fff3d5;padding:10px;border-radius:6px;margin:10px 0;font-size:13px}
 
-text-align:center
+.search-area{background:#f3f5f9;padding:15px;border-radius:8px;margin:18px 0}
 
-}
+.search-area input,.search-area select{width:100%;margin:8px 0;background:white}
 
-.warning{
+.search-label{font-size:13px;font-weight:bold;display:block;margin-top:10px}
 
-color:#a15c00;
-
-background:#fff3d5;
-
-padding:10px;
-
-border-radius:6px;
-
-margin:10px 0;
-
-font-size:13px
-
-}
-
-.search-area{
-
-background:#f3f5f9;
-
-padding:15px;
-
-border-radius:8px;
-
-margin:18px 0
-
-}
-
-.search-area input,
-
-.search-area select{
-
-width:100%;
-
-margin:8px 0;
-
-background:white
-
-}
-
-.search-label{
-
-font-size:13px;
-
-font-weight:bold;
-
-display:block;
-
-margin-top:10px
-
-}
-
-.result-count{
-
-font-size:13px;
-
-color:#555;
-
-margin:12px 0
-
-}
+.result-count{font-size:13px;color:#555;margin:12px 0}
 
 a{color:#07152e;font-weight:bold}
 
-@media(max-width:600px){
-
-.stats{grid-template-columns:repeat(2,1fr)}
-
-.container{padding:16px}
-
-}
+@media(max-width:600px){.stats{grid-template-columns:repeat(2,1fr)}.container{padding:16px}}
 
 </style>
 
@@ -290,37 +104,19 @@ a{color:#07152e;font-weight:bold}
 
 </div>
 
-<button type="button" onclick="loadTransactions()">
-
-Refresh Transactions
-
-</button>
+<button type="button" onclick="loadTransactions()">Refresh Transactions</button>
 
 <div class="search-area">
 
-<label class="search-label" for="search">
+<label class="search-label" for="search">Search Transactions</label>
 
-Search Transactions
-
-</label>
-
-<input
-
-type="search"
-
-id="search"
+<input type="search" id="search"
 
 placeholder="Search customer name, email, phone, transaction ID or reference..."
 
-oninput="displayTransactions()"
+oninput="displayTransactions()">
 
->
-
-<label class="search-label" for="statusFilter">
-
-Filter by Transaction Status
-
-</label>
+<label class="search-label" for="statusFilter">Filter by Transaction Status</label>
 
 <select id="statusFilter" onchange="displayTransactions()">
 
@@ -334,55 +130,29 @@ Filter by Transaction Status
 
 </select>
 
-<label class="search-label" for="startDate">
+<label class="search-label" for="startDate">From Date</label>
 
-From Date
+<input type="date" id="startDate" onchange="displayTransactions()">
 
-</label>
+<label class="search-label" for="endDate">To Date</label>
 
-<input
+<input type="date" id="endDate" onchange="displayTransactions()">
 
-type="date"
-
-id="startDate"
-
-onchange="displayTransactions()"
-
->
-
-<label class="search-label" for="endDate">
-
-To Date
-
-</label>
-
-<input
-
-type="date"
-
-id="endDate"
-
-onchange="displayTransactions()"
-
->
-
-<button type="button" onclick="clearFilters()">
-
-Clear Search and Filters
-
-</button>
+<button type="button" onclick="clearFilters()">Clear Search and Filters</button>
 
 </div>
+
+<button type="button" class="export-button" onclick="exportTransactions()">
+
+Download Transaction Report (CSV)
+
+</button>
 
 <div id="warning"></div>
 
 <div id="resultCount" class="result-count"></div>
 
-<div id="transactions" class="message">
-
-Loading transactions...
-
-</div>
+<div id="transactions" class="message">Loading transactions...</div>
 
 <p><a href="admin.html">Back to Admin Dashboard</a></p>
 
@@ -492,25 +262,15 @@ allTransactions=records||[];
 
 document.getElementById("total").textContent=allTransactions.length;
 
-document.getElementById("pending").textContent=
+document.getElementById("pending").textContent=allTransactions.filter(r=>r.status==="Pending").length;
 
-allTransactions.filter(r=>r.status==="Pending").length;
+document.getElementById("approved").textContent=allTransactions.filter(r=>r.status==="Approved").length;
 
-document.getElementById("approved").textContent=
-
-allTransactions.filter(r=>r.status==="Approved").length;
-
-document.getElementById("rejected").textContent=
-
-allTransactions.filter(r=>r.status==="Rejected").length;
+document.getElementById("rejected").textContent=allTransactions.filter(r=>r.status==="Rejected").length;
 
 profileMap={};
 
-const customerIds=[
-
-...new Set(allTransactions.map(r=>r.user_id).filter(Boolean))
-
-];
+const customerIds=[...new Set(allTransactions.map(r=>r.user_id).filter(Boolean))];
 
 if(customerIds.length){
 
@@ -550,13 +310,9 @@ displayTransactions();
 
 }
 
-function displayTransactions(){
+function getFilteredTransactions(){
 
-container.replaceChildren();
-
-const search=document.getElementById("search").value
-
-.trim().toLowerCase();
+const search=document.getElementById("search").value.trim().toLowerCase();
 
 const selectedStatus=document.getElementById("statusFilter").value;
 
@@ -564,7 +320,13 @@ const startDate=document.getElementById("startDate").value;
 
 const endDate=document.getElementById("endDate").value;
 
-const filtered=allTransactions.filter(record=>{
+if(startDate&&endDate&&startDate>endDate){
+
+return [];
+
+}
+
+return allTransactions.filter(record=>{
 
 const profile=profileMap[record.user_id]||{};
 
@@ -592,35 +354,43 @@ profile.phone_number
 
 const matchesSearch=searchableText.includes(search);
 
-const matchesStatus=
-
-selectedStatus==="All"||record.status===selectedStatus;
-
-const transactionDate=new Date(record.created_at);
+const matchesStatus=selectedStatus==="All"||record.status===selectedStatus;
 
 const dateOnly=record.created_at.slice(0,10);
 
-const matchesStartDate=
+const matchesStartDate=!startDate||dateOnly>=startDate;
 
-!startDate||dateOnly>=startDate;
+const matchesEndDate=!endDate||dateOnly<=endDate;
 
-const matchesEndDate=
-
-!endDate||dateOnly<=endDate;
-
-return matchesSearch&&
-
-matchesStatus&&
-
-matchesStartDate&&
-
-matchesEndDate;
+return matchesSearch&&matchesStatus&&matchesStartDate&&matchesEndDate;
 
 });
+
+}
+
+function displayTransactions(){
+
+container.replaceChildren();
+
+const filtered=getFilteredTransactions();
 
 document.getElementById("resultCount").textContent=
 
 "Showing "+filtered.length+" of "+allTransactions.length+" transactions.";
+
+const startDate=document.getElementById("startDate").value;
+
+const endDate=document.getElementById("endDate").value;
+
+if(startDate&&endDate&&startDate>endDate){
+
+container.className="message";
+
+container.textContent="The From Date cannot be later than the To Date.";
+
+return;
+
+}
 
 if(!filtered.length){
 
@@ -678,15 +448,7 @@ card.appendChild(customer);
 
 detail(card,"Transaction ID",record.id);
 
-detail(
-
-card,
-
-"Date",
-
-new Date(record.created_at).toLocaleString("en-NG")
-
-);
+detail(card,"Date",new Date(record.created_at).toLocaleString("en-NG"));
 
 detail(card,"Description",record.description);
 
@@ -737,6 +499,116 @@ card.appendChild(controls);
 container.appendChild(card);
 
 });
+
+}
+
+function csvCell(value){
+
+let text=String(value??"");
+
+if(/^[\s]*[=+\-@\t\r]/.test(text)){
+
+text="'"+text;
+
+}
+
+return '"'+text.replace(/"/g,'""')+'"';
+
+}
+
+function exportTransactions(){
+
+const filtered=getFilteredTransactions();
+
+if(!filtered.length){
+
+alert("There are no matching transactions to export.");
+
+return;
+
+}
+
+const headers=[
+
+"Transaction ID",
+
+"Customer ID",
+
+"Customer Name",
+
+"Email Address",
+
+"Phone Number",
+
+"Transaction Type",
+
+"Amount (NGN)",
+
+"Description",
+
+"Status",
+
+"Date"
+
+];
+
+const rows=filtered.map(record=>{
+
+const profile=profileMap[record.user_id]||{};
+
+return [
+
+record.id,
+
+record.user_id,
+
+profile.full_name||"Not provided",
+
+profile.email||"Not provided",
+
+profile.phone_number||"Not provided",
+
+record.transaction_type,
+
+record.amount,
+
+record.description||"",
+
+record.status,
+
+new Date(record.created_at).toLocaleString("en-NG")
+
+];
+
+});
+
+const csv="\uFEFF"+
+
+[headers,...rows]
+
+.map(row=>row.map(csvCell).join(","))
+
+.join("\r\n");
+
+const blob=new Blob([csv],{type:"text/csv;charset=utf-8;"});
+
+const url=URL.createObjectURL(blob);
+
+const link=document.createElement("a");
+
+link.href=url;
+
+const date=new Date().toISOString().slice(0,10);
+
+link.download="Beeperpay-Transactions-"+date+".csv";
+
+document.body.appendChild(link);
+
+link.click();
+
+link.remove();
+
+URL.revokeObjectURL(url);
 
 }
 
