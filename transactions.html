@@ -8,75 +8,41 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Beeperpay | Transactions</title>
+<title>Transaction History - Beeperpay</title>
 
 <style>
 
-* { box-sizing: border-box; }
+*{box-sizing:border-box}
 
-body {
+body{margin:0;padding:20px;background:#f3f5f9;color:#07152e;font-family:Arial,sans-serif}
 
-  margin: 0;
+.container{max-width:600px;margin:30px auto;background:white;padding:24px;border-radius:12px;box-shadow:0 4px 18px rgba(0,0,0,.07)}
 
-  padding: 20px 15px;
+.brand{text-align:center}
 
-  background: #07152e;
+.brand h2{letter-spacing:2px;margin-bottom:5px}
 
-  color: white;
+.brand p{color:#b58a2b;font-size:12px;margin-top:0}
 
-  font-family: Arial, sans-serif;
+h3{margin-top:28px}
 
-}
+.transaction{border:1px solid #e0e4eb;border-radius:9px;padding:16px;margin:14px 0}
 
-.container {
+.transaction h4{margin:0 0 10px}
 
-  max-width: 500px;
+.amount{font-size:21px;font-weight:bold;margin:8px 0}
 
-  margin: 25px auto;
+.detail{font-size:13px;color:#555;line-height:1.8;overflow-wrap:anywhere}
 
-}
+.status{display:inline-block;background:#fff3d5;color:#76520b;padding:6px 9px;border-radius:5px;font-size:11px;margin-top:10px}
 
-h1 {
+.empty{text-align:center;padding:25px;color:#777}
 
-  color: #e4b84e;
+a{color:#07152e;font-weight:bold}
 
-  text-align: center;
+button{padding:11px 16px;border:0;border-radius:6px;background:#07152e;color:white;margin:8px 0;cursor:pointer}
 
-}
-
-.card {
-
-  background: #122747;
-
-  padding: 20px;
-
-  margin: 15px 0;
-
-  border-radius: 12px;
-
-}
-
-.transaction {
-
-  padding: 15px 0;
-
-  border-bottom: 1px solid #43516a;
-
-  line-height: 1.6;
-
-  overflow-wrap: anywhere;
-
-}
-
-.status {
-
-  color: #e4b84e;
-
-  font-weight: bold;
-
-}
-
-a { color: #e4b84e; }
+.notice{font-size:12px;color:#666;line-height:1.5;margin-top:22px}
 
 </style>
 
@@ -86,29 +52,27 @@ a { color: #e4b84e; }
 
 <div class="container">
 
-<h1>BEEPERPAY</h1>
+<div class="brand">
 
-<p style="text-align:center">MICROFINANCE BANK</p>
+<h2>BEEPERPAY</h2>
 
-<h2>Transaction History</h2>
-
-<div class="card">
-
-  <h3>My Transactions</h3>
-
-  <div id="transactions">Loading transactions...</div>
+<p>MICROFINANCE BANK</p>
 
 </div>
 
-<p style="text-align:center">
+<h3>Transaction History</h3>
 
-<a href="dashboard.html">Back to Dashboard</a>
+<h4>My Transactions</h4>
 
-</p>
+<div id="transactions"></div>
 
-<p style="text-align:center;font-size:12px;color:#bbb">
+<p><a href="dashboard.html">Back to Dashboard</a></p>
+
+<p class="notice">
 
 Demo transaction records only. No real banking transactions have occurred.
+
+Records are stored in this browser and are not a real bank ledger.
 
 </p>
 
@@ -118,85 +82,121 @@ Demo transaction records only. No real banking transactions have occurred.
 
 <script>
 
-const client = window.supabase.createClient(
+const client=window.supabase.createClient(
 
-  "https://wrjvcvxswdojpxzcwyqw.supabase.co",
+"https://wrjvcvxswdojpxzcwyqw.supabase.co",
 
-  "sb_publishable_zTksapAhIoJp_0-9w1twlQ_j7WECGcv"
+"sb_publishable_zTksapAhIoJp_0-9w1twlQ_j7WECGcv"
 
 );
 
-const storageKey = "beeperpay_demo_transactions";
+const container=document.getElementById("transactions");
 
-function escapeHTML(value) {
+function addDetail(parent,label,value){
 
-  return String(value).replace(/[&<>"']/g, function(c) {
+const line=document.createElement("div");
 
-    return {
+line.className="detail";
 
-      "&": "&amp;",
+line.textContent=label+": "+(value||"Not provided");
 
-      "<": "&lt;",
-
-      ">": "&gt;",
-
-      '"': "&quot;",
-
-      "'": "&#039;"
-
-    }[c];
-
-  });
+parent.appendChild(line);
 
 }
 
-async function loadTransactions() {
+async function loadTransactions(){
 
-  const { data, error } = await client.auth.getUser();
+const {data,error}=await client.auth.getUser();
 
-  if (error || !data.user) {
+if(error||!data.user){
 
-    window.location.href = "login.html";
+window.location.href="login.html";
 
-    return;
+return;
 
-  }
+}
 
-  const key = storageKey + "_" + data.user.id;
+const key="beeperpay_demo_transactions_"+data.user.id;
 
-  const transactions = JSON.parse(
+let records=[];
 
-    localStorage.getItem(key) || "[]"
+try{
 
-  );
+records=JSON.parse(localStorage.getItem(key)||"[]");
 
-  const container = document.getElementById("transactions");
+if(!Array.isArray(records))records=[];
 
-  if (transactions.length === 0) {
+}catch(e){
 
-    container.textContent = "No transactions yet.";
+records=[];
 
-    return;
+}
 
-  }
+records.reverse();
 
-  container.innerHTML = transactions.slice().reverse().map(t => `
+container.replaceChildren();
 
-    <div class="transaction">
+if(records.length===0){
 
-      <strong>${escapeHTML(t.type)}</strong><br>
+const empty=document.createElement("div");
 
-      Amount: ₦${Number(t.amount).toLocaleString("en-NG")}<br>
+empty.className="empty";
 
-      Reference: ${escapeHTML(t.reference)}<br>
+empty.textContent="No transactions yet.";
 
-      Date: ${escapeHTML(t.date)}<br>
+container.appendChild(empty);
 
-      <span class="status">Demo request only</span>
+return;
 
-    </div>
+}
 
-  `).join("");
+records.forEach(function(record){
+
+const card=document.createElement("div");
+
+card.className="transaction";
+
+const heading=document.createElement("h4");
+
+heading.textContent=record.type||"Transaction";
+
+card.appendChild(heading);
+
+const amount=document.createElement("div");
+
+amount.className="amount";
+
+amount.textContent="₦"+Number(record.amount||0).toLocaleString("en-NG");
+
+card.appendChild(amount);
+
+addDetail(card,"Reference",record.reference);
+
+addDetail(card,"Date",record.date);
+
+if(record.type==="Add Money"){
+
+addDetail(card,"Payment Method",record.method);
+
+}
+
+if(record.type==="Transfer"){
+
+addDetail(card,"Recipient Bank",record.bank);
+
+}
+
+const status=document.createElement("span");
+
+status.className="status";
+
+status.textContent=record.status||"Demo request only";
+
+card.appendChild(status);
+
+container.appendChild(card);
+
+});
 
 }
 
