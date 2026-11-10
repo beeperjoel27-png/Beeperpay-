@@ -1,1 +1,365 @@
+<!DOCTYPE html>
 
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Beeperpay | Transfer Money</title>
+
+<style>
+
+* { box-sizing: border-box; }
+
+body {
+
+  margin: 0;
+
+  padding: 20px 15px;
+
+  background: #07152e;
+
+  color: white;
+
+  font-family: Arial, sans-serif;
+
+}
+
+.container {
+
+  max-width: 450px;
+
+  margin: 25px auto;
+
+  padding: 25px;
+
+  background: #122747;
+
+  border-radius: 15px;
+
+}
+
+h1 {
+
+  text-align: center;
+
+  color: #e4b84e;
+
+}
+
+h2 { text-align: center; }
+
+label {
+
+  display: block;
+
+  margin-top: 17px;
+
+}
+
+input, select, textarea {
+
+  width: 100%;
+
+  padding: 13px;
+
+  margin-top: 7px;
+
+  border-radius: 7px;
+
+  border: 1px solid #ccc;
+
+  font-size: 16px;
+
+}
+
+textarea {
+
+  min-height: 75px;
+
+  resize: vertical;
+
+}
+
+button {
+
+  width: 100%;
+
+  padding: 15px;
+
+  margin-top: 22px;
+
+  background: #e4b84e;
+
+  color: #07152e;
+
+  border: none;
+
+  border-radius: 7px;
+
+  font-weight: bold;
+
+  font-size: 15px;
+
+  cursor: pointer;
+
+}
+
+#message {
+
+  margin-top: 20px;
+
+  line-height: 1.6;
+
+  overflow-wrap: anywhere;
+
+}
+
+a { color: #e4b84e; }
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>BEEPERPAY</h1>
+
+<p style="text-align:center">MICROFINANCE BANK</p>
+
+<h2>Transfer Money</h2>
+
+<form id="transferForm">
+
+<label>Recipient Full Name</label>
+
+<input
+
+  type="text"
+
+  id="recipient"
+
+  placeholder="Enter recipient name"
+
+  required
+
+>
+
+<label>Recipient Account Number</label>
+
+<input
+
+  type="text"
+
+  id="account"
+
+  inputmode="numeric"
+
+  maxlength="10"
+
+  pattern="[0-9]{10}"
+
+  placeholder="10-digit account number"
+
+  required
+
+>
+
+<label>Recipient Bank</label>
+
+<select id="bank" required>
+
+  <option value="">Select bank</option>
+
+  <option>Access Bank</option>
+
+  <option>First Bank</option>
+
+  <option>GTBank</option>
+
+  <option>UBA</option>
+
+  <option>Zenith Bank</option>
+
+  <option>Fidelity Bank</option>
+
+  <option>FCMB</option>
+
+  <option>Wema Bank</option>
+
+  <option>Stanbic IBTC</option>
+
+  <option>Union Bank</option>
+
+  <option>OPay</option>
+
+  <option>Moniepoint</option>
+
+  <option>Kuda Bank</option>
+
+  <option>Other</option>
+
+</select>
+
+<label>Transfer Amount (₦)</label>
+
+<input
+
+  type="number"
+
+  id="amount"
+
+  min="1"
+
+  step="1"
+
+  placeholder="Enter amount"
+
+  required
+
+>
+
+<label>Description (Optional)</label>
+
+<textarea
+
+  id="description"
+
+  placeholder="What is this transfer for?"
+
+></textarea>
+
+<button type="submit" id="transferButton">
+
+CONTINUE
+
+</button>
+
+</form>
+
+<div id="message" role="status"></div>
+
+<p style="text-align:center">
+
+<a href="dashboard.html">Back to Dashboard</a>
+
+</p>
+
+<p style="text-align:center;font-size:12px;color:#ddd">
+
+DEMO ONLY. No real funds are transferred. Recipient details are not verified and no bank payment is initiated.
+
+</p>
+
+</div>
+
+<script>
+
+const form = document.getElementById("transferForm");
+
+const message = document.getElementById("message");
+
+form.addEventListener("submit", function(event) {
+
+  event.preventDefault();
+
+  const recipient =
+
+    document.getElementById("recipient").value.trim();
+
+  const account =
+
+    document.getElementById("account").value.trim();
+
+  const bank =
+
+    document.getElementById("bank").value;
+
+  const amount =
+
+    Number(document.getElementById("amount").value);
+
+  const description =
+
+    document.getElementById("description").value.trim();
+
+  if (!/^[0-9]{10}$/.test(account)) {
+
+    message.textContent =
+
+      "Please enter a valid 10-digit account number.";
+
+    return;
+
+  }
+
+  if (!Number.isFinite(amount) || amount <= 0) {
+
+    message.textContent =
+
+      "Please enter a valid transfer amount.";
+
+    return;
+
+  }
+
+  const reference =
+
+    "BEEPER" + Date.now().toString();
+
+  message.innerHTML =
+
+    "<strong>DEMO TRANSFER REQUEST</strong><br><br>" +
+
+    "Recipient: " + escapeHTML(recipient) + "<br>" +
+
+    "Account Number: " + escapeHTML(account) + "<br>" +
+
+    "Bank: " + escapeHTML(bank) + "<br>" +
+
+    "Amount: ₦" + amount.toLocaleString("en-NG") + "<br>" +
+
+    "Description: " + (escapeHTML(description) || "None") +
+
+    "<br>Reference: " + reference +
+
+    "<br><br><strong>Demo request created successfully.</strong>" +
+
+    "<br>No money was transferred.";
+
+  form.reset();
+
+});
+
+function escapeHTML(value) {
+
+  return value.replace(/[&<>"']/g, function(character) {
+
+    return {
+
+      "&": "&amp;",
+
+      "<": "&lt;",
+
+      ">": "&gt;",
+
+      '"': "&quot;",
+
+      "'": "&#039;"
+
+    }[character];
+
+  });
+
+}
+
+</script>
+
+</body>
+
+</html>
