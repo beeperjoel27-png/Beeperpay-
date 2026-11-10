@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Beeperpay Security Settings</title>
+
+<style>
+
+*{box-sizing:border-box}
+
+body{margin:0;background:#f4f6fa;font-family:Arial;color:#17243a}
+
+header{background:#07152e;color:white;text-align:center;padding:24px}
+
+header h1{color:#e4b84e;margin:0}
+
+main{max-width:600px;margin:25px auto;padding:15px}
+
+.card{background:white;padding:20px;border-radius:12px;margin-bottom:18px}
+
+h2{color:#07152e}
+
+.item{padding:13px 0;border-bottom:1px solid #eee;font-size:14px;line-height:1.6}
+
+.item:last-child{border:0}
+
+button{width:100%;padding:14px;background:#07152e;color:#e4b84e;border:0;border-radius:8px;font-weight:bold;margin-top:12px}
+
+.notice{background:#fff6df;color:#765b20;padding:12px;border-radius:8px;font-size:12px;line-height:1.5}
+
+nav{text-align:center;padding:15px;line-height:2}
+
+nav a{color:#07152e;margin:5px 8px;font-weight:bold;font-size:13px}
+
+footer{text-align:center;color:#777;padding:20px;font-size:12px}
+
+</style>
+
+</head>
+
+<body>
+
+<header>
+
+<h1>BEEPERPAY</h1>
+
+<p>MICROFINANCE BANK</p>
+
+<p>Your money. Your future. Our priority.</p>
+
+</header>
+
+<main>
+
+<section class="card">
+
+<h2>🔐 Security Settings</h2>
+
+<p>Manage your Beeperpay account security.</p>
+
+<div class="item">
+
+<strong>Account Email</strong>
+
+<p id="email">Loading...</p>
+
+</div>
+
+<div class="item">
+
+<strong>Account Status</strong>
+
+<p>Demo Account</p>
+
+</div>
+
+<div class="item">
+
+<strong>Authentication</strong>
+
+<p>Supabase account authentication enabled.</p>
+
+</div>
+
+<div class="item">
+
+<strong>Password Security</strong>
+
+<p>Your password is managed securely through the authentication provider.</p>
+
+</div>
+
+</section>
+
+<section class="card">
+
+<h2>Password Management</h2>
+
+<p>Request a password reset link using your registered email address.</p>
+
+<button id="reset">SEND PASSWORD RESET LINK</button>
+
+<p id="message"></p>
+
+</section>
+
+<section class="card">
+
+<h2>Security Advice</h2>
+
+<div class="notice">
+
+Never share your password, PIN, OTP or authenticator code with anyone. Beeperpay staff will never need your password or OTP.
+
+</div>
+
+</section>
+
+<nav>
+
+<a href="dashboard.html">Dashboard</a>
+
+<a href="profile.html">Profile</a>
+
+<a href="transactions.html">Transactions</a>
+
+<a href="notifications.html">Notifications</a>
+
+<a href="support.html">Support</a>
+
+<a href="#" id="logout">Logout</a>
+
+</nav>
+
+</main>
+
+<footer>
+
+© 2026 Beeperpay Microfinance Bank. Demonstration website only.
+
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+
+const SUPABASE_URL="https://wrjvcvxswdojpxzcwyqw.supabase.co";
+
+const SUPABASE_KEY="sb_publishable_zTksapAhIoJp_0-9w1twlQ_j7WECGcv";
+
+const client=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+
+let user=null;
+
+async function start(){
+
+const {data,error}=await client.auth.getUser();
+
+if(error||!data.user){
+
+window.location.href="login.html";
+
+return;
+
+}
+
+user=data.user;
+
+document.getElementById("email").textContent=user.email||"Not available";
+
+}
+
+document.getElementById("reset").addEventListener("click",async()=>{
+
+if(!user)return;
+
+const message=document.getElementById("message");
+
+message.textContent="Sending reset request...";
+
+const {error}=await client.auth.resetPasswordForEmail(user.email,{
+
+redirectTo:"https://beeperjoel27-png.github.io/Beeperpay-/login.html"
+
+});
+
+message.textContent=error?
+
+"Unable to send reset link: "+error.message:
+
+"Password reset link requested. Check your email inbox.";
+
+});
+
+document.getElementById("logout").addEventListener("click",async(e)=>{
+
+e.preventDefault();
+
+await client.auth.signOut();
+
+window.location.href="login.html";
+
+});
+
+start();
+
+</script>
+
+</body>
+
+</html>
