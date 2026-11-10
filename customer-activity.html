@@ -8,7 +8,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Customer Activity | Beeperpay</title>
+<title>Customer Activity Monitoring | Beeperpay</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
@@ -16,67 +16,59 @@
 
 *{box-sizing:border-box;margin:0;padding:0}
 
-body{font-family:Arial,sans-serif;background:#f3f5f9;color:#17233d}
+body{font-family:Arial,sans-serif;background:#f3f5f9;color:#17243b}
 
-header{background:#071b49;color:white;padding:22px 18px;border-bottom:4px solid #d6a83e}
+header{background:#071b3a;color:white;padding:20px;text-align:center}
 
-.brand{font-size:25px;font-weight:bold}
+.brand{font-size:23px;font-weight:bold;letter-spacing:1px}
 
-.brand span{color:#e2b54c}
+.brand span{color:#d9a52c}
 
-header p{font-size:12px;margin-top:6px;letter-spacing:2px}
+header p{font-size:12px;margin-top:6px;color:#e4e9f2}
 
-main{max-width:1150px;margin:25px auto;padding:0 15px}
+nav{background:white;padding:14px;display:flex;gap:10px;flex-wrap:wrap;justify-content:center;box-shadow:0 2px 8px #00000010}
 
-.topbar{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-bottom:20px}
+nav a,button{border:0;border-radius:6px;padding:10px 14px;text-decoration:none;background:#102b55;color:white;font-size:13px;cursor:pointer}
 
-h1{font-size:24px;color:#071b49}
+nav button{background:#a87912}
 
-h2{font-size:19px;color:#071b49;margin-bottom:15px}
+.container{max-width:1100px;margin:25px auto;padding:0 15px}
 
-.subtitle{color:#6b7280;margin-top:7px;font-size:14px}
+h2{margin-bottom:8px;color:#102b55}
 
-.actions{display:flex;gap:9px;flex-wrap:wrap}
+.subtitle{color:#68758a;font-size:14px;margin-bottom:20px}
 
-button,.link{border:0;border-radius:6px;padding:11px 15px;font-size:13px;font-weight:bold;cursor:pointer;text-decoration:none}
+.stats{background:white;border-radius:10px;padding:20px;margin-bottom:20px;box-shadow:0 2px 10px #00000008}
 
-button{background:#071b49;color:white}
+.stats strong{display:block;font-size:30px;color:#b38420;margin-top:8px}
 
-.link{background:#e8edf5;color:#071b49}
+.panel{background:white;padding:20px;border-radius:10px;box-shadow:0 2px 10px #00000008;margin-bottom:20px}
 
-.panel,.stat{background:white;padding:20px;border-radius:10px;box-shadow:0 2px 9px #0000000c;margin-bottom:20px}
+.toolbar{display:flex;gap:10px;flex-wrap:wrap;margin:15px 0}
 
-.stat{border-left:4px solid #d6a83e}
-
-.stat p{font-size:13px;color:#687386;margin-bottom:10px}
-
-.stat h2{font-size:27px;margin:0}
-
-.status{font-size:13px;color:#536174;margin:12px 0}
-
-.error{color:#b42318}
-
-.success{color:#16803c}
+input,select{padding:12px;border:1px solid #ccd3df;border-radius:6px;font-size:14px;flex:1;min-width:180px}
 
 .table-wrap{overflow-x:auto}
 
-table{width:100%;border-collapse:collapse;min-width:850px}
+table{width:100%;border-collapse:collapse;min-width:750px}
 
-th,td{padding:13px 11px;text-align:left;border-bottom:1px solid #e9edf3;font-size:13px}
+th,td{text-align:left;padding:13px;border-bottom:1px solid #e9edf3;font-size:13px}
 
-th{background:#f3f5f9;color:#071b49}
+th{background:#f1f4f9;color:#102b55}
 
-td{color:#465166}
+.status{background:#e9f2ff;color:#174b83;padding:5px 8px;border-radius:12px;font-size:11px}
 
-.empty{text-align:center;padding:25px;color:#7b8493}
+.details{display:none;background:#f7f9fc;padding:16px;border-radius:8px;margin-top:15px;line-height:1.9;font-size:13px;overflow-wrap:anywhere}
 
-footer{text-align:center;padding:25px 12px;color:#778092;font-size:12px;line-height:1.8}
+.details h3{color:#102b55;margin-bottom:10px}
 
-#app{display:none}
+.details button{margin-top:12px}
 
-#loading{text-align:center;margin:70px auto;padding:20px;color:#071b49}
+.message{padding:12px;background:#edf4ff;border-radius:6px;color:#234d79;font-size:13px;margin-top:10px}
 
-@media(max-width:600px){h1{font-size:21px}.panel{padding:13px}}
+footer{text-align:center;padding:25px;color:#68758a;font-size:12px}
+
+@media(max-width:600px){.panel{padding:13px}nav a,nav button{font-size:12px;padding:9px}.brand{font-size:20px}}
 
 </style>
 
@@ -88,53 +80,61 @@ footer{text-align:center;padding:25px 12px;color:#778092;font-size:12px;line-hei
 
 <div class="brand">BEEPER<span>PAY</span></div>
 
-<p>MICROFINANCE BANK</p>
+<div style="font-size:11px;letter-spacing:2px;margin-top:4px">MICROFINANCE BANK</div>
+
+<p>Your money. Your future. Our priority.</p>
 
 </header>
 
-<div id="loading">Checking administrator access...</div>
+<nav>
 
-<main id="app">
+<a href="admin.html">Admin Dashboard</a>
 
-<div class="topbar">
+<a href="customers.html">Customer Management</a>
 
-<div>
+<button onclick="loadActivities()">Refresh</button>
 
-<h1>Customer Activity Monitoring</h1>
+<button onclick="logout()">Logout</button>
 
-<p class="subtitle">Review recorded customer account and verification changes.</p>
+</nav>
 
-</div>
+<main class="container">
 
-<div class="actions">
+<h2>Customer Activity Monitoring</h2>
 
-<a class="link" href="admin.html">Admin Dashboard</a>
+<p class="subtitle">Review and inspect recorded customer account and verification changes.</p>
 
-<a class="link" href="customers.html">Customer Management</a>
+<section class="stats">
 
-<button id="refreshBtn">Refresh</button>
+<div>Total Recorded Activities</div>
 
-<button id="logoutBtn" style="background:#b42318">Logout</button>
+<strong id="totalActivities">0</strong>
 
-</div>
-
-</div>
-
-<div class="stat">
-
-<p>Total Recorded Activities</p>
-
-<h2 id="totalActivities">0</h2>
-
-</div>
+</section>
 
 <section class="panel">
 
-<h2>Customer Activity History</h2>
+<h3>Customer Activity History</h3>
 
-<p class="status" id="message">Loading activity records...</p>
+<div class="toolbar">
 
-<div class="table-wrap">
+<input id="searchInput" placeholder="Search customer ID or activity..." oninput="renderActivities()">
+
+<select id="activityFilter" onchange="renderActivities()">
+
+<option value="">All Activity Types</option>
+
+<option value="Account Status">Account Status</option>
+
+<option value="Verification Status">Verification Status</option>
+
+</select>
+
+</div>
+
+<div id="message" class="message">Checking administrator access...</div>
+
+<div class="table-wrap" style="margin-top:15px">
 
 <table>
 
@@ -152,13 +152,15 @@ footer{text-align:center;padding:25px 12px;color:#778092;font-size:12px;line-hei
 
 <th>New Value</th>
 
+<th>Details</th>
+
 </tr>
 
 </thead>
 
 <tbody id="activityTable">
 
-<tr><td colspan="5" class="empty">Loading records...</td></tr>
+<tr><td colspan="6">Loading activities...</td></tr>
 
 </tbody>
 
@@ -166,61 +168,85 @@ footer{text-align:center;padding:25px 12px;color:#778092;font-size:12px;line-hei
 
 </div>
 
+<div id="detailsPanel" class="details">
+
+<h3>Activity Details</h3>
+
+<div id="detailsContent"></div>
+
+<button onclick="closeDetails()">Close Details</button>
+
+</div>
+
 </section>
+
+</main>
 
 <footer>
 
-BEEPERPAY MICROFINANCE BANK<br>
-
-Your money. Your future. Our priority.<br>
+BEEPERPAY MICROFINANCE BANK<br><br>
 
 Demonstration activity records only. No real banking transactions are monitored.
 
 </footer>
 
-</main>
-
 <script>
 
-const SUPABASE_URL="https://wrjvcvxswdojpxzcwyqw.supabase.co";
+const SUPABASE_URL = "https://wrjvcvxswdojpxzcwyqw.supabase.co";
 
-const SUPABASE_KEY="sb_publishable_zTksapAhIoJp_0-9w1twlQ_j7WECGcv";
+const SUPABASE_KEY = "sb_publishable_zTksapAhIoJp_0-9w1twlQ_j7WECGcv";
 
-const client=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+const supabaseClient = window.supabase.createClient(
 
-const $=id=>document.getElementById(id);
+SUPABASE_URL,
+
+SUPABASE_KEY
+
+);
+
+let activities = [];
 
 function escapeHTML(value){
 
-return String(value??"").replace(/[&<>"']/g,char=>({
+return String(value ?? "").replace(/[&<>"']/g,function(char){
 
-"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+return {
 
-})[char]);
+"&":"&amp;",
+
+"<":"&lt;",
+
+">":"&gt;",
+
+'"':"&quot;",
+
+"'":"&#39;"
+
+}[char];
+
+});
 
 }
 
-function formatDate(value){
+function showMessage(text){
 
-const date=new Date(value);
-
-return isNaN(date)?"Not available":date.toLocaleString();
+document.getElementById("message").textContent=text;
 
 }
 
-async function checkAdministrator(){
+async function checkAdmin(){
 
-const {data:{user},error:userError}=await client.auth.getUser();
+const {data:{user},error} = await supabaseClient.auth.getUser();
 
-if(userError||!user){
+if(error || !user){
 
-location.replace("index.html");
+location.href="admin.html";
 
 return false;
 
 }
 
-const {data:role,error}=await client
+const {data:role,error:roleError} = await supabaseClient
 
 .from("user_roles")
 
@@ -232,19 +258,13 @@ const {data:role,error}=await client
 
 .maybeSingle();
 
-if(error||!role){
+if(roleError || !role){
 
-$("loading").textContent="Administrator access required.";
-
-await client.auth.signOut();
+showMessage("Administrator access is required.");
 
 return false;
 
 }
-
-$("loading").style.display="none";
-
-$("app").style.display="block";
 
 return true;
 
@@ -252,95 +272,143 @@ return true;
 
 async function loadActivities(){
 
-$("message").textContent="Loading activity records...";
+showMessage("Loading customer activity records...");
 
-$("message").className="status";
+const allowed = await checkAdmin();
 
-$("activityTable").innerHTML=
+if(!allowed)return;
 
-'<tr><td colspan="5" class="empty">Loading...</td></tr>';
-
-const {data,error}=await client
+const {data,error} = await supabaseClient
 
 .from("customer_activity")
 
-.select("id,customer_id,activity_type,old_value,new_value,created_at")
+.select("id,customer_id,changed_by,activity_type,old_value,new_value,created_at")
 
 .order("created_at",{ascending:false});
 
 if(error){
 
-$("totalActivities").textContent="0";
-
-$("activityTable").innerHTML=
-
-'<tr><td colspan="5" class="empty">Unable to load activity records.</td></tr>';
-
-$("message").textContent="Error: "+error.message;
-
-$("message").className="status error";
+showMessage("Unable to load activities: "+error.message);
 
 return;
 
 }
 
-const records=data||[];
+activities = data || [];
 
-$("totalActivities").textContent=records.length;
+document.getElementById("totalActivities").textContent=activities.length;
 
-if(!records.length){
+showMessage("Activity records loaded successfully.");
 
-$("activityTable").innerHTML=
+renderActivities();
 
-'<tr><td colspan="5" class="empty">No customer activities recorded yet. Changes made after activity monitoring was enabled will appear here.</td></tr>';
+}
 
-$("message").textContent="Activity records loaded successfully.";
+function renderActivities(){
 
-$("message").className="status success";
+const search=document.getElementById("searchInput").value.toLowerCase().trim();
+
+const filter=document.getElementById("activityFilter").value;
+
+const filtered=activities.filter(item=>{
+
+const searchable=[
+
+item.customer_id,
+
+item.activity_type,
+
+item.old_value,
+
+item.new_value,
+
+item.changed_by
+
+].join(" ").toLowerCase();
+
+return searchable.includes(search) &&
+
+(!filter || item.activity_type===filter);
+
+});
+
+const tbody=document.getElementById("activityTable");
+
+if(!filtered.length){
+
+tbody.innerHTML='<tr><td colspan="6">No matching activity records found.</td></tr>';
 
 return;
 
 }
 
-$("activityTable").innerHTML=records.map(record=>`
+tbody.innerHTML=filtered.map(item=>`
 
 <tr>
 
-<td>${escapeHTML(formatDate(record.created_at))}</td>
+<td>${escapeHTML(new Date(item.created_at).toLocaleString())}</td>
 
-<td>${escapeHTML(record.customer_id||"Customer record unavailable")}</td>
+<td>${escapeHTML(item.customer_id || "Unavailable")}</td>
 
-<td>${escapeHTML(record.activity_type)}</td>
+<td><span class="status">${escapeHTML(item.activity_type)}</span></td>
 
-<td>${escapeHTML(record.old_value||"Not available")}</td>
+<td>${escapeHTML(item.old_value || "—")}</td>
 
-<td>${escapeHTML(record.new_value||"Not available")}</td>
+<td>${escapeHTML(item.new_value || "—")}</td>
+
+<td><button onclick="viewDetails('${escapeHTML(item.id)}')">View Details</button></td>
 
 </tr>
 
 `).join("");
 
-$("message").textContent="Activity records loaded successfully.";
+}
 
-$("message").className="status success";
+function viewDetails(id){
+
+const item=activities.find(activity=>activity.id===id);
+
+if(!item)return;
+
+document.getElementById("detailsContent").innerHTML=`
+
+<strong>Activity ID:</strong> ${escapeHTML(item.id)}<br>
+
+<strong>Customer ID:</strong> ${escapeHTML(item.customer_id || "Unavailable")}<br>
+
+<strong>Administrator ID:</strong> ${escapeHTML(item.changed_by || "Unavailable")}<br>
+
+<strong>Activity Type:</strong> ${escapeHTML(item.activity_type)}<br>
+
+<strong>Previous Value:</strong> ${escapeHTML(item.old_value || "—")}<br>
+
+<strong>New Value:</strong> ${escapeHTML(item.new_value || "—")}<br>
+
+<strong>Date and Time:</strong> ${escapeHTML(new Date(item.created_at).toLocaleString())}
+
+`;
+
+document.getElementById("detailsPanel").style.display="block";
+
+document.getElementById("detailsPanel").scrollIntoView({behavior:"smooth"});
 
 }
 
-$("refreshBtn").addEventListener("click",loadActivities);
+function closeDetails(){
 
-$("logoutBtn").addEventListener("click",async()=>{
+document.getElementById("detailsPanel").style.display="none";
 
-await client.auth.signOut();
+}
 
-location.replace("index.html");
+async function logout(){
 
-});
+await supabaseClient.auth.signOut();
 
-(async()=>{
+location.href="admin.html";
 
-if(await checkAdministrator())await loadActivities();
+}
 
-})();
+loadActivities();
 
 </script>
 
