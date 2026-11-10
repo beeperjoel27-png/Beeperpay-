@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Customer Verification Management | Beeperpay</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+
+*{box-sizing:border-box;margin:0;padding:0}
+
+body{font-family:Arial,sans-serif;background:#f3f5f9;color:#17243b}
+
+header{background:#071b49;color:white;text-align:center;padding:22px;border-bottom:4px solid #d6a83e}
+
+.brand{font-size:25px;font-weight:bold}
+
+.brand span{color:#e2b54c}
+
+header p{font-size:12px;margin-top:7px}
+
+nav{background:white;padding:14px;display:flex;justify-content:center;gap:10px;flex-wrap:wrap;box-shadow:0 2px 8px #00000010}
+
+nav a,button{padding:11px 14px;background:#102b55;color:white;border:0;border-radius:6px;text-decoration:none;font-size:13px;cursor:pointer}
+
+button.gold{background:#a87912}
+
+.container{max-width:1150px;margin:25px auto;padding:0 15px}
+
+h2{color:#102b55;margin-bottom:8px}
+
+.subtitle{color:#68758a;font-size:14px;margin-bottom:22px}
+
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:13px;margin-bottom:22px}
+
+.card{background:white;padding:20px;border-radius:10px;box-shadow:0 2px 10px #00000008}
+
+.card p{font-size:13px;color:#68758a}
+
+.card strong{display:block;font-size:29px;margin-top:10px;color:#102b55}
+
+.panel{background:white;padding:20px;border-radius:10px;margin-bottom:20px;box-shadow:0 2px 10px #00000008}
+
+.toolbar{display:flex;gap:10px;flex-wrap:wrap;margin:16px 0}
+
+input,select{padding:12px;border:1px solid #ccd3df;border-radius:6px;font-size:14px;flex:1;min-width:170px}
+
+.table-wrap{overflow-x:auto}
+
+table{width:100%;border-collapse:collapse;min-width:850px}
+
+th,td{text-align:left;padding:13px;border-bottom:1px solid #e9edf3;font-size:13px}
+
+th{background:#f1f4f9;color:#102b55}
+
+.status{padding:5px 9px;border-radius:12px;background:#e9f2ff;color:#174b83;font-size:11px}
+
+.actions{display:flex;gap:6px;flex-wrap:wrap}
+
+.actions button{padding:8px 10px;font-size:11px}
+
+.approve{background:#16803c}
+
+.reject{background:#b42318}
+
+.pending{background:#a87912}
+
+.message{padding:12px;background:#edf4ff;color:#234d79;border-radius:6px;font-size:13px;margin:12px 0;overflow-wrap:anywhere}
+
+.details{display:none;background:#f7f9fc;padding:16px;border-radius:8px;margin-top:15px;line-height:1.9;font-size:13px;overflow-wrap:anywhere}
+
+.details h3{color:#102b55;margin-bottom:10px}
+
+.details button{margin-top:10px}
+
+footer{text-align:center;padding:25px;color:#68758a;font-size:12px;line-height:1.8}
+
+@media(max-width:600px){.panel{padding:13px}}
+
+</style>
+
+</head>
+
+<body>
+
+<header>
+
+<div class="brand">BEEPER<span>PAY</span></div>
+
+<div style="font-size:11px;letter-spacing:2px;margin-top:5px">MICROFINANCE BANK</div>
+
+<p>Your money. Your future. Our priority.</p>
+
+</header>
+
+<nav>
+
+<a href="admin.html">Admin Dashboard</a>
+
+<a href="customers.html">Customer Management</a>
+
+<a href="customer-reports.html">Customer Reports</a>
+
+<a href="customer-activity.html">Activity Monitoring</a>
+
+<button onclick="loadCustomers()">Refresh</button>
+
+<button class="gold" onclick="logout()">Logout</button>
+
+</nav>
+
+<main class="container">
+
+<h2>Customer Verification Management</h2>
+
+<p class="subtitle">Review and manage demonstration customer verification statuses.</p>
+
+<section class="cards">
+
+<div class="card">
+
+<p>Total Customers</p>
+
+<strong id="total">0</strong>
+
+</div>
+
+<div class="card">
+
+<p>Pending Verification</p>
+
+<strong id="pendingCount">0</strong>
+
+</div>
+
+<div class="card">
+
+<p>Verified Customers</p>
+
+<strong id="verifiedCount">0</strong>
+
+</div>
+
+<div class="card">
+
+<p>Rejected Verification</p>
+
+<strong id="rejectedCount">0</strong>
+
+</div>
+
+</section>
+
+<section class="panel">
+
+<h3>Customer Verification Records</h3>
+
+<div id="message" class="message">Checking administrator access...</div>
+
+<div class="toolbar">
+
+<input id="search" placeholder="Search customer name, email, phone or ID" oninput="renderCustomers()">
+
+<select id="filter" onchange="renderCustomers()">
+
+<option value="">All Verification Statuses</option>
+
+<option value="Pending">Pending</option>
+
+<option value="Verified">Verified</option>
+
+<option value="Rejected">Rejected</option>
+
+</select>
+
+</div>
+
+<div class="table-wrap">
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>Customer Name</th>
+
+<th>Email</th>
+
+<th>Phone</th>
+
+<th>Customer ID</th>
+
+<th>Verification Status</th>
+
+<th>Actions</th>
+
+</tr>
+
+</thead>
+
+<tbody id="customerTable">
+
+<tr><td colspan="6">Loading customers...</td></tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+<div class="details" id="detailsPanel">
+
+<h3>Customer Verification Details</h3>
+
+<div id="detailsContent"></div>
+
+<button onclick="closeDetails()">Close Details</button>
+
+</div>
+
+</section>
+
+<section class="panel">
+
+<h3>Verification Information</h3>
+
+<p style="font-size:13px;line-height:1.8;color:#68758a;margin-top:10px">
+
+This demonstration module records administrative verification status changes.
+
+Approval or rejection here does not constitute identity verification, KYC compliance, or regulatory approval.
+
+All changes are recorded by the existing Supabase customer activity monitoring trigger.
+
+</p>
+
+</section>
+
+</main>
+
+<footer>
+
+BEEPERPAY MICROFINANCE BANK<br><br>
+
+Your money. Your future. Our priority.<br>
+
+Demonstration verification management only.
+
+</footer>
+
+<script>
+
+const SUPABASE_URL="https://wrjvcvxswdojpxzcwyqw.supabase.co";
+
+const SUPABASE_KEY="sb_publishable_zTksapAhIoJp_0-9w1twlQ_j7WECGcv";
+
+const client=window.supabase.createClient(
+
+SUPABASE_URL,
+
+SUPABASE_KEY
+
+);
+
+let customers=[];
+
+function escapeHTML(value){
+
+return String(value??"").replace(/[&<>"']/g,char=>({
+
+"&":"&amp;",
+
+"<":"&lt;",
+
+">":"&gt;",
+
+'"':"&quot;",
+
+"'":"&#39;"
+
+}[char]));
+
+}
+
+function showMessage(text){
+
+document.getElementById("message").textContent=text;
+
+}
+
+async function checkAdmin(){
+
+const {data:{user},error}=await client.auth.getUser();
+
+if(error||!user){
+
+location.href="admin.html";
+
+return false;
+
+}
+
+const {data:role,error:roleError}=await client
+
+.from("user_roles")
+
+.select("role")
+
+.eq("user_id",user.id)
+
+.eq("role","admin")
+
+.maybeSingle();
+
+if(roleError||!role){
+
+showMessage("Administrator access required.");
+
+return false;
+
+}
+
+return true;
+
+}
+
+async function loadCustomers(){
+
+showMessage("Loading customer verification records...");
+
+if(!await checkAdmin())return;
+
+const {data,error}=await client
+
+.from("customer_profiles")
+
+.select("id,email,full_name,phone_number,created_at,account_status,verification_status")
+
+.order("created_at",{ascending:false});
+
+if(error){
+
+showMessage("Unable to load customers: "+error.message);
+
+return;
+
+}
+
+customers=data||[];
+
+document.getElementById("total").textContent=customers.length;
+
+document.getElementById("pendingCount").textContent=customers.filter(c=>c.verification_status==="Pending").length;
+
+document.getElementById("verifiedCount").textContent=customers.filter(c=>c.verification_status==="Verified").length;
+
+document.getElementById("rejectedCount").textContent=customers.filter(c=>c.verification_status==="Rejected").length;
+
+showMessage("Customer verification records loaded successfully.");
+
+renderCustomers();
+
+}
+
+function renderCustomers(){
+
+const search=document.getElementById("search").value.toLowerCase().trim();
+
+const filter=document.getElementById("filter").value;
+
+const filtered=customers.filter(c=>{
+
+const text=[c.full_name,c.email,c.phone_number,c.id].join(" ").toLowerCase();
+
+return text.includes(search)&&
+
+(!filter||c.verification_status===filter);
+
+});
+
+const tbody=document.getElementById("customerTable");
+
+if(!filtered.length){
+
+tbody.innerHTML='<tr><td colspan="6">No matching customer records found.</td></tr>';
+
+return;
+
+}
+
+tbody.innerHTML=filtered.map(c=>`
+
+<tr>
+
+<td>${escapeHTML(c.full_name||"—")}</td>
+
+<td>${escapeHTML(c.email||"—")}</td>
+
+<td>${escapeHTML(c.phone_number||"—")}</td>
+
+<td>${escapeHTML(c.id)}</td>
+
+<td><span class="status">${escapeHTML(c.verification_status||"Pending")}</span></td>
+
+<td>
+
+<div class="actions">
+
+<button onclick="viewDetails('${escapeHTML(c.id)}')">Details</button>
+
+<button class="approve" onclick="updateVerification('${escapeHTML(c.id)}','Verified')">Approve</button>
+
+<button class="reject" onclick="updateVerification('${escapeHTML(c.id)}','Rejected')">Reject</button>
+
+<button class="pending" onclick="updateVerification('${escapeHTML(c.id)}','Pending')">Pending</button>
+
+</div>
+
+</td>
+
+</tr>
+
+`).join("");
+
+}
+
+function viewDetails(id){
+
+const c=customers.find(item=>item.id===id);
+
+if(!c)return;
+
+document.getElementById("detailsContent").innerHTML=`
+
+<strong>Full Name:</strong> ${escapeHTML(c.full_name||"Unavailable")}<br>
+
+<strong>Email Address:</strong> ${escapeHTML(c.email||"Unavailable")}<br>
+
+<strong>Phone Number:</strong> ${escapeHTML(c.phone_number||"Unavailable")}<br>
+
+<strong>Customer ID:</strong> ${escapeHTML(c.id)}<br>
+
+<strong>Account Status:</strong> ${escapeHTML(c.account_status||"Unavailable")}<br>
+
+<strong>Verification Status:</strong> ${escapeHTML(c.verification_status||"Pending")}<br>
+
+<strong>Registration Date:</strong> ${escapeHTML(c.created_at?new Date(c.created_at).toLocaleString():"Unavailable")}
+
+`;
+
+document.getElementById("detailsPanel").style.display="block";
+
+document.getElementById("detailsPanel").scrollIntoView({behavior:"smooth"});
+
+}
+
+function closeDetails(){
+
+document.getElementById("detailsPanel").style.display="none";
+
+}
+
+async function updateVerification(id,status){
+
+const customer=customers.find(c=>c.id===id);
+
+if(!customer)return;
+
+if(customer.verification_status===status){
+
+showMessage("This customer already has "+status+" verification status.");
+
+return;
+
+}
+
+const confirmed=confirm(
+
+"Change this customer's verification status from "+
+
+(customer.verification_status||"Pending")+" to "+status+"?"
+
+);
+
+if(!confirmed)return;
+
+showMessage("Updating customer verification status...");
+
+const {data,error}=await client
+
+.from("customer_profiles")
+
+.update({verification_status:status})
+
+.eq("id",id)
+
+.select("id,verification_status")
+
+.maybeSingle();
+
+if(error){
+
+showMessage("Verification update failed: "+error.message);
+
+return;
+
+}
+
+if(!data){
+
+showMessage("No customer record was updated. Check administrator permissions.");
+
+return;
+
+}
+
+showMessage("Customer verification status successfully updated to "+status+".");
+
+await loadCustomers();
+
+}
+
+async function logout(){
+
+const {error}=await client.auth.signOut();
+
+if(error){
+
+showMessage("Logout failed: "+error.message);
+
+return;
+
+}
+
+location.href="admin.html";
+
+}
+
+loadCustomers();
+
+</script>
+
+</body>
+
+</html>
