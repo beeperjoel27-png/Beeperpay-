@@ -80,6 +80,8 @@ body {
 
 .service {
 
+  display: block;
+
   background: #122747;
 
   border-radius: 12px;
@@ -89,6 +91,8 @@ body {
   text-align: center;
 
   color: white;
+
+  text-decoration: none;
 
 }
 
@@ -104,13 +108,7 @@ body {
 
 }
 
-a {
-
-  text-decoration: none;
-
-  color: #e4b84e;
-
-}
+a { color: #e4b84e; }
 
 button {
 
@@ -130,6 +128,8 @@ button {
 
   font-weight: bold;
 
+  cursor: pointer;
+
 }
 
 </style>
@@ -146,61 +146,91 @@ button {
 
   <p>MICROFINANCE BANK</p>
 
+  <p>Your money. Your future. Our priority.</p>
+
   <p id="welcome">Loading customer...</p>
 
 </div>
 
 <div class="wallet">
 
-  <p>My Wallet Balance</p>
+  <p>Demo Wallet Balance</p>
 
   <div class="balance">₦0.00</div>
 
-  <p>Demo balance — no real funds</p>
+  <p>Demo balance only. No real funds are held.</p>
 
 </div>
 
-<h3>Banking Services</h3>
+<h3>Customer Services</h3>
 
 <div class="services">
 
-  <div class="service">
-
-    <span>＋</span>
-
-    Add Money
-
-  </div>
-
-  <div class="service">
+  <a href="transfer.html" class="service">
 
     <span>⇄</span>
 
     Transfer Money
 
-  </div>
+  </a>
 
-  <div class="service">
+  <a href="add-money.html" class="service">
+
+    <span>＋</span>
+
+    Add Money
+
+  </a>
+
+  <a href="transactions.html" class="service">
 
     <span>▤</span>
 
     Transactions
 
-  </div>
+  </a>
 
-  <div class="service">
+  <a href="airtime.html" class="service">
 
     <span>▣</span>
 
-    Airtime & Bills
+    Buy Airtime
 
-  </div>
+  </a>
+
+  <a href="bills.html" class="service">
+
+    <span>▧</span>
+
+    Pay Bills
+
+  </a>
+
+  <a href="profile.html" class="service">
+
+    <span>👤</span>
+
+    My Profile
+
+  </a>
 
 </div>
 
-<p style="margin-top:25px">
+<h3>Recent Transactions</h3>
 
-  <a href="profile.html">My Profile</a>
+<div class="wallet">
+
+  <p>No transactions yet.</p>
+
+</div>
+
+<p style="text-align:center">
+
+  <a href="index.html">Home</a> |
+
+  <a href="dashboard.html">Dashboard</a> |
+
+  <a href="profile.html">Profile</a>
 
 </p>
 
@@ -208,7 +238,7 @@ button {
 
 <p style="text-align:center;font-size:12px;color:#bbb">
 
-  Beeperpay demonstration platform. No live banking transactions are available.
+  Demonstration interface only. Banking services are not connected.
 
 </p>
 
@@ -238,9 +268,11 @@ async function loadDashboard() {
 
   }
 
-  const name = data.user.user_metadata.full_name ||
+  const name =
 
-               data.user.email;
+    data.user.user_metadata.full_name ||
+
+    data.user.email;
 
   document.getElementById("welcome").textContent =
 
@@ -248,7 +280,9 @@ async function loadDashboard() {
 
 }
 
-document.getElementById("logoutButton").addEventListener("click", async () => {
+document.getElementById("logoutButton")
+
+.addEventListener("click", async function() {
 
   const { error } = await client.auth.signOut();
 
