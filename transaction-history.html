@@ -1,1 +1,463 @@
+<!DOCTYPE html>
 
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Transaction Status History | Beeperpay</title>
+
+<style>
+
+*{box-sizing:border-box}
+
+body{
+
+margin:0;
+
+padding:20px;
+
+background:#f3f5f9;
+
+color:#07152e;
+
+font-family:Arial,sans-serif;
+
+}
+
+.container{
+
+max-width:950px;
+
+margin:25px auto;
+
+padding:24px;
+
+background:white;
+
+border-radius:12px;
+
+box-shadow:0 4px 18px rgba(0,0,0,.07);
+
+}
+
+.brand{text-align:center}
+
+.brand h2{letter-spacing:2px;margin-bottom:5px}
+
+.brand p{color:#b58a2b;font-size:12px;margin:5px}
+
+h3{margin-top:28px}
+
+.stats{
+
+display:grid;
+
+grid-template-columns:repeat(3,1fr);
+
+gap:10px;
+
+margin:20px 0;
+
+}
+
+.stat{
+
+background:#f3f5f9;
+
+padding:15px;
+
+border-radius:8px;
+
+text-align:center;
+
+}
+
+.stat strong{
+
+display:block;
+
+font-size:23px;
+
+margin-top:8px;
+
+}
+
+.history-card{
+
+border:1px solid #e0e4eb;
+
+border-radius:9px;
+
+padding:16px;
+
+margin:14px 0;
+
+}
+
+.history-card h4{margin:0 0 12px}
+
+.detail{
+
+font-size:13px;
+
+color:#555;
+
+line-height:1.9;
+
+overflow-wrap:anywhere;
+
+}
+
+.old-status{
+
+display:inline-block;
+
+background:#fff3d5;
+
+color:#76520b;
+
+padding:6px 9px;
+
+border-radius:5px;
+
+font-size:12px;
+
+margin:5px 5px 5px 0;
+
+}
+
+.new-status{
+
+display:inline-block;
+
+background:#e4f5e9;
+
+color:#176b35;
+
+padding:6px 9px;
+
+border-radius:5px;
+
+font-size:12px;
+
+margin:5px 0;
+
+}
+
+button{
+
+padding:11px 15px;
+
+border-radius:6px;
+
+border:0;
+
+background:#07152e;
+
+color:white;
+
+cursor:pointer;
+
+margin:5px 5px 5px 0;
+
+}
+
+.message{
+
+padding:18px;
+
+text-align:center;
+
+color:#555;
+
+}
+
+.warning{
+
+background:#fff3d5;
+
+color:#a15c00;
+
+padding:12px;
+
+border-radius:6px;
+
+margin:12px 0;
+
+font-size:13px;
+
+}
+
+a{
+
+color:#07152e;
+
+font-weight:bold;
+
+}
+
+@media(max-width:600px){
+
+.container{padding:16px}
+
+.stats{grid-template-columns:repeat(2,1fr)}
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="brand">
+
+<h2>BEEPERPAY</h2>
+
+<p>MICROFINANCE BANK</p>
+
+<p>Your money. Your future. Our priority.</p>
+
+</div>
+
+<h3>Transaction Status History</h3>
+
+<p>View administrator changes to customer transaction statuses.</p>
+
+<div class="stats">
+
+<div class="stat">
+
+Total Changes
+
+<strong id="total">0</strong>
+
+</div>
+
+<div class="stat">
+
+Approved Changes
+
+<strong id="approved">0</strong>
+
+</div>
+
+<div class="stat">
+
+Rejected Changes
+
+<strong id="rejected">0</strong>
+
+</div>
+
+</div>
+
+<button type="button" onclick="loadHistory()">
+
+Refresh History
+
+</button>
+
+<div id="warning"></div>
+
+<div id="history" class="message">
+
+Loading transaction history...
+
+</div>
+
+<p>
+
+<a href="admin.html">Back to Admin Dashboard</a>
+
+</p>
+
+<p class="detail">
+
+Demonstration audit history only. Transaction status changes do not transfer money or credit wallets.
+
+</p>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+
+const client=window.supabase.createClient(
+
+"https://wrjvcvxswdojpxzcwyqw.supabase.co",
+
+"sb_publishable_zTksapAhIoJp_0-9w1twlQ_j7WECGcv"
+
+);
+
+const historyContainer=document.getElementById("history");
+
+const warning=document.getElementById("warning");
+
+async function checkAdmin(){
+
+const {data,error}=await client.auth.getUser();
+
+if(error||!data.user){
+
+window.location.href="login.html";
+
+return false;
+
+}
+
+const {data:role,error:roleError}=await client
+
+.from("user_roles")
+
+.select("role")
+
+.eq("user_id",data.user.id)
+
+.eq("role","admin")
+
+.maybeSingle();
+
+if(roleError||!role){
+
+historyContainer.textContent="Administrator access required.";
+
+return false;
+
+}
+
+return true;
+
+}
+
+function addDetail(parent,label,value){
+
+const line=document.createElement("div");
+
+line.className="detail";
+
+line.textContent=label+": "+(value||"Not available");
+
+parent.appendChild(line);
+
+}
+
+async function loadHistory(){
+
+historyContainer.textContent="Loading transaction history...";
+
+warning.replaceChildren();
+
+if(!await checkAdmin())return;
+
+const {data:records,error}=await client
+
+.from("transaction_status_history")
+
+.select("id,transaction_id,changed_by,old_status,new_status,changed_at")
+
+.order("changed_at",{ascending:false});
+
+if(error){
+
+console.error(error);
+
+historyContainer.textContent=
+
+"Unable to load history: "+error.message;
+
+return;
+
+}
+
+const history=records||[];
+
+document.getElementById("total").textContent=history.length;
+
+document.getElementById("approved").textContent=
+
+history.filter(r=>r.new_status==="Approved").length;
+
+document.getElementById("rejected").textContent=
+
+history.filter(r=>r.new_status==="Rejected").length;
+
+historyContainer.replaceChildren();
+
+if(!history.length){
+
+historyContainer.className="message";
+
+historyContainer.textContent=
+
+"No transaction status changes have been recorded yet.";
+
+return;
+
+}
+
+historyContainer.className="";
+
+history.forEach(record=>{
+
+const card=document.createElement("div");
+
+card.className="history-card";
+
+const heading=document.createElement("h4");
+
+heading.textContent="Transaction Status Updated";
+
+card.appendChild(heading);
+
+const oldStatus=document.createElement("span");
+
+oldStatus.className="old-status";
+
+oldStatus.textContent="Previous: "+(record.old_status||"Not available");
+
+card.appendChild(oldStatus);
+
+const newStatus=document.createElement("span");
+
+newStatus.className="new-status";
+
+newStatus.textContent="New: "+record.new_status;
+
+card.appendChild(newStatus);
+
+addDetail(card,"Transaction ID",record.transaction_id);
+
+addDetail(card,"Administrator ID",record.changed_by);
+
+addDetail(
+
+card,
+
+"Date and Time",
+
+new Date(record.changed_at).toLocaleString("en-NG")
+
+);
+
+historyContainer.appendChild(card);
+
+});
+
+}
+
+loadHistory();
+
+</script>
+
+</body>
+
+</html>
