@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Customer Reports | Beeperpay</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+
+*{box-sizing:border-box;margin:0;padding:0}
+
+body{font-family:Arial,sans-serif;background:#f3f5f9;color:#17243b}
+
+header{background:#071b3a;color:white;text-align:center;padding:22px}
+
+.brand{font-size:24px;font-weight:bold}
+
+.brand span{color:#d9a52c}
+
+header p{font-size:12px;margin-top:6px}
+
+nav{background:white;padding:14px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+
+nav a,button{background:#102b55;color:white;border:0;padding:11px 14px;border-radius:6px;text-decoration:none;cursor:pointer;font-size:13px}
+
+button.gold{background:#a87912}
+
+.container{max-width:1100px;margin:25px auto;padding:0 15px}
+
+h2{color:#102b55;margin-bottom:8px}
+
+.subtitle{color:#68758a;font-size:14px;margin-bottom:22px}
+
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin-bottom:22px}
+
+.card{background:white;padding:20px;border-radius:10px;box-shadow:0 2px 10px #00000008}
+
+.card p{font-size:13px;color:#68758a}
+
+.card strong{display:block;font-size:27px;margin-top:10px;color:#102b55}
+
+.panel{background:white;padding:20px;border-radius:10px;margin-bottom:20px;box-shadow:0 2px 10px #00000008}
+
+.toolbar{display:flex;gap:10px;flex-wrap:wrap;margin:15px 0}
+
+input,select{padding:12px;border:1px solid #ccd3df;border-radius:6px;flex:1;min-width:160px}
+
+.table-wrap{overflow-x:auto}
+
+table{width:100%;border-collapse:collapse;min-width:850px}
+
+th,td{padding:13px;text-align:left;border-bottom:1px solid #e9edf3;font-size:13px}
+
+th{background:#f1f4f9;color:#102b55}
+
+.message{background:#edf4ff;padding:12px;border-radius:6px;font-size:13px;margin:12px 0}
+
+footer{text-align:center;padding:25px;color:#68758a;font-size:12px}
+
+@media(max-width:600px){.panel{padding:13px}}
+
+</style>
+
+</head>
+
+<body>
+
+<header>
+
+<div class="brand">BEEPER<span>PAY</span></div>
+
+<div style="font-size:11px;letter-spacing:2px;margin-top:5px">MICROFINANCE BANK</div>
+
+<p>Your money. Your future. Our priority.</p>
+
+</header>
+
+<nav>
+
+<a href="admin.html">Admin Dashboard</a>
+
+<a href="customers.html">Customer Management</a>
+
+<a href="customer-activity.html">Activity Monitoring</a>
+
+<button onclick="loadReports()">Refresh</button>
+
+<button class="gold" onclick="exportCSV()">Export CSV</button>
+
+<button onclick="logout()">Logout</button>
+
+</nav>
+
+<main class="container">
+
+<h2>Customer Account Management Reports</h2>
+
+<p class="subtitle">View customer registration, account status and verification statistics.</p>
+
+<section class="cards">
+
+<div class="card"><p>Total Registered Customers</p><strong id="total">0</strong></div>
+
+<div class="card"><p>Active Accounts</p><strong id="active">0</strong></div>
+
+<div class="card"><p>Suspended Accounts</p><strong id="suspended">0</strong></div>
+
+<div class="card"><p>Verified Customers</p><strong id="verified">0</strong></div>
+
+<div class="card"><p>Pending Verification</p><strong id="pending">0</strong></div>
+
+<div class="card"><p>Rejected Verification</p><strong id="rejected">0</strong></div>
+
+</section>
+
+<section class="panel">
+
+<h3>Customer Registration and Account Report</h3>
+
+<div id="message" class="message">Checking administrator access...</div>
+
+<div class="toolbar">
+
+<input id="search" placeholder="Search name, email, phone or ID" oninput="renderTable()">
+
+<select id="accountFilter" onchange="renderTable()">
+
+<option value="">All Account Statuses</option>
+
+<option value="Active">Active</option>
+
+<option value="Suspended">Suspended</option>
+
+</select>
+
+<select id="verificationFilter" onchange="renderTable()">
+
+<option value="">All Verification Statuses</option>
+
+<option value="Pending">Pending</option>
+
+<option value="Verified">Verified</option>
+
+<option value="Rejected">Rejected</option>
+
+</select>
+
+</div>
+
+<div class="table-wrap">
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>Full Name</th>
+
+<th>Email</th>
+
+<th>Phone</th>
+
+<th>Customer ID</th>
+
+<th>Account Status</th>
+
+<th>Verification</th>
+
+<th>Registration Date</th>
+
+</tr>
+
+</thead>
+
+<tbody id="reportTable">
+
+<tr><td colspan="7">Loading report...</td></tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+</section>
+
+</main>
+
+<footer>
+
+BEEPERPAY MICROFINANCE BANK<br><br>
+
+Demonstration customer reports only. No real banking services or financial transactions are represented.
+
+</footer>
+
+<script>
+
+const SUPABASE_URL="https://wrjvcvxswdojpxzcwyqw.supabase.co";
+
+const SUPABASE_KEY="sb_publishable_zTksapAhIoJp_0-9w1twlQ_j7WECGcv";
+
+const supabaseClient=window.supabase.createClient(
+
+SUPABASE_URL,SUPABASE_KEY
+
+);
+
+let customers=[];
+
+function escapeHTML(value){
+
+return String(value??"").replace(/[&<>"']/g,char=>({
+
+"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+
+}[char]));
+
+}
+
+function message(text){
+
+document.getElementById("message").textContent=text;
+
+}
+
+async function checkAdmin(){
+
+const {data:{user},error}=await supabaseClient.auth.getUser();
+
+if(error||!user){
+
+location.href="admin.html";
+
+return false;
+
+}
+
+const {data:role,error:roleError}=await supabaseClient
+
+.from("user_roles")
+
+.select("role")
+
+.eq("user_id",user.id)
+
+.eq("role","admin")
+
+.maybeSingle();
+
+if(roleError||!role){
+
+message("Administrator access required.");
+
+return false;
+
+}
+
+return true;
+
+}
+
+async function loadReports(){
+
+message("Loading customer reports...");
+
+if(!await checkAdmin())return;
+
+const {data,error}=await supabaseClient
+
+.from("customer_profiles")
+
+.select("id,email,full_name,phone_number,created_at,account_status,verification_status")
+
+.order("created_at",{ascending:false});
+
+if(error){
+
+message("Unable to load reports: "+error.message);
+
+return;
+
+}
+
+customers=data||[];
+
+document.getElementById("total").textContent=customers.length;
+
+document.getElementById("active").textContent=customers.filter(c=>c.account_status==="Active").length;
+
+document.getElementById("suspended").textContent=customers.filter(c=>c.account_status==="Suspended").length;
+
+document.getElementById("verified").textContent=customers.filter(c=>c.verification_status==="Verified").length;
+
+document.getElementById("pending").textContent=customers.filter(c=>c.verification_status==="Pending").length;
+
+document.getElementById("rejected").textContent=customers.filter(c=>c.verification_status==="Rejected").length;
+
+message("Customer reports loaded successfully.");
+
+renderTable();
+
+}
+
+function renderTable(){
+
+const search=document.getElementById("search").value.toLowerCase().trim();
+
+const account=document.getElementById("accountFilter").value;
+
+const verification=document.getElementById("verificationFilter").value;
+
+const filtered=customers.filter(c=>{
+
+const text=[c.full_name,c.email,c.phone_number,c.id].join(" ").toLowerCase();
+
+return text.includes(search)&&
+
+(!account||c.account_status===account)&&
+
+(!verification||c.verification_status===verification);
+
+});
+
+const tbody=document.getElementById("reportTable");
+
+if(!filtered.length){
+
+tbody.innerHTML='<tr><td colspan="7">No matching customers found.</td></tr>';
+
+return;
+
+}
+
+tbody.innerHTML=filtered.map(c=>`
+
+<tr>
+
+<td>${escapeHTML(c.full_name||"—")}</td>
+
+<td>${escapeHTML(c.email||"—")}</td>
+
+<td>${escapeHTML(c.phone_number||"—")}</td>
+
+<td>${escapeHTML(c.id)}</td>
+
+<td>${escapeHTML(c.account_status||"—")}</td>
+
+<td>${escapeHTML(c.verification_status||"—")}</td>
+
+<td>${escapeHTML(c.created_at?new Date(c.created_at).toLocaleDateString():"—")}</td>
+
+</tr>
+
+`).join("");
+
+}
+
+function exportCSV(){
+
+const search=document.getElementById("search").value.toLowerCase().trim();
+
+const account=document.getElementById("accountFilter").value;
+
+const verification=document.getElementById("verificationFilter").value;
+
+const filtered=customers.filter(c=>{
+
+const text=[c.full_name,c.email,c.phone_number,c.id].join(" ").toLowerCase();
+
+return text.includes(search)&&
+
+(!account||c.account_status===account)&&
+
+(!verification||c.verification_status===verification);
+
+});
+
+if(!filtered.length){
+
+message("There are no customer records to export.");
+
+return;
+
+}
+
+const headers=["Full Name","Email","Phone","Customer ID","Account Status","Verification Status","Registration Date"];
+
+const rows=filtered.map(c=>[
+
+c.full_name,c.email,c.phone_number,c.id,c.account_status,
+
+c.verification_status,c.created_at
+
+]);
+
+function csvCell(value){
+
+return '"'+String(value??"").replace(/"/g,'""')+'"';
+
+}
+
+const csv=[headers,...rows].map(row=>row.map(csvCell).join(",")).join("\r\n");
+
+const blob=new Blob(["\uFEFF"+csv],{type:"text/csv;charset=utf-8;"});
+
+const url=URL.createObjectURL(blob);
+
+const link=document.createElement("a");
+
+link.href=url;
+
+link.download="beeperpay-customer-report.csv";
+
+link.click();
+
+URL.revokeObjectURL(url);
+
+message("Customer report exported successfully.");
+
+}
+
+async function logout(){
+
+await supabaseClient.auth.signOut();
+
+location.href="admin.html";
+
+}
+
+loadReports();
+
+</script>
+
+</body>
+
+</html>
