@@ -24,11 +24,19 @@ main{max-width:650px;margin:25px auto;padding:15px}
 
 .card{background:white;padding:20px;border-radius:12px;margin-bottom:18px}
 
-h2{color:#07152e}
+h2{color:#07152e;margin-top:0}
 
 .balance{font-size:30px;font-weight:bold;color:#07152e}
 
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+
+.stat{background:#f4f6fa;padding:15px;border-radius:8px}
+
+.stat strong{display:block;font-size:20px;margin-top:8px;color:#07152e}
+
 .service{display:block;padding:15px;margin:10px 0;background:#07152e;color:#e4b84e;text-align:center;text-decoration:none;border-radius:8px;font-weight:bold}
+
+.transaction{padding:12px 0;border-bottom:1px solid #eee;font-size:13px;line-height:1.6}
 
 .logout{width:100%;padding:14px;background:#a52a2a;color:white;border:0;border-radius:8px;font-weight:bold}
 
@@ -68,6 +76,44 @@ footer{text-align:center;color:#777;padding:20px;font-size:12px}
 
 <section class="card">
 
+<h2>Account Overview</h2>
+
+<div class="stats">
+
+<div class="stat">
+
+Add Money Requests
+
+<strong id="addTotal">₦0</strong>
+
+</div>
+
+<div class="stat">
+
+Transfer Requests
+
+<strong id="transferTotal">₦0</strong>
+
+</div>
+
+</div>
+
+</section>
+
+<section class="card">
+
+<h2>Recent Transactions</h2>
+
+<div id="recent">
+
+Loading transactions...
+
+</div>
+
+</section>
+
+<section class="card">
+
 <h2>Quick Services</h2>
 
 <a class="service" href="add-money.html">💰 Add Money</a>
@@ -90,7 +136,7 @@ footer{text-align:center;color:#777;padding:20px;font-size:12px}
 
 <p id="email">Loading account...</p>
 
-<p id="status">Account Status: Demo Account</p>
+<p>Account Status: Demo Account</p>
 
 </section>
 
@@ -137,6 +183,74 @@ document.getElementById("welcome").textContent=
 document.getElementById("email").textContent=
 
 "Email: "+(user.email||"Not available");
+
+try{
+
+const key="beeperpay_demo_transactions_"+user.id;
+
+const transactions=JSON.parse(localStorage.getItem(key)||"[]");
+
+let addTotal=0;
+
+let transferTotal=0;
+
+transactions.forEach(item=>{
+
+const amount=Number(item.amount)||0;
+
+if(item.type==="Add Money")addTotal+=amount;
+
+if(item.type==="Transfer")transferTotal+=amount;
+
+});
+
+document.getElementById("addTotal").textContent=
+
+"₦"+addTotal.toLocaleString("en-NG");
+
+document.getElementById("transferTotal").textContent=
+
+"₦"+transferTotal.toLocaleString("en-NG");
+
+const recent=document.getElementById("recent");
+
+recent.textContent="";
+
+if(transactions.length===0){
+
+recent.textContent="No transactions yet.";
+
+}else{
+
+transactions.slice().reverse().slice(0,5).forEach(item=>{
+
+const div=document.createElement("div");
+
+div.className="transaction";
+
+div.textContent=
+
+(item.type||"Transaction")+" — ₦"+
+
+(Number(item.amount)||0).toLocaleString("en-NG")+
+
+" | "+(item.date||"Date unavailable")+
+
+" | "+(item.status||"Demo request");
+
+recent.appendChild(div);
+
+});
+
+}
+
+}catch(error){
+
+document.getElementById("recent").textContent=
+
+"Unable to load demonstration records.";
+
+}
 
 }
 
