@@ -8,37 +8,167 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Beeperpay Admin Dashboard</title>
+<title>Beeperpay Administration Portal</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
 
 *{box-sizing:border-box}
 
-body{margin:0;font-family:Arial,sans-serif;background:#f3f5f9;color:#07152e}
+body{
 
-header{background:#07152e;color:white;text-align:center;padding:24px}
+ margin:0;
 
-header h2{color:#e4b84e;margin:0}
+ font-family:Arial,sans-serif;
 
-main{max-width:950px;margin:25px auto;padding:15px}
+ background:#f3f5f9;
 
-.card{background:white;padding:20px;border-radius:12px;margin-bottom:18px;box-shadow:0 2px 8px #0000000c}
+ color:#122747;
 
-input{width:100%;padding:13px;margin:9px 0;border:1px solid #ddd;border-radius:7px}
+}
 
-button{background:#07152e;color:white;padding:13px 20px;border:0;border-radius:7px;cursor:pointer}
+header{
 
-.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+ background:#07152e;
 
-.stats div{background:#f3f5f9;padding:18px;border-radius:8px}
+ color:white;
 
-.stats strong{display:block;font-size:22px;margin-top:8px}
+ padding:24px 18px;
 
-.notice{background:#fff4d6;color:#795400;padding:13px;border-radius:8px;font-size:13px;line-height:1.5}
+ text-align:center;
 
-.hidden{display:none}
+ border-bottom:4px solid #e4b84e;
 
-footer{text-align:center;color:#777;padding:20px;font-size:12px}
+}
+
+.logo{font-size:27px;font-weight:bold;letter-spacing:1px}
+
+.sub{color:#e4b84e;font-size:13px;margin-top:5px}
+
+.tagline{margin-top:12px;font-size:14px}
+
+main{max-width:950px;margin:25px auto;padding:0 15px}
+
+.panel{
+
+ background:white;
+
+ padding:22px;
+
+ border-radius:12px;
+
+ margin-bottom:20px;
+
+ box-shadow:0 3px 12px #0000000d;
+
+}
+
+h2{margin-top:0;color:#07152e}
+
+input{
+
+ width:100%;
+
+ padding:14px;
+
+ border:1px solid #ccd3df;
+
+ border-radius:7px;
+
+ margin:9px 0;
+
+ font-size:16px;
+
+}
+
+button{
+
+ background:#07152e;
+
+ color:white;
+
+ border:0;
+
+ padding:13px 18px;
+
+ border-radius:7px;
+
+ font-size:15px;
+
+ cursor:pointer;
+
+}
+
+button.gold{background:#b78b28}
+
+button.logout{background:#9b2525}
+
+.grid{
+
+ display:grid;
+
+ grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+
+ gap:14px;
+
+}
+
+.stat{
+
+ background:#f5f7fb;
+
+ border-left:4px solid #e4b84e;
+
+ padding:18px;
+
+ border-radius:8px;
+
+}
+
+.stat strong{display:block;font-size:23px;margin-top:9px}
+
+.services a{
+
+ display:block;
+
+ padding:14px;
+
+ margin:9px 0;
+
+ background:#f5f7fb;
+
+ border-radius:7px;
+
+ color:#07152e;
+
+ text-decoration:none;
+
+ font-weight:bold;
+
+}
+
+.services a:hover{background:#e9edf5}
+
+.notice{
+
+ background:#fff6df;
+
+ padding:13px;
+
+ border-radius:7px;
+
+ font-size:13px;
+
+ line-height:1.5;
+
+}
+
+#message{margin-top:12px;color:#a32626;font-size:14px}
+
+footer{text-align:center;padding:20px;color:#657085;font-size:12px}
+
+[hidden]{display:none!important}
 
 </style>
 
@@ -48,233 +178,413 @@ footer{text-align:center;color:#777;padding:20px;font-size:12px}
 
 <header>
 
-<h2>BEEPERPAY</h2>
+ <div class="logo">BEEPERPAY</div>
 
-<p>MICROFINANCE BANK</p>
+ <div class="sub">MICROFINANCE BANK</div>
 
-<h3>ADMINISTRATION PORTAL</h3>
+ <h3>ADMINISTRATION PORTAL</h3>
 
-<p>Your money. Your future. Our priority.</p>
+ <div class="tagline">Your money. Your future. Our priority.</div>
 
 </header>
 
 <main>
 
-<div class="card" id="login">
+<section id="loginPanel" class="panel">
 
-<h2>Administrator Login</h2>
+ <h2>Administrator Login</h2>
 
-<p>Enter your administrator password to open the demo dashboard.</p>
+ <p>Sign in using your registered Beeperpay administrator account.</p>
 
-<input type="password" id="adminPassword" placeholder="Administrator password">
+ <form id="loginForm">
 
-<button onclick="adminLogin()">LOGIN</button>
+  <input id="email" type="email" placeholder="Administrator Email" required>
 
-<p id="loginMessage"></p>
+  <input id="password" type="password" placeholder="Password" required>
 
-</div>
+  <button type="submit">LOGIN SECURELY</button>
 
-<div id="dashboard" class="hidden">
+ </form>
 
-<div class="card">
+ <p id="message"></p>
 
-<h2>Welcome, Administrator</h2>
+</section>
 
-<p>Beeperpay Administration Overview</p>
+<section id="adminPanel" hidden>
 
-</div>
+ <div class="panel">
 
-<div class="notice">
+  <h2>Welcome, Administrator</h2>
 
-DEMONSTRATION ADMIN PORTAL. The figures below are local demo records, not live banking or customer account data. This browser-only password screen is not production-grade security.
+  <p id="adminEmail"></p>
 
-</div>
+  <p>Beeperpay Administration Overview</p>
 
-<div class="card">
+  <button class="logout" id="logoutButton">LOGOUT</button>
 
-<h3>Transaction Overview</h3>
+ </div>
 
-<div class="stats">
+ <div class="panel">
 
-<div>Add Money Requests<strong id="addTotal">₦0.00</strong></div>
+  <div class="notice">
 
-<div>Transfer Requests<strong id="transferTotal">₦0.00</strong></div>
+   DEMONSTRATION ADMIN PORTAL. Figures below are local demo records,
 
-<div>Total Transaction Records<strong id="transactionCount">0</strong></div>
+   not live banking or customer account data.
 
-<div>Support Tickets<strong id="ticketCount">0</strong></div>
+  </div>
 
-</div>
+ </div>
 
-</div>
+ <div class="panel">
 
-<div class="card">
+  <h2>Transaction Overview</h2>
 
-<h3>Administration Services</h3>
+  <div class="grid">
 
-<p><a href="dashboard.html">Customer Dashboard</a></p>
+   <div class="stat">
 
-<p><a href="transactions.html">Transaction History</a></p>
+    Add Money Requests
 
-<p><a href="support-tickets.html">Support Ticket History</a></p>
+    <strong id="addTotal">₦0.00</strong>
 
-<p><a href="support.html">Customer Support</a></p>
+   </div>
 
-<p><a href="profile.html">Customer Profile</a></p>
+   <div class="stat">
 
-</div>
+    Transfer Requests
 
-<div class="card">
+    <strong id="transferTotal">₦0.00</strong>
 
-<h3>Administrator Actions</h3>
+   </div>
 
-<p>Transaction monitoring: Demo records only.</p>
+   <div class="stat">
 
-<p>Customer support: Demo records only.</p>
+    Total Transaction Records
 
-<p>Account management: Not enabled.</p>
+    <strong id="transactionCount">0</strong>
 
-<button onclick="adminLogout()">LOGOUT</button>
+   </div>
 
-</div>
+   <div class="stat">
 
-</div>
+    Support Tickets
+
+    <strong id="supportCount">0</strong>
+
+   </div>
+
+  </div>
+
+ </div>
+
+ <div class="panel services">
+
+  <h2>Administration Services</h2>
+
+  <a href="dashboard.html">Customer Dashboard</a>
+
+  <a href="transactions.html">Transaction History</a>
+
+  <a href="support-tickets.html">Support Ticket History</a>
+
+  <a href="support.html">Customer Support</a>
+
+  <a href="profile.html">Customer Profile</a>
+
+  <a href="statement.html">Account Statement</a>
+
+ </div>
+
+ <div class="panel">
+
+  <h2>Administrator Actions</h2>
+
+  <p>Transaction monitoring: Demo records only.</p>
+
+  <p>Customer support: Demo records only.</p>
+
+  <p>Account management: Not enabled.</p>
+
+ </div>
+
+ <div class="panel">
+
+  <div class="notice">
+
+   Security notice: This portal verifies administrator identity
+
+   through Supabase. Transaction and support figures remain
+
+   browser-local demonstration records. No real banking services
+
+   are enabled.
+
+  </div>
+
+ </div>
+
+</section>
 
 </main>
 
 <footer>
 
-© 2026 Beeperpay Microfinance Bank. Demonstration administration portal only.
+ BEEPERPAY MICROFINANCE BANK<br>
+
+ Demonstration portal only.
 
 </footer>
 
 <script>
 
-const ADMIN_PASSWORD = "BeeperDemo2026!";
+const SUPABASE_URL =
 
-const SESSION_KEY = "beeperpay_demo_admin_session";
+ "https://wrjvcvxswdojpxzcwyqw.supabase.co";
 
-function adminLogin(){
+const SUPABASE_KEY =
 
-const password = document.getElementById("adminPassword").value;
+ "sb_publishable_zTksapAhIoJp_0-9w1twlQ_j7WECGcv";
 
-if(password === ADMIN_PASSWORD){
+const client = window.supabase.createClient(
 
-sessionStorage.setItem(SESSION_KEY,"true");
+ SUPABASE_URL,
 
-showDashboard();
+ SUPABASE_KEY
 
-}else{
+);
 
-document.getElementById("loginMessage").textContent =
+const loginPanel = document.getElementById("loginPanel");
 
-"Incorrect administrator password.";
+const adminPanel = document.getElementById("adminPanel");
 
-}
+const message = document.getElementById("message");
 
-}
+function showLogin(error = "") {
 
-function showDashboard(){
+ loginPanel.hidden = false;
 
-document.getElementById("login").classList.add("hidden");
+ adminPanel.hidden = true;
 
-document.getElementById("dashboard").classList.remove("hidden");
-
-loadDemoOverview();
+ message.textContent = error;
 
 }
 
-function adminLogout(){
+function formatNaira(amount) {
 
-sessionStorage.removeItem(SESSION_KEY);
+ return Number(amount || 0).toLocaleString("en-NG", {
 
-location.reload();
+  style: "currency",
+
+  currency: "NGN"
+
+ });
 
 }
 
-function money(value){
+function getLocalRecords(prefix) {
 
-return "₦" + value.toLocaleString("en-NG",{
+ let records = [];
 
-minimumFractionDigits:2,
+ for (let i = 0; i < localStorage.length; i++) {
 
-maximumFractionDigits:2
+  const key = localStorage.key(i);
+
+  if (key && key.startsWith(prefix)) {
+
+   try {
+
+    const data = JSON.parse(localStorage.getItem(key));
+
+    if (Array.isArray(data)) {
+
+     records = records.concat(data);
+
+    } else if (data && Array.isArray(data.transactions)) {
+
+     records = records.concat(data.transactions);
+
+    } else if (data && Array.isArray(data.tickets)) {
+
+     records = records.concat(data.tickets);
+
+    }
+
+   } catch (error) {
+
+    console.warn("Could not read demo record:", key);
+
+   }
+
+  }
+
+ }
+
+ return records;
+
+}
+
+function loadDemoOverview() {
+
+ const transactions =
+
+  getLocalRecords("beeperpay_demo_transactions_");
+
+ const tickets =
+
+  getLocalRecords("beeperpay_demo_support_");
+
+ let addMoney = 0;
+
+ let transfers = 0;
+
+ transactions.forEach(item => {
+
+  const type = String(
+
+   item.type || item.transaction_type || item.request_type || ""
+
+  ).toLowerCase();
+
+  const amount = Number(
+
+   item.amount || item.transferAmount || item.value || 0
+
+  );
+
+  if (type.includes("add")) {
+
+   addMoney += amount;
+
+  }
+
+  if (type.includes("transfer")) {
+
+   transfers += amount;
+
+  }
+
+ });
+
+ document.getElementById("addTotal").textContent =
+
+  formatNaira(addMoney);
+
+ document.getElementById("transferTotal").textContent =
+
+  formatNaira(transfers);
+
+ document.getElementById("transactionCount").textContent =
+
+  transactions.length;
+
+ document.getElementById("supportCount").textContent =
+
+  tickets.length;
+
+}
+
+async function verifyAdmin() {
+
+ const { data, error } = await client.auth.getSession();
+
+ if (error || !data.session) {
+
+  showLogin();
+
+  return;
+
+ }
+
+ const user = data.session.user;
+
+ const { data: roleData, error: roleError } =
+
+  await client
+
+   .from("user_roles")
+
+   .select("role")
+
+   .eq("user_id", user.id)
+
+   .maybeSingle();
+
+ if (roleError || !roleData || roleData.role !== "admin") {
+
+  await client.auth.signOut();
+
+  showLogin("Administrator access denied. Your account does not have the admin role.");
+
+  return;
+
+ }
+
+ loginPanel.hidden = true;
+
+ adminPanel.hidden = false;
+
+ document.getElementById("adminEmail").textContent =
+
+  "Signed in as: " + user.email;
+
+ loadDemoOverview();
+
+}
+
+document.getElementById("loginForm")
+
+ .addEventListener("submit", async function(event) {
+
+  event.preventDefault();
+
+  message.textContent = "Checking your account...";
+
+  const email = document.getElementById("email").value.trim();
+
+  const password = document.getElementById("password").value;
+
+  const { error } = await client.auth.signInWithPassword({
+
+   email,
+
+   password
+
+  });
+
+  if (error) {
+
+   showLogin("Login failed: " + error.message);
+
+   return;
+
+  }
+
+  await verifyAdmin();
+
+ });
+
+document.getElementById("logoutButton")
+
+ .addEventListener("click", async function() {
+
+  await client.auth.signOut();
+
+  showLogin();
+
+ });
+
+client.auth.onAuthStateChange((event, session) => {
+
+ if (event === "SIGNED_OUT") {
+
+  showLogin();
+
+ }
 
 });
 
-}
-
-function loadDemoOverview(){
-
-let addTotal=0;
-
-let transferTotal=0;
-
-let transactionCount=0;
-
-let ticketCount=0;
-
-for(let i=0;i<localStorage.length;i++){
-
-const key=localStorage.key(i);
-
-if(!key) continue;
-
-if(key.startsWith("beeperpay_demo_transactions_")){
-
-try{
-
-const records=JSON.parse(localStorage.getItem(key)||"[]");
-
-if(Array.isArray(records)){
-
-records.forEach(item=>{
-
-const amount=Number(item.amount)||0;
-
-if(item.type==="Add Money") addTotal+=amount;
-
-if(item.type==="Transfer") transferTotal+=amount;
-
-transactionCount++;
-
-});
-
-}
-
-}catch(e){}
-
-}
-
-if(key.startsWith("beeperpay_demo_support_")){
-
-try{
-
-const records=JSON.parse(localStorage.getItem(key)||"[]");
-
-if(Array.isArray(records)) ticketCount+=records.length;
-
-}catch(e){}
-
-}
-
-}
-
-document.getElementById("addTotal").textContent=money(addTotal);
-
-document.getElementById("transferTotal").textContent=money(transferTotal);
-
-document.getElementById("transactionCount").textContent=transactionCount;
-
-document.getElementById("ticketCount").textContent=ticketCount;
-
-}
-
-if(sessionStorage.getItem(SESSION_KEY)==="true"){
-
-showDashboard();
-
-}
+verifyAdmin();
 
 </script>
 
