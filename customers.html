@@ -26,7 +26,7 @@ header{background:#071b49;color:white;padding:22px 18px;border-bottom:4px solid 
 
 header p{font-size:12px;margin-top:6px;letter-spacing:2px}
 
-main{max-width:1150px;margin:25px auto;padding:0 15px}
+main{max-width:1200px;margin:25px auto;padding:0 15px}
 
 .topbar{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-bottom:20px}
 
@@ -48,6 +48,8 @@ button,.back-link{border:0;border-radius:6px;padding:11px 15px;font-size:13px;fo
 
 .back-link,.close-btn{background:#e8edf5;color:#071b49}
 
+.save-btn{background:#071b49;color:white}
+
 button:disabled{opacity:.6;cursor:not-allowed}
 
 .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:15px;margin-bottom:22px}
@@ -62,11 +64,11 @@ button:disabled{opacity:.6;cursor:not-allowed}
 
 .panel{margin-bottom:20px}
 
-input{width:100%;padding:13px;border:1px solid #d4dae4;border-radius:6px;font-size:14px;margin-bottom:17px}
+input,select{width:100%;padding:12px;border:1px solid #d4dae4;border-radius:6px;font-size:14px;margin-bottom:15px;background:white}
 
 .table-wrap{width:100%;overflow-x:auto}
 
-table{width:100%;border-collapse:collapse;min-width:1050px}
+table{width:100%;border-collapse:collapse;min-width:1200px}
 
 th,td{padding:13px 11px;text-align:left;border-bottom:1px solid #e9edf3;font-size:13px}
 
@@ -84,9 +86,11 @@ td{color:#465166}
 
 .badge-status{font-weight:bold}
 
-.active-status{color:#16803c}
+.active-status,.verified{color:#16803c}
 
-.suspended-status{color:#b42318}
+.suspended-status,.rejected{color:#b42318}
+
+.pending{color:#b7791f}
 
 #detailsPanel{display:none}
 
@@ -98,7 +102,7 @@ td{color:#465166}
 
 .detail-item strong{display:block;color:#071b49;font-size:14px}
 
-#accountActions{margin-top:20px}
+#accountActions,#verificationActions{margin-top:20px;padding-top:15px;border-top:1px solid #e9edf3}
 
 footer{text-align:center;padding:25px 12px;color:#778092;font-size:12px;line-height:1.8}
 
@@ -172,7 +176,11 @@ footer{text-align:center;padding:25px 12px;color:#778092;font-size:12px;line-hei
 
 <h2>Registered Customers</h2>
 
-<input type="search" id="searchInput" placeholder="Search by name, email, phone or customer ID..." autocomplete="off">
+<input type="search" id="searchInput"
+
+placeholder="Search by name, email, phone or customer ID..."
+
+autocomplete="off">
 
 <p class="status" id="statusMessage">Loading customer records...</p>
 
@@ -196,6 +204,8 @@ footer{text-align:center;padding:25px 12px;color:#778092;font-size:12px;line-hei
 
 <th>Account Status</th>
 
+<th>Verification Status</th>
+
 <th>Action</th>
 
 </tr>
@@ -204,7 +214,7 @@ footer{text-align:center;padding:25px 12px;color:#778092;font-size:12px;line-hei
 
 <tbody id="customerTable">
 
-<tr><td colspan="7" class="empty">Loading customers...</td></tr>
+<tr><td colspan="8" class="empty">Loading customers...</td></tr>
 
 </tbody>
 
@@ -238,13 +248,41 @@ footer{text-align:center;padding:25px 12px;color:#778092;font-size:12px;line-hei
 
 <div class="detail-item"><small>Account Status</small><strong id="detailStatus"></strong></div>
 
+<div class="detail-item"><small>Verification Status</small><strong id="detailVerification"></strong></div>
+
 </div>
 
 <div id="accountActions">
 
-<p class="status" id="accountMessage">Demo account management.</p>
+<h2>Account Controls</h2>
+
+<p class="status" id="accountMessage"></p>
 
 <button id="statusActionBtn" class="suspend-btn">Suspend Account</button>
+
+</div>
+
+<div id="verificationActions">
+
+<h2>Customer Verification Management</h2>
+
+<p class="status">Current verification status: <strong id="verificationCurrent"></strong></p>
+
+<label for="verificationSelect">Choose verification status</label>
+
+<select id="verificationSelect">
+
+<option value="Pending">Pending Verification</option>
+
+<option value="Verified">Verified</option>
+
+<option value="Rejected">Verification Rejected</option>
+
+</select>
+
+<button class="save-btn" id="saveVerificationBtn">Save Verification Status</button>
+
+<p class="status" id="verificationMessage">Verification changes are saved in Supabase.</p>
 
 </div>
 
@@ -256,7 +294,7 @@ BEEPERPAY MICROFINANCE BANK<br>
 
 Your money. Your future. Our priority.<br>
 
-Demonstration customer management portal. No real banking services are active.
+Demonstration customer management portal. No real banking services or identity verification are active.
 
 </footer>
 
@@ -301,6 +339,16 @@ return String(value??"").replace(/[&<>"']/g,char=>({
 "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
 
 })[char]);
+
+}
+
+function verificationClass(status){
+
+if(status==="Verified")return "verified";
+
+if(status==="Rejected")return "rejected";
+
+return "pending";
 
 }
 
@@ -356,7 +404,7 @@ if(!list.length){
 
 $("customerTable").innerHTML=
 
-'<tr><td colspan="7" class="empty">No matching customers found.</td></tr>';
+'<tr><td colspan="8" class="empty">No matching customers found.</td></tr>';
 
 return;
 
@@ -366,7 +414,7 @@ $("customerTable").innerHTML=list.map(customer=>{
 
 const accountStatus=customer.account_status||"Active";
 
-const statusClass=accountStatus==="Suspended"?"suspended-status":"active-status";
+const verification=customer.verification_status||"Pending";
 
 return `
 
@@ -382,7 +430,9 @@ return `
 
 <td>${formatDate(customer.created_at)}</td>
 
-<td><span class="badge-status ${statusClass}">${escapeHTML(accountStatus)}</span></td>
+<td><span class="badge-status ${accountStatus==="Suspended"?"suspended-status":"active-status"}">${escapeHTML(accountStatus)}</span></td>
+
+<td><span class="badge-status ${verificationClass(verification)}">${escapeHTML(verification)}</span></td>
 
 <td><button class="view-btn" data-view="${escapeHTML(customer.id)}">View Details</button></td>
 
@@ -428,13 +478,13 @@ showMessage("Loading customer records...");
 
 $("customerTable").innerHTML=
 
-'<tr><td colspan="7" class="empty">Loading customers...</td></tr>';
+'<tr><td colspan="8" class="empty">Loading customers...</td></tr>';
 
 const {data,error}=await client
 
 .from("customer_profiles")
 
-.select("id,email,full_name,phone_number,created_at,account_status")
+.select("id,email,full_name,phone_number,created_at,account_status,verification_status")
 
 .order("created_at",{ascending:false});
 
@@ -456,17 +506,51 @@ customers.forEach(customer=>{
 
 if(!customer.account_status)customer.account_status="Active";
 
+if(!customer.verification_status)customer.verification_status="Pending";
+
 });
 
 filterCustomers();
 
 showMessage("Customer records loaded successfully.","success");
 
+if(selectedCustomer){
+
+const refreshed=customers.find(c=>c.id===selectedCustomer.id);
+
+if(refreshed){
+
+selectedCustomer=refreshed;
+
+updateDetails();
+
+}else{
+
+selectedCustomer=null;
+
+$("detailsPanel").style.display="none";
+
+}
+
+}
+
 }
 
 function showCustomerDetails(id){
 
 selectedCustomer=customers.find(customer=>customer.id===id);
+
+if(!selectedCustomer)return;
+
+updateDetails();
+
+$("detailsPanel").style.display="block";
+
+$("detailsPanel").scrollIntoView({behavior:"smooth",block:"start"});
+
+}
+
+function updateDetails(){
 
 if(!selectedCustomer)return;
 
@@ -480,43 +564,33 @@ $("detailId").textContent=selectedCustomer.id;
 
 $("detailDate").textContent=formatDate(selectedCustomer.created_at);
 
-updateDetailsStatus();
-
-$("detailsPanel").style.display="block";
-
-$("detailsPanel").scrollIntoView({behavior:"smooth",block:"start"});
-
-}
-
-function updateDetailsStatus(){
-
-if(!selectedCustomer)return;
-
 const status=selectedCustomer.account_status||"Active";
+
+const verification=selectedCustomer.verification_status||"Pending";
 
 $("detailStatus").textContent=status;
 
 $("detailStatus").className=status==="Suspended"?"suspended-status":"active-status";
 
+$("detailVerification").textContent=verification;
+
+$("detailVerification").className=verificationClass(verification);
+
 const button=$("statusActionBtn");
 
-if(status==="Suspended"){
+button.textContent=status==="Suspended"?"Activate Account":"Suspend Account";
 
-button.textContent="Activate Account";
-
-button.className="activate-btn";
-
-}else{
-
-button.textContent="Suspend Account";
-
-button.className="suspend-btn";
-
-}
+button.className=status==="Suspended"?"activate-btn":"suspend-btn";
 
 $("accountMessage").textContent="Current demo account status: "+status;
 
-$("accountMessage").className="status";
+$("verificationCurrent").textContent=verification;
+
+$("verificationSelect").value=verification;
+
+$("verificationMessage").textContent="Verification changes are saved in Supabase.";
+
+$("verificationMessage").className="status";
 
 }
 
@@ -528,15 +602,7 @@ const oldStatus=selectedCustomer.account_status||"Active";
 
 const newStatus=oldStatus==="Active"?"Suspended":"Active";
 
-const confirmed=confirm(
-
-"Are you sure you want to "+newStatus.toLowerCase()+
-
-" this customer's demo account?"
-
-);
-
-if(!confirmed)return;
+if(!confirm("Are you sure you want to "+newStatus.toLowerCase()+" this customer's demo account?"))return;
 
 const button=$("statusActionBtn");
 
@@ -560,15 +626,11 @@ button.disabled=false;
 
 if(error||!data){
 
-$("accountMessage").textContent=
+updateDetails();
 
-error?"Update failed: "+error.message:
-
-"No customer record was updated. Check administrator permissions.";
+$("accountMessage").textContent=error?"Update failed: "+error.message:"No record was updated. Check administrator permissions.";
 
 $("accountMessage").className="status error";
-
-updateDetailsStatus();
 
 return;
 
@@ -580,21 +642,91 @@ const index=customers.findIndex(c=>c.id===selectedCustomer.id);
 
 if(index!==-1)customers[index].account_status=data.account_status;
 
-updateDetailsStatus();
+updateDetails();
 
 filterCustomers();
 
-$("accountMessage").textContent=
-
-"Customer demo account status updated to "+newStatus+".";
+$("accountMessage").textContent="Demo account status updated to "+newStatus+".";
 
 $("accountMessage").className="status success";
+
+}
+
+async function saveVerificationStatus(){
+
+if(!selectedCustomer)return;
+
+const newStatus=$("verificationSelect").value;
+
+const button=$("saveVerificationBtn");
+
+button.disabled=true;
+
+button.textContent="Saving...";
+
+$("verificationMessage").textContent="Saving verification status...";
+
+$("verificationMessage").className="status";
+
+const {data,error}=await client
+
+.from("customer_profiles")
+
+.update({verification_status:newStatus})
+
+.eq("id",selectedCustomer.id)
+
+.select("id,verification_status")
+
+.maybeSingle();
+
+button.disabled=false;
+
+button.textContent="Save Verification Status";
+
+if(error||!data){
+
+$("verificationMessage").textContent=
+
+error?"Update failed: "+error.message:
+
+"No record was updated. Check administrator permissions.";
+
+$("verificationMessage").className="status error";
+
+return;
+
+}
+
+selectedCustomer.verification_status=data.verification_status;
+
+const index=customers.findIndex(c=>c.id===selectedCustomer.id);
+
+if(index!==-1){
+
+customers[index].verification_status=data.verification_status;
+
+}
+
+updateDetails();
+
+filterCustomers();
+
+$("verificationMessage").textContent=
+
+"Verification status successfully updated to "+newStatus+".";
+
+$("verificationMessage").className="status success";
 
 }
 
 $("searchInput").addEventListener("input",filterCustomers);
 
 $("refreshBtn").addEventListener("click",loadCustomers);
+
+$("statusActionBtn").addEventListener("click",changeCustomerStatus);
+
+$("saveVerificationBtn").addEventListener("click",saveVerificationStatus);
 
 $("closeDetailsBtn").addEventListener("click",()=>{
 
@@ -603,8 +735,6 @@ $("detailsPanel").style.display="none";
 selectedCustomer=null;
 
 });
-
-$("statusActionBtn").addEventListener("click",changeCustomerStatus);
 
 $("logoutBtn").addEventListener("click",async()=>{
 
