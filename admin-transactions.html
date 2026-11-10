@@ -1,1 +1,319 @@
+<!DOCTYPE html>
 
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Admin Transaction Management | Beeperpay</title>
+
+<style>
+
+*{box-sizing:border-box}
+
+body{margin:0;padding:20px;background:#f3f5f9;color:#07152e;font-family:Arial,sans-serif}
+
+.container{max-width:900px;margin:25px auto;background:white;padding:24px;border-radius:12px;box-shadow:0 4px 18px rgba(0,0,0,.07)}
+
+.brand{text-align:center}
+
+.brand h2{letter-spacing:2px;margin-bottom:5px}
+
+.brand p{color:#b58a2b;font-size:12px;margin:5px}
+
+h3{margin-top:28px}
+
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:20px 0}
+
+.stat{background:#f3f5f9;padding:15px;border-radius:8px;text-align:center}
+
+.stat strong{display:block;font-size:23px;margin-top:8px}
+
+.transaction{border:1px solid #e0e4eb;border-radius:9px;padding:16px;margin:14px 0}
+
+.transaction h4{margin:0 0 10px}
+
+.amount{font-size:21px;font-weight:bold;margin:8px 0}
+
+.detail{font-size:13px;color:#555;line-height:1.8;overflow-wrap:anywhere}
+
+.status{display:inline-block;background:#fff3d5;color:#76520b;padding:6px 9px;border-radius:5px;font-size:11px;margin:10px 0}
+
+select,button{padding:11px;border-radius:6px;border:1px solid #ccd2dc;margin:5px 5px 5px 0}
+
+button{background:#07152e;color:white;border:0;cursor:pointer}
+
+.message{padding:15px;color:#555;text-align:center}
+
+a{color:#07152e;font-weight:bold}
+
+@media(max-width:500px){.stats{grid-template-columns:1fr}}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="brand">
+
+<h2>BEEPERPAY</h2>
+
+<p>MICROFINANCE BANK</p>
+
+<p>Your money. Your future. Our priority.</p>
+
+</div>
+
+<h3>Admin Transaction Management</h3>
+
+<p>View and manage customer transaction requests.</p>
+
+<div class="stats">
+
+<div class="stat">Total Requests<strong id="total">0</strong></div>
+
+<div class="stat">Pending<strong id="pending">0</strong></div>
+
+<div class="stat">Approved<strong id="approved">0</strong></div>
+
+</div>
+
+<button type="button" onclick="loadTransactions()">Refresh Transactions</button>
+
+<div id="transactions" class="message">Loading transactions...</div>
+
+<p><a href="admin.html">Back to Admin Dashboard</a></p>
+
+<p class="detail">
+
+Demonstration transaction management only. Approving a request does not transfer money or add funds to a wallet.
+
+</p>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+
+const client=window.supabase.createClient(
+
+"https://wrjvcvxswdojpxzcwyqw.supabase.co",
+
+"sb_publishable_zTksapAhIoJp_0-9w1twlQ_j7WECGcv"
+
+);
+
+const container=document.getElementById("transactions");
+
+async function checkAdmin(){
+
+const {data,error}=await client.auth.getUser();
+
+if(error||!data.user){
+
+window.location.href="login.html";
+
+return false;
+
+}
+
+const {data:role,error:roleError}=await client
+
+.from("user_roles")
+
+.select("role")
+
+.eq("user_id",data.user.id)
+
+.eq("role","admin")
+
+.maybeSingle();
+
+if(roleError||!role){
+
+container.textContent="Administrator access required.";
+
+return false;
+
+}
+
+return true;
+
+}
+
+function detail(parent,label,value){
+
+const line=document.createElement("div");
+
+line.className="detail";
+
+line.textContent=label+": "+(value||"Not provided");
+
+parent.appendChild(line);
+
+}
+
+async function loadTransactions(){
+
+container.textContent="Loading transactions...";
+
+if(!await checkAdmin())return;
+
+const {data:records,error}=await client
+
+.from("transaction_requests")
+
+.select("id,user_id,transaction_type,amount,description,status,created_at")
+
+.order("created_at",{ascending:false});
+
+if(error){
+
+console.error(error);
+
+container.textContent="Unable to load transaction requests: "+error.message;
+
+return;
+
+}
+
+document.getElementById("total").textContent=records.length;
+
+document.getElementById("pending").textContent=
+
+records.filter(r=>r.status==="Pending").length;
+
+document.getElementById("approved").textContent=
+
+records.filter(r=>r.status==="Approved").length;
+
+container.replaceChildren();
+
+if(!records.length){
+
+container.textContent="No transaction requests found.";
+
+return;
+
+}
+
+records.forEach(record=>{
+
+const card=document.createElement("div");
+
+card.className="transaction";
+
+const heading=document.createElement("h4");
+
+heading.textContent=record.transaction_type;
+
+card.appendChild(heading);
+
+const amount=document.createElement("div");
+
+amount.className="amount";
+
+amount.textContent="₦"+Number(record.amount).toLocaleString("en-NG");
+
+card.appendChild(amount);
+
+detail(card,"Transaction ID",record.id);
+
+detail(card,"Customer ID",record.user_id);
+
+detail(card,"Date",new Date(record.created_at).toLocaleString("en-NG"));
+
+detail(card,"Description",record.description);
+
+const status=document.createElement("span");
+
+status.className="status";
+
+status.textContent="Current Status: "+record.status;
+
+card.appendChild(status);
+
+const controls=document.createElement("div");
+
+const select=document.createElement("select");
+
+["Pending","Approved","Rejected"].forEach(value=>{
+
+const option=document.createElement("option");
+
+option.value=value;
+
+option.textContent=value;
+
+if(value===record.status)option.selected=true;
+
+select.appendChild(option);
+
+});
+
+const save=document.createElement("button");
+
+save.type="button";
+
+save.textContent="Update Status";
+
+save.addEventListener("click",()=>updateStatus(record.id,select.value,save));
+
+controls.appendChild(select);
+
+controls.appendChild(save);
+
+card.appendChild(controls);
+
+container.appendChild(card);
+
+});
+
+}
+
+async function updateStatus(id,newStatus,button){
+
+button.disabled=true;
+
+button.textContent="Updating...";
+
+const {error}=await client
+
+.from("transaction_requests")
+
+.update({status:newStatus})
+
+.eq("id",id);
+
+if(error){
+
+alert("Status update failed: "+error.message);
+
+button.disabled=false;
+
+button.textContent="Update Status";
+
+return;
+
+}
+
+alert("Transaction status successfully updated to "+newStatus+".");
+
+await loadTransactions();
+
+}
+
+loadTransactions();
+
+</script>
+
+</body>
+
+</html>
