@@ -1,25 +1,157 @@
-<a href="notifications.html" style="
+<!DOCTYPE html>
 
-display:block;
+<html lang="en">
 
-background:#07152e;
+<head>
 
-color:#e4b84e;
+<meta charset="UTF-8">
 
-padding:15px;
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
-margin:10px 0;
+<title>Beeperpay Dashboard</title>
 
-border-radius:8px;
+<style>
 
-text-align:center;
+*{box-sizing:border-box}
 
-text-decoration:none;
+body{margin:0;background:#f4f6fa;font-family:Arial;color:#17243a}
 
-font-weight:bold;
+header{background:#07152e;color:white;text-align:center;padding:25px}
 
-">
+header h1{color:#e4b84e;margin:0}
 
-🔔 Notifications
+main{max-width:650px;margin:25px auto;padding:15px}
 
-</a>
+.card{background:white;padding:20px;border-radius:12px;margin-bottom:18px}
+
+h2{color:#07152e}
+
+.balance{font-size:30px;font-weight:bold;color:#07152e}
+
+.service{display:block;padding:15px;margin:10px 0;background:#07152e;color:#e4b84e;text-align:center;text-decoration:none;border-radius:8px;font-weight:bold}
+
+.logout{width:100%;padding:14px;background:#a52a2a;color:white;border:0;border-radius:8px;font-weight:bold}
+
+footer{text-align:center;color:#777;padding:20px;font-size:12px}
+
+</style>
+
+</head>
+
+<body>
+
+<header>
+
+<h1>BEEPERPAY</h1>
+
+<p>MICROFINANCE BANK</p>
+
+<p>Your money. Your future. Our priority.</p>
+
+</header>
+
+<main>
+
+<section class="card">
+
+<h2 id="welcome">Welcome to Beeperpay</h2>
+
+<p>My Dashboard</p>
+
+<p>Demo Wallet Balance</p>
+
+<div class="balance">₦0.00</div>
+
+<p>Demonstration account only.</p>
+
+</section>
+
+<section class="card">
+
+<h2>Quick Services</h2>
+
+<a class="service" href="add-money.html">💰 Add Money</a>
+
+<a class="service" href="transfer.html">💸 Transfer Money</a>
+
+<a class="service" href="transactions.html">📄 Transaction History</a>
+
+<a class="service" href="profile.html">👤 My Profile</a>
+
+<a class="service" href="support.html">🎧 Customer Support</a>
+
+<a class="service" href="notifications.html">🔔 Notifications</a>
+
+</section>
+
+<section class="card">
+
+<h2>Account Information</h2>
+
+<p id="email">Loading account...</p>
+
+<p id="status">Account Status: Demo Account</p>
+
+</section>
+
+<button class="logout" id="logout">LOGOUT</button>
+
+</main>
+
+<footer>
+
+© 2026 Beeperpay Microfinance Bank.
+
+Demonstration website only. No real banking transactions.
+
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+
+const SUPABASE_URL="https://wrjvcvxswdojpxzcwyqw.supabase.co";
+
+const SUPABASE_KEY="sb_publishable_zTksapAhIoJp_0-9w1twlQ_j7WECGcv";
+
+const client=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+
+async function loadDashboard(){
+
+const {data,error}=await client.auth.getUser();
+
+if(error||!data.user){
+
+window.location.href="login.html";
+
+return;
+
+}
+
+const user=data.user;
+
+document.getElementById("welcome").textContent=
+
+"Welcome, "+(user.user_metadata?.full_name||"Customer");
+
+document.getElementById("email").textContent=
+
+"Email: "+(user.email||"Not available");
+
+}
+
+document.getElementById("logout").addEventListener("click",async()=>{
+
+await client.auth.signOut();
+
+window.location.href="login.html";
+
+});
+
+loadDashboard();
+
+</script>
+
+</body>
+
+</html>
