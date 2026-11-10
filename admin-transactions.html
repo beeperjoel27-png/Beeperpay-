@@ -26,7 +26,7 @@ body{margin:0;padding:20px;background:#f3f5f9;color:#07152e;font-family:Arial,sa
 
 h3{margin-top:28px}
 
-.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:20px 0}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:20px 0}
 
 .stat{background:#f3f5f9;padding:15px;border-radius:8px;text-align:center}
 
@@ -40,17 +40,31 @@ h3{margin-top:28px}
 
 .detail{font-size:13px;color:#555;line-height:1.8;overflow-wrap:anywhere}
 
+.customer{background:#f3f5f9;padding:12px;border-radius:7px;margin:12px 0}
+
+.customer strong{color:#07152e}
+
 .status{display:inline-block;background:#fff3d5;color:#76520b;padding:6px 9px;border-radius:5px;font-size:11px;margin:10px 0}
 
 select,button{padding:11px;border-radius:6px;border:1px solid #ccd2dc;margin:5px 5px 5px 0}
 
 button{background:#07152e;color:white;border:0;cursor:pointer}
 
+button:disabled{opacity:.6}
+
 .message{padding:15px;color:#555;text-align:center}
+
+.warning{color:#a15c00;background:#fff3d5;padding:10px;border-radius:6px;margin:10px 0;font-size:13px}
 
 a{color:#07152e;font-weight:bold}
 
-@media(max-width:500px){.stats{grid-template-columns:1fr}}
+@media(max-width:600px){
+
+.stats{grid-template-columns:repeat(2,1fr)}
+
+.container{padding:16px}
+
+}
 
 </style>
 
@@ -82,9 +96,13 @@ a{color:#07152e;font-weight:bold}
 
 <div class="stat">Approved<strong id="approved">0</strong></div>
 
+<div class="stat">Rejected<strong id="rejected">0</strong></div>
+
 </div>
 
 <button type="button" onclick="loadTransactions()">Refresh Transactions</button>
+
+<div id="warning"></div>
 
 <div id="transactions" class="message">Loading transactions...</div>
 
@@ -111,6 +129,8 @@ const client=window.supabase.createClient(
 );
 
 const container=document.getElementById("transactions");
+
+const warning=document.getElementById("warning");
 
 async function checkAdmin(){
 
@@ -164,6 +184,8 @@ async function loadTransactions(){
 
 container.textContent="Loading transactions...";
 
+warning.replaceChildren();
+
 if(!await checkAdmin())return;
 
 const {data:records,error}=await client
@@ -178,13 +200,15 @@ if(error){
 
 console.error(error);
 
-container.textContent="Unable to load transaction requests: "+error.message;
+container.textContent="Unable to load transactions: "+error.message;
 
 return;
 
 }
 
-document.getElementById("total").textContent=records.length;
+const total=records.length;
+
+document.getElementById("total").textContent=total;
 
 document.getElementById("pending").textContent=
 
@@ -194,15 +218,67 @@ document.getElementById("approved").textContent=
 
 records.filter(r=>r.status==="Approved").length;
 
+document.getElementById("rejected").textContent=
+
+records.filter(r=>r.status==="Rejected").length;
+
 container.replaceChildren();
 
-if(!records.length){
+if(!total){
 
 container.textContent="No transaction requests found.";
 
 return;
 
 }
+
+/* Fetch customer profiles */
+
+const customerIds=[...new Set(records.map(r=>r.user_id).filter(Boolean))];
+
+let profiles=[];
+
+let profileError=null;
+
+if(customerIds.length){
+
+const result=await client
+
+.from("customer_profiles")
+
+.select("id,full_name,email,phone_number")
+
+.in("id",customerIds);
+
+profiles=result.data||[];
+
+profileError=result.error;
+
+}
+
+if(profileError){
+
+console.error("Customer profile error:",profileError);
+
+const message=document.createElement("div");
+
+message.className="warning";
+
+message.textContent="Customer details could not be loaded. Customer IDs are shown instead. "+profileError.message;
+
+warning.appendChild(message);
+
+}
+
+const profileMap={};
+
+profiles.forEach(profile=>{
+
+profileMap[profile.id]=profile;
+
+});
+
+/* Display transaction records */
 
 records.forEach(record=>{
 
@@ -224,9 +300,31 @@ amount.textContent="₦"+Number(record.amount).toLocaleString("en-NG");
 
 card.appendChild(amount);
 
-detail(card,"Transaction ID",record.id);
+/* Customer information */
 
-detail(card,"Customer ID",record.user_id);
+const profile=profileMap[record.user_id];
+
+const customer=document.createElement("div");
+
+customer.className="customer";
+
+const customerTitle=document.createElement("strong");
+
+customerTitle.textContent="Customer Information";
+
+customer.appendChild(customerTitle);
+
+detail(customer,"Full Name",profile?.full_name);
+
+detail(customer,"Email Address",profile?.email);
+
+detail(customer,"Phone Number",profile?.phone_number);
+
+detail(customer,"Customer ID",record.user_id);
+
+card.appendChild(customer);
+
+detail(card,"Transaction ID",record.id);
 
 detail(card,"Date",new Date(record.created_at).toLocaleString("en-NG"));
 
@@ -264,7 +362,11 @@ save.type="button";
 
 save.textContent="Update Status";
 
-save.addEventListener("click",()=>updateStatus(record.id,select.value,save));
+save.addEventListener("click",()=>{
+
+updateStatus(record.id,select.value,save);
+
+});
 
 controls.appendChild(select);
 
