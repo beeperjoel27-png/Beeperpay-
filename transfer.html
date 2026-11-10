@@ -8,117 +8,45 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Beeperpay | Transfer Money</title>
+<title>Transfer Money - Beeperpay</title>
 
 <style>
 
-* { box-sizing: border-box; }
+*{box-sizing:border-box}
 
-body {
+body{font-family:Arial,sans-serif;background:#f3f5f9;color:#07152e;padding:20px;margin:0}
 
-  margin: 0;
+.container{max-width:480px;margin:30px auto;background:white;padding:25px;border-radius:12px;box-shadow:0 4px 18px rgba(0,0,0,.07)}
 
-  padding: 20px 15px;
+.brand{text-align:center}
 
-  background: #07152e;
+.brand h2{letter-spacing:2px;margin-bottom:5px}
 
-  color: white;
+.brand p{color:#b58a2b;font-size:12px;margin-top:0}
 
-  font-family: Arial, sans-serif;
+h3{margin-top:28px}
 
-}
+label{display:block;font-weight:bold;margin-top:16px}
 
-.container {
+input,select,textarea{width:100%;padding:13px;margin-top:7px;border:1px solid #ccd2dc;border-radius:7px;font-size:15px;background:white}
 
-  max-width: 450px;
+textarea{resize:vertical}
 
-  margin: 25px auto;
+button{width:100%;padding:14px;margin-top:22px;background:#07152e;color:white;border:0;border-radius:7px;font-weight:bold;font-size:15px}
 
-  padding: 25px;
+button:disabled{opacity:.6}
 
-  background: #122747;
+#message{margin-top:18px;line-height:1.6;overflow-wrap:anywhere}
 
-  border-radius: 15px;
+.success{background:#e8f6ed;color:#176534;padding:12px;border-radius:7px}
 
-}
+.error{background:#fdecec;color:#a32020;padding:12px;border-radius:7px}
 
-h1 {
+.links{text-align:center;margin-top:22px;line-height:2}
 
-  text-align: center;
+a{color:#07152e}
 
-  color: #e4b84e;
-
-}
-
-h2 { text-align: center; }
-
-label {
-
-  display: block;
-
-  margin-top: 17px;
-
-}
-
-input, select, textarea {
-
-  width: 100%;
-
-  padding: 13px;
-
-  margin-top: 7px;
-
-  border-radius: 7px;
-
-  border: 1px solid #ccc;
-
-  font-size: 16px;
-
-}
-
-textarea {
-
-  min-height: 75px;
-
-  resize: vertical;
-
-}
-
-button {
-
-  width: 100%;
-
-  padding: 15px;
-
-  margin-top: 22px;
-
-  background: #e4b84e;
-
-  color: #07152e;
-
-  border: none;
-
-  border-radius: 7px;
-
-  font-weight: bold;
-
-  font-size: 15px;
-
-  cursor: pointer;
-
-}
-
-#message {
-
-  margin-top: 20px;
-
-  line-height: 1.6;
-
-  overflow-wrap: anywhere;
-
-}
-
-a { color: #e4b84e; }
+.notice{font-size:12px;color:#666;line-height:1.5;margin-top:20px}
 
 </style>
 
@@ -128,235 +56,251 @@ a { color: #e4b84e; }
 
 <div class="container">
 
-<h1>BEEPERPAY</h1>
+<div class="brand">
 
-<p style="text-align:center">MICROFINANCE BANK</p>
+<h2>BEEPERPAY</h2>
 
-<h2>Transfer Money</h2>
+<p>MICROFINANCE BANK</p>
+
+</div>
+
+<h3>Transfer Money</h3>
 
 <form id="transferForm">
 
-<label>Recipient Full Name</label>
+<label for="recipient">Recipient Full Name</label>
 
-<input
+<input type="text" id="recipient" required placeholder="Enter recipient name">
 
-  type="text"
+<label for="account">Recipient Account Number</label>
 
-  id="recipient"
+<input type="text" id="account" inputmode="numeric" maxlength="10" required placeholder="10-digit account number">
 
-  placeholder="Enter recipient name"
-
-  required
-
->
-
-<label>Recipient Account Number</label>
-
-<input
-
-  type="text"
-
-  id="account"
-
-  inputmode="numeric"
-
-  maxlength="10"
-
-  pattern="[0-9]{10}"
-
-  placeholder="10-digit account number"
-
-  required
-
->
-
-<label>Recipient Bank</label>
+<label for="bank">Recipient Bank</label>
 
 <select id="bank" required>
 
-  <option value="">Select bank</option>
+<option value="">Select Bank</option>
 
-  <option>Access Bank</option>
+<option>Access Bank</option>
 
-  <option>First Bank</option>
+<option>First Bank</option>
 
-  <option>GTBank</option>
+<option>GTBank</option>
 
-  <option>UBA</option>
+<option>UBA</option>
 
-  <option>Zenith Bank</option>
+<option>Zenith Bank</option>
 
-  <option>Fidelity Bank</option>
+<option>Fidelity Bank</option>
 
-  <option>FCMB</option>
+<option>FCMB</option>
 
-  <option>Wema Bank</option>
+<option>Wema Bank</option>
 
-  <option>Stanbic IBTC</option>
+<option>Stanbic IBTC</option>
 
-  <option>Union Bank</option>
+<option>Union Bank</option>
 
-  <option>OPay</option>
+<option>OPay</option>
 
-  <option>Moniepoint</option>
+<option>Moniepoint</option>
 
-  <option>Kuda Bank</option>
+<option>Kuda Bank</option>
 
-  <option>Other</option>
+<option>Other</option>
 
 </select>
 
-<label>Transfer Amount (₦)</label>
+<label for="amount">Transfer Amount (₦)</label>
 
-<input
+<input type="number" id="amount" min="100" step="1" required placeholder="Enter amount">
 
-  type="number"
+<label for="description">Description (Optional)</label>
 
-  id="amount"
+<textarea id="description" rows="3" placeholder="Enter description"></textarea>
 
-  min="1"
-
-  step="1"
-
-  placeholder="Enter amount"
-
-  required
-
->
-
-<label>Description (Optional)</label>
-
-<textarea
-
-  id="description"
-
-  placeholder="What is this transfer for?"
-
-></textarea>
-
-<button type="submit" id="transferButton">
-
-CONTINUE
-
-</button>
+<button type="submit" id="submitButton">CONTINUE</button>
 
 </form>
 
 <div id="message" role="status"></div>
 
-<p style="text-align:center">
+<div class="links">
 
-<a href="dashboard.html">Back to Dashboard</a>
+<a href="dashboard.html">Back to Dashboard</a><br>
 
-</p>
+<a href="transactions.html">View Transaction History</a>
 
-<p style="text-align:center;font-size:12px;color:#ddd">
+</div>
 
-DEMO ONLY. No real funds are transferred. Recipient details are not verified and no bank payment is initiated.
+<p class="notice">
+
+Demonstration only. No real bank transfer will take place.
+
+No money will be deducted from any account.
 
 </p>
 
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <script>
+
+const client = window.supabase.createClient(
+
+"https://wrjvcvxswdojpxzcwyqw.supabase.co",
+
+"sb_publishable_zTksapAhIoJp_0-9w1twlQ_j7WECGcv"
+
+);
 
 const form = document.getElementById("transferForm");
 
 const message = document.getElementById("message");
 
-form.addEventListener("submit", function(event) {
+const button = document.getElementById("submitButton");
+
+async function getUser(){
+
+  const {data,error}=await client.auth.getUser();
+
+  if(error || !data.user){
+
+    window.location.href="login.html";
+
+    return null;
+
+  }
+
+  return data.user;
+
+}
+
+form.addEventListener("submit",async function(event){
 
   event.preventDefault();
 
-  const recipient =
+  message.className="";
 
-    document.getElementById("recipient").value.trim();
+  message.textContent="";
 
-  const account =
+  button.disabled=true;
 
-    document.getElementById("account").value.trim();
+  button.textContent="SAVING...";
 
-  const bank =
+  try{
 
-    document.getElementById("bank").value;
+    const user=await getUser();
 
-  const amount =
+    if(!user)return;
 
-    Number(document.getElementById("amount").value);
+    const recipient=document.getElementById("recipient").value.trim();
 
-  const description =
+    const account=document.getElementById("account").value.trim();
 
-    document.getElementById("description").value.trim();
+    const bank=document.getElementById("bank").value;
 
-  if (!/^[0-9]{10}$/.test(account)) {
+    const amount=Number(document.getElementById("amount").value);
 
-    message.textContent =
+    const description=document.getElementById("description").value.trim();
 
-      "Please enter a valid 10-digit account number.";
+    if(!recipient){
 
-    return;
+      throw new Error("Enter the recipient's full name.");
+
+    }
+
+    if(!/^\d{10}$/.test(account)){
+
+      throw new Error("Enter a valid 10-digit account number.");
+
+    }
+
+    if(!bank){
+
+      throw new Error("Please select the recipient's bank.");
+
+    }
+
+    if(!Number.isFinite(amount)||amount<100){
+
+      throw new Error("Enter a transfer amount of at least ₦100.");
+
+    }
+
+    const storageKey="beeperpay_demo_transactions_"+user.id;
+
+    let records=[];
+
+    try{
+
+      records=JSON.parse(localStorage.getItem(storageKey)||"[]");
+
+      if(!Array.isArray(records))records=[];
+
+    }catch(parseError){
+
+      records=[];
+
+    }
+
+    const reference="BEEPER"+Date.now();
+
+    const record={
+
+      type:"Transfer",
+
+      amount:amount,
+
+      reference:reference,
+
+      date:new Date().toLocaleString("en-NG"),
+
+      bank:bank,
+
+      status:"Demo request only"
+
+    };
+
+    records.push(record);
+
+    localStorage.setItem(storageKey,JSON.stringify(records));
+
+    message.textContent=
+
+      "Demo Transfer Request Created. Amount: ₦"+
+
+      amount.toLocaleString("en-NG")+
+
+      ". Bank: "+bank+
+
+      ". Reference: "+reference+
+
+      ". No money was transferred.";
+
+    message.className="success";
+
+    form.reset();
+
+  }catch(error){
+
+    message.textContent=error.message||"Unable to save demo request.";
+
+    message.className="error";
+
+  }finally{
+
+    button.disabled=false;
+
+    button.textContent="CONTINUE";
 
   }
-
-  if (!Number.isFinite(amount) || amount <= 0) {
-
-    message.textContent =
-
-      "Please enter a valid transfer amount.";
-
-    return;
-
-  }
-
-  const reference =
-
-    "BEEPER" + Date.now().toString();
-
-  message.innerHTML =
-
-    "<strong>DEMO TRANSFER REQUEST</strong><br><br>" +
-
-    "Recipient: " + escapeHTML(recipient) + "<br>" +
-
-    "Account Number: " + escapeHTML(account) + "<br>" +
-
-    "Bank: " + escapeHTML(bank) + "<br>" +
-
-    "Amount: ₦" + amount.toLocaleString("en-NG") + "<br>" +
-
-    "Description: " + (escapeHTML(description) || "None") +
-
-    "<br>Reference: " + reference +
-
-    "<br><br><strong>Demo request created successfully.</strong>" +
-
-    "<br>No money was transferred.";
-
-  form.reset();
 
 });
 
-function escapeHTML(value) {
-
-  return value.replace(/[&<>"']/g, function(character) {
-
-    return {
-
-      "&": "&amp;",
-
-      "<": "&lt;",
-
-      ">": "&gt;",
-
-      '"': "&quot;",
-
-      "'": "&#039;"
-
-    }[character];
-
-  });
-
-}
+getUser();
 
 </script>
 
