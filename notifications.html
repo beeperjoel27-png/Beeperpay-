@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Beeperpay Notifications</title>
+
+<style>
+
+*{box-sizing:border-box}
+
+body{margin:0;background:#f4f6fa;color:#17243a;font-family:Arial,sans-serif}
+
+header{background:#07152e;color:white;text-align:center;padding:24px 15px}
+
+header h1{margin:0;color:#e4b84e}
+
+header p{font-size:13px;margin:8px 0 0}
+
+main{max-width:650px;margin:25px auto;padding:0 15px}
+
+.card{background:white;padding:20px;border-radius:12px;margin-bottom:17px;box-shadow:0 3px 12px #0000000d}
+
+h2{margin-top:0;color:#07152e}
+
+button{border:0;border-radius:7px;padding:11px 15px;background:#07152e;color:white;font-weight:bold}
+
+button:disabled{opacity:.5}
+
+.actions{display:flex;gap:10px;flex-wrap:wrap}
+
+.notification{border-bottom:1px solid #e5e8ee;padding:15px 0}
+
+.notification:last-child{border:0}
+
+.notification h3{font-size:15px;margin:0 0 7px;color:#122747}
+
+.notification p{font-size:13px;color:#555;line-height:1.5;margin:0 0 7px}
+
+.meta{font-size:11px;color:#888}
+
+.unread{border-left:4px solid #e4b84e;padding-left:12px}
+
+.empty{color:#777;text-align:center;padding:25px 5px}
+
+.notice{font-size:12px;color:#765b20;background:#fff6df;padding:12px;border-radius:7px;line-height:1.5}
+
+nav{text-align:center;padding:15px;line-height:2}
+
+nav a{color:#07152e;margin:5px 8px;font-weight:bold;font-size:13px}
+
+footer{text-align:center;color:#777;font-size:12px;padding:20px}
+
+</style>
+
+</head>
+
+<body>
+
+<header>
+
+<h1>BEEPERPAY</h1>
+
+<p>MICROFINANCE BANK</p>
+
+<p>Your money. Your future. Our priority.</p>
+
+</header>
+
+<main>
+
+<section class="card">
+
+<h2>Notifications 🔔</h2>
+
+<p id="welcome">Your account notifications.</p>
+
+<div class="notice">
+
+These are demonstration notifications. They do not confirm real payments, deposits or transfers.
+
+</div>
+
+<br>
+
+<div class="actions">
+
+<button id="readAll">MARK ALL AS READ</button>
+
+<button id="refresh">REFRESH</button>
+
+</div>
+
+</section>
+
+<section class="card">
+
+<h2>My Notifications</h2>
+
+<div id="notificationList">
+
+<p class="empty">Loading notifications...</p>
+
+</div>
+
+</section>
+
+<nav>
+
+<a href="index.html">Home</a>
+
+<a href="dashboard.html">Dashboard</a>
+
+<a href="add-money.html">Add Money</a>
+
+<a href="transfer.html">Transfer</a>
+
+<a href="transactions.html">Transactions</a>
+
+<a href="profile.html">Profile</a>
+
+<a href="support.html">Support</a>
+
+<a href="#" id="logout">Logout</a>
+
+</nav>
+
+</main>
+
+<footer>
+
+© 2026 Beeperpay Microfinance Bank. Demonstration website only.
+
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+
+const SUPABASE_URL="https://wrjvcvxswdojpxzcwyqw.supabase.co";
+
+const SUPABASE_KEY="sb_publishable_zTksapAhIoJp_0-9w1twlQ_j7WECGcv";
+
+const client=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+
+let currentUser=null;
+
+let notifications=[];
+
+function addNotification(title,message,date,reference){
+
+  notifications.push({
+
+    id:reference,
+
+    title:title,
+
+    message:message,
+
+    date:date,
+
+    read:false
+
+  });
+
+}
+
+function loadNotifications(){
+
+  notifications=[];
+
+  const name=currentUser.user_metadata?.full_name||"Customer";
+
+  const storageKey="beeperpay_demo_transactions_"+currentUser.id;
+
+  const supportKey="beeperpay_demo_support_"+currentUser.id;
+
+  addNotification(
+
+    "Welcome to Beeperpay",
+
+    "Hello "+name+". Welcome to your Beeperpay demonstration account.",
+
+    currentUser.created_at||new Date().toISOString(),
+
+    "welcome"
+
+  );
+
+  try{
+
+    const transactions=JSON.parse(localStorage.getItem(storageKey)||"[]");
+
+    transactions.forEach((item,index)=>{
+
+      addNotification(
+
+        item.type==="Transfer"?"Transfer Request Recorded":"Add Money Request Recorded",
+
+        item.type+" demonstration request of ₦"+Number(item.amount).toLocaleString("en-NG")+" was saved. Status: "+(item.status||"Demo Request")+". Reference: "+(item.reference||"Not available"),
+
+        item.date||new Date().toISOString(),
+
+        "transaction-"+index
+
+      );
+
+    });
+
+    const tickets=JSON.parse(localStorage.getItem(supportKey)||"[]");
+
+    tickets.forEach((ticket,index)=>{
+
+      addNotification(
+
+        "Support Request Saved",
+
+        "Your demo support request was saved in this browser. Reference: "+ticket.reference,
+
+        ticket.date||new Date().toISOString(),
+
+        "support-"+index
+
+      );
+
+    });
+
+  }catch(error){
+
+    console.error("Unable to load demo records",error);
+
+  }
+
+  const readKey="beeperpay_notification_read_"+currentUser.id;
+
+  const readIds=JSON.parse(localStorage.getItem(readKey)||"[]");
+
+  notifications.forEach(item=>{
+
+    item.read=readIds.includes(item.id);
+
+  });
+
+  notifications.sort((a,b)=>new Date(b.date)-new Date(a.date));
+
+  renderNotifications();
+
+}
+
+function renderNotifications(){
+
+  const list=document.getElementById("notificationList");
+
+  list.textContent="";
+
+  if(notifications.length===0){
+
+    const empty=document.createElement("p");
+
+    empty.className="empty";
+
+    empty.textContent="No notifications yet.";
+
+    list.appendChild(empty);
+
+    return;
+
+  }
+
+  notifications.forEach(item=>{
+
+    const card=document.createElement("div");
+
+    card.className="notification"+(item.read?"":" unread");
+
+    const title=document.createElement("h3");
+
+    title.textContent=item.title;
+
+    const message=document.createElement("p");
+
+    message.textContent=item.message;
+
+    const date=document.createElement("div");
+
+    date.className="meta";
+
+    date.textContent=new Date(item.date).toLocaleString();
+
+    const status=document.createElement("div");
+
+    status.className="meta";
+
+    status.textContent=item.read?"Read":"Unread";
+
+    card.append(title,message,date,status);
+
+    list.appendChild(card);
+
+  });
+
+  const unread=notifications.filter(item=>!item.read).length;
+
+  document.getElementById("welcome").textContent=
+
+    unread+" unread notification(s) out of "+notifications.length+".";
+
+}
+
+async function start(){
+
+  const {data,error}=await client.auth.getUser();
+
+  if(error||!data.user){
+
+    window.location.href="login.html";
+
+    return;
+
+  }
+
+  currentUser=data.user;
+
+  loadNotifications();
+
+}
+
+document.getElementById("readAll").addEventListener("click",()=>{
+
+  if(!currentUser)return;
+
+  const readKey="beeperpay_notification_read_"+currentUser.id;
+
+  localStorage.setItem(readKey,JSON.stringify(notifications.map(item=>item.id)));
+
+  notifications.forEach(item=>item.read=true);
+
+  renderNotifications();
+
+});
+
+document.getElementById("refresh").addEventListener("click",()=>{
+
+  if(currentUser)loadNotifications();
+
+});
+
+document.getElementById("logout").addEventListener("click",async(e)=>{
+
+  e.preventDefault();
+
+  await client.auth.signOut();
+
+  window.location.href="login.html";
+
+});
+
+start();
+
+</script>
+
+</body>
+
+</html>
