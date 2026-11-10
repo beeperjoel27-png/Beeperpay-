@@ -96,8 +96,6 @@ button:disabled{opacity:.6;cursor:wait}
 
 .status{margin-top:15px;font-size:13px;color:#536174}
 
-.customer-link{margin-top:15px}
-
 .service-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px;margin-top:15px}
 
 .service-grid a{display:block;background:#f3f5f9;padding:16px;border-radius:8px;color:#071b49;text-decoration:none;font-size:13px;font-weight:bold;border:1px solid #e3e8f0}
@@ -198,6 +196,10 @@ Access is restricted to approved administrators.
 
 <a href="customers.html" class="highlight">Customer Management</a>
 
+<a href="customer-reports.html">Customer Account Management Reports</a>
+
+<a href="customer-activity.html">Customer Activity Monitoring</a>
+
 <a href="transactions.html">Transaction History</a>
 
 <a href="support-history.html">Support Ticket History</a>
@@ -224,9 +226,7 @@ Access is restricted to approved administrators.
 
 <strong>DEMONSTRATION ADMIN PORTAL.</strong>
 
-The figures below are local demo records, not live banking
-
-or customer account data.
+The figures below are local demo records, not live banking or customer account data.
 
 </p>
 
@@ -298,6 +298,10 @@ or customer account data.
 
 <a href="customers.html">Customer Management</a>
 
+<a href="customer-reports.html">Customer Account Management Reports</a>
+
+<a href="customer-activity.html">Customer Activity Monitoring</a>
+
 <a href="dashboard.html">Customer Dashboard</a>
 
 <a href="transactions.html">Transaction History</a>
@@ -326,13 +330,9 @@ or customer account data.
 
 <p>Customer support: Demo records only.</p>
 
-<p>Account management: Not enabled.</p>
+<p>Account management: Demonstration features enabled.</p>
 
-<p id="dashboardStatus" class="status">
-
-Checking database connection...
-
-</p>
+<p id="dashboardStatus" class="status">Checking database connection...</p>
 
 </section>
 
@@ -344,17 +344,15 @@ Checking database connection...
 
 This portal verifies administrator identity through Supabase.
 
-Customer profile access is controlled by database Row Level
-
-Security policies.
+Customer profile access is controlled by database Row Level Security policies.
 
 </p>
 
 <p>
 
-Transaction and support figures remain browser-local
+Transaction and support figures remain browser-local demonstration records.
 
-demonstration records. No real banking services are enabled.
+No real banking services are enabled.
 
 </p>
 
@@ -378,37 +376,27 @@ Demonstration portal only. No real banking services are active.
 
 // SUPABASE CONNECTION
 
-const SUPABASE_URL =
+const SUPABASE_URL="https://wrjvcvxswdojpxzcwyqw.supabase.co";
 
-"https://wrjvcvxswdojpxzcwyqw.supabase.co";
+const SUPABASE_KEY="sb_publishable_zTksapAhIoJp_0-9w1twlQ_j7WECGcv";
 
-const SUPABASE_KEY =
-
-"sb_publishable_zTksapAhIoJp_0-9w1twlQ_j7WECGcv";
-
-const client = window.supabase.createClient(
-
-SUPABASE_URL,
-
-SUPABASE_KEY
-
-);
+const client=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
 
 // ELEMENTS
 
-const loginSection = document.getElementById("loginSection");
+const loginSection=document.getElementById("loginSection");
 
-const adminSection = document.getElementById("adminSection");
+const adminSection=document.getElementById("adminSection");
 
-const loginMessage = document.getElementById("loginMessage");
+const loginMessage=document.getElementById("loginMessage");
 
-const loginBtn = document.getElementById("loginBtn");
+const loginBtn=document.getElementById("loginBtn");
 
 function showLoginMessage(message,type){
 
-loginMessage.textContent = message;
+loginMessage.textContent=message;
 
-loginMessage.className = "message " + type;
+loginMessage.className="message "+type;
 
 }
 
@@ -416,7 +404,7 @@ loginMessage.className = "message " + type;
 
 async function verifyAdministrator(user){
 
-const {data,error} = await client
+const {data,error}=await client
 
 .from("user_roles")
 
@@ -452,17 +440,17 @@ for(const key of keys){
 
 try{
 
-const value = localStorage.getItem(key);
+const value=localStorage.getItem(key);
 
-if(!value) continue;
+if(!value)continue;
 
-const parsed = JSON.parse(value);
+const parsed=JSON.parse(value);
 
-if(Array.isArray(parsed)) return parsed;
+if(Array.isArray(parsed))return parsed;
 
-if(parsed && Array.isArray(parsed.records)) return parsed.records;
+if(parsed&&Array.isArray(parsed.records))return parsed.records;
 
-if(parsed && Array.isArray(parsed.transactions)) return parsed.transactions;
+if(parsed&&Array.isArray(parsed.transactions))return parsed.transactions;
 
 }catch(error){
 
@@ -480,9 +468,9 @@ return [];
 
 function formatNaira(value){
 
-const amount = Number(value) || 0;
+const amount=Number(value)||0;
 
-return "₦" + amount.toLocaleString("en-NG",{
+return "₦"+amount.toLocaleString("en-NG",{
 
 minimumFractionDigits:2,
 
@@ -508,7 +496,7 @@ record.value ??
 
 0
 
-) || 0;
+)||0;
 
 }
 
@@ -516,7 +504,7 @@ record.value ??
 
 function loadDemoOverview(){
 
-const addRecords = readDemoRecords([
+const addRecords=readDemoRecords([
 
 "beeperpay_add_money_requests",
 
@@ -528,7 +516,7 @@ const addRecords = readDemoRecords([
 
 ]);
 
-const transferRecords = readDemoRecords([
+const transferRecords=readDemoRecords([
 
 "beeperpay_transfer_requests",
 
@@ -540,7 +528,7 @@ const transferRecords = readDemoRecords([
 
 ]);
 
-const transactionRecords = readDemoRecords([
+const transactionRecords=readDemoRecords([
 
 "beeperpay_transactions",
 
@@ -552,7 +540,7 @@ const transactionRecords = readDemoRecords([
 
 ]);
 
-const supportRecords = readDemoRecords([
+const supportRecords=readDemoRecords([
 
 "beeperpay_support_tickets",
 
@@ -564,33 +552,25 @@ const supportRecords = readDemoRecords([
 
 ]);
 
-const addTotal = addRecords.reduce(
+const addTotal=addRecords.reduce(
 
 (total,item)=>total+getAmount(item),0
 
 );
 
-const transferTotal = transferRecords.reduce(
+const transferTotal=transferRecords.reduce(
 
 (total,item)=>total+getAmount(item),0
 
 );
 
-document.getElementById("addMoneyTotal").textContent =
+document.getElementById("addMoneyTotal").textContent=formatNaira(addTotal);
 
-formatNaira(addTotal);
+document.getElementById("transferTotal").textContent=formatNaira(transferTotal);
 
-document.getElementById("transferTotal").textContent =
+document.getElementById("transactionCount").textContent=transactionRecords.length;
 
-formatNaira(transferTotal);
-
-document.getElementById("transactionCount").textContent =
-
-transactionRecords.length;
-
-document.getElementById("supportCount").textContent =
-
-supportRecords.length;
+document.getElementById("supportCount").textContent=supportRecords.length;
 
 }
 
@@ -598,11 +578,11 @@ supportRecords.length;
 
 async function loadDashboardData(){
 
-const status = document.getElementById("dashboardStatus");
+const status=document.getElementById("dashboardStatus");
 
-status.textContent = "Loading database information...";
+status.textContent="Loading database information...";
 
-const {count,error} = await client
+const {count,error}=await client
 
 .from("customer_profiles")
 
@@ -610,25 +590,19 @@ const {count,error} = await client
 
 if(error){
 
-status.textContent =
+status.textContent="Customer database error: "+error.message;
 
-"Customer database error: "+error.message;
-
-status.className = "status error";
+status.className="status error";
 
 return;
 
 }
 
-document.getElementById("customerCount").textContent =
+document.getElementById("customerCount").textContent=count??0;
 
-count ?? 0;
+status.textContent="Supabase connected. Customer records loaded successfully.";
 
-status.textContent =
-
-"Supabase connected. Customer records loaded successfully.";
-
-status.className = "status success";
+status.className="status success";
 
 loadDemoOverview();
 
@@ -640,17 +614,13 @@ async function openAdminDashboard(user){
 
 await verifyAdministrator(user);
 
-loginSection.style.display = "none";
+loginSection.style.display="none";
 
-adminSection.style.display = "block";
+adminSection.style.display="block";
 
-document.getElementById("welcomeMessage").textContent =
+document.getElementById("welcomeMessage").textContent="Welcome, Administrator";
 
-"Welcome, Administrator";
-
-document.getElementById("adminEmail").textContent =
-
-"Signed in as: "+user.email;
+document.getElementById("adminEmail").textContent="Signed in as: "+user.email;
 
 await loadDashboardData();
 
@@ -658,25 +628,23 @@ await loadDashboardData();
 
 // LOGIN
 
-document.getElementById("loginForm")
-
-.addEventListener("submit",async function(event){
+document.getElementById("loginForm").addEventListener("submit",async function(event){
 
 event.preventDefault();
 
-loginBtn.disabled = true;
+loginBtn.disabled=true;
 
-loginBtn.textContent = "VERIFYING...";
+loginBtn.textContent="VERIFYING...";
 
 showLoginMessage("Checking administrator credentials...","");
 
-const email = document.getElementById("email").value.trim();
+const email=document.getElementById("email").value.trim();
 
-const password = document.getElementById("password").value;
+const password=document.getElementById("password").value;
 
 try{
 
-const {data,error} = await client.auth.signInWithPassword({
+const {data,error}=await client.auth.signInWithPassword({
 
 email:email,
 
@@ -684,13 +652,9 @@ password:password
 
 });
 
-if(error) throw new Error(error.message);
+if(error)throw new Error(error.message);
 
-if(!data.user){
-
-throw new Error("Unable to identify administrator.");
-
-}
+if(!data.user)throw new Error("Unable to identify administrator.");
 
 await openAdminDashboard(data.user);
 
@@ -704,9 +668,9 @@ await client.auth.signOut();
 
 }finally{
 
-loginBtn.disabled = false;
+loginBtn.disabled=false;
 
-loginBtn.textContent = "SIGN IN";
+loginBtn.textContent="SIGN IN";
 
 }
 
@@ -718,9 +682,9 @@ async function checkExistingSession(){
 
 try{
 
-const {data,error} = await client.auth.getUser();
+const {data,error}=await client.auth.getUser();
 
-if(error || !data.user) return;
+if(error||!data.user)return;
 
 await openAdminDashboard(data.user);
 
@@ -728,9 +692,9 @@ await openAdminDashboard(data.user);
 
 console.error(error);
 
-loginSection.style.display = "block";
+loginSection.style.display="block";
 
-adminSection.style.display = "none";
+adminSection.style.display="none";
 
 showLoginMessage(error.message,"error");
 
@@ -740,13 +704,11 @@ showLoginMessage(error.message,"error");
 
 // REFRESH
 
-document.getElementById("refreshBtn")
+document.getElementById("refreshBtn").addEventListener("click",async function(){
 
-.addEventListener("click",async function(){
+const {data,error}=await client.auth.getUser();
 
-const {data,error} = await client.auth.getUser();
-
-if(error || !data.user){
+if(error||!data.user){
 
 window.location.reload();
 
@@ -770,11 +732,9 @@ alert(error.message);
 
 // LOGOUT
 
-document.getElementById("logoutBtn")
+document.getElementById("logoutBtn").addEventListener("click",async function(){
 
-.addEventListener("click",async function(){
-
-const {error} = await client.auth.signOut();
+const {error}=await client.auth.signOut();
 
 if(error){
 
