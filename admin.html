@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Beeperpay Admin Dashboard</title>
+
+<style>
+
+*{box-sizing:border-box}
+
+body{margin:0;font-family:Arial,sans-serif;background:#f3f5f9;color:#07152e}
+
+header{background:#07152e;color:white;text-align:center;padding:24px}
+
+header h2{color:#e4b84e;margin:0}
+
+main{max-width:950px;margin:25px auto;padding:15px}
+
+.card{background:white;padding:20px;border-radius:12px;margin-bottom:18px;box-shadow:0 2px 8px #0000000c}
+
+input{width:100%;padding:13px;margin:9px 0;border:1px solid #ddd;border-radius:7px}
+
+button{background:#07152e;color:white;padding:13px 20px;border:0;border-radius:7px;cursor:pointer}
+
+.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+
+.stats div{background:#f3f5f9;padding:18px;border-radius:8px}
+
+.stats strong{display:block;font-size:22px;margin-top:8px}
+
+.notice{background:#fff4d6;color:#795400;padding:13px;border-radius:8px;font-size:13px;line-height:1.5}
+
+.hidden{display:none}
+
+footer{text-align:center;color:#777;padding:20px;font-size:12px}
+
+</style>
+
+</head>
+
+<body>
+
+<header>
+
+<h2>BEEPERPAY</h2>
+
+<p>MICROFINANCE BANK</p>
+
+<h3>ADMINISTRATION PORTAL</h3>
+
+<p>Your money. Your future. Our priority.</p>
+
+</header>
+
+<main>
+
+<div class="card" id="login">
+
+<h2>Administrator Login</h2>
+
+<p>Enter your administrator password to open the demo dashboard.</p>
+
+<input type="password" id="adminPassword" placeholder="Administrator password">
+
+<button onclick="adminLogin()">LOGIN</button>
+
+<p id="loginMessage"></p>
+
+</div>
+
+<div id="dashboard" class="hidden">
+
+<div class="card">
+
+<h2>Welcome, Administrator</h2>
+
+<p>Beeperpay Administration Overview</p>
+
+</div>
+
+<div class="notice">
+
+DEMONSTRATION ADMIN PORTAL. The figures below are local demo records, not live banking or customer account data. This browser-only password screen is not production-grade security.
+
+</div>
+
+<div class="card">
+
+<h3>Transaction Overview</h3>
+
+<div class="stats">
+
+<div>Add Money Requests<strong id="addTotal">₦0.00</strong></div>
+
+<div>Transfer Requests<strong id="transferTotal">₦0.00</strong></div>
+
+<div>Total Transaction Records<strong id="transactionCount">0</strong></div>
+
+<div>Support Tickets<strong id="ticketCount">0</strong></div>
+
+</div>
+
+</div>
+
+<div class="card">
+
+<h3>Administration Services</h3>
+
+<p><a href="dashboard.html">Customer Dashboard</a></p>
+
+<p><a href="transactions.html">Transaction History</a></p>
+
+<p><a href="support-tickets.html">Support Ticket History</a></p>
+
+<p><a href="support.html">Customer Support</a></p>
+
+<p><a href="profile.html">Customer Profile</a></p>
+
+</div>
+
+<div class="card">
+
+<h3>Administrator Actions</h3>
+
+<p>Transaction monitoring: Demo records only.</p>
+
+<p>Customer support: Demo records only.</p>
+
+<p>Account management: Not enabled.</p>
+
+<button onclick="adminLogout()">LOGOUT</button>
+
+</div>
+
+</div>
+
+</main>
+
+<footer>
+
+© 2026 Beeperpay Microfinance Bank. Demonstration administration portal only.
+
+</footer>
+
+<script>
+
+const ADMIN_PASSWORD = "BeeperDemo2026!";
+
+const SESSION_KEY = "beeperpay_demo_admin_session";
+
+function adminLogin(){
+
+const password = document.getElementById("adminPassword").value;
+
+if(password === ADMIN_PASSWORD){
+
+sessionStorage.setItem(SESSION_KEY,"true");
+
+showDashboard();
+
+}else{
+
+document.getElementById("loginMessage").textContent =
+
+"Incorrect administrator password.";
+
+}
+
+}
+
+function showDashboard(){
+
+document.getElementById("login").classList.add("hidden");
+
+document.getElementById("dashboard").classList.remove("hidden");
+
+loadDemoOverview();
+
+}
+
+function adminLogout(){
+
+sessionStorage.removeItem(SESSION_KEY);
+
+location.reload();
+
+}
+
+function money(value){
+
+return "₦" + value.toLocaleString("en-NG",{
+
+minimumFractionDigits:2,
+
+maximumFractionDigits:2
+
+});
+
+}
+
+function loadDemoOverview(){
+
+let addTotal=0;
+
+let transferTotal=0;
+
+let transactionCount=0;
+
+let ticketCount=0;
+
+for(let i=0;i<localStorage.length;i++){
+
+const key=localStorage.key(i);
+
+if(!key) continue;
+
+if(key.startsWith("beeperpay_demo_transactions_")){
+
+try{
+
+const records=JSON.parse(localStorage.getItem(key)||"[]");
+
+if(Array.isArray(records)){
+
+records.forEach(item=>{
+
+const amount=Number(item.amount)||0;
+
+if(item.type==="Add Money") addTotal+=amount;
+
+if(item.type==="Transfer") transferTotal+=amount;
+
+transactionCount++;
+
+});
+
+}
+
+}catch(e){}
+
+}
+
+if(key.startsWith("beeperpay_demo_support_")){
+
+try{
+
+const records=JSON.parse(localStorage.getItem(key)||"[]");
+
+if(Array.isArray(records)) ticketCount+=records.length;
+
+}catch(e){}
+
+}
+
+}
+
+document.getElementById("addTotal").textContent=money(addTotal);
+
+document.getElementById("transferTotal").textContent=money(transferTotal);
+
+document.getElementById("transactionCount").textContent=transactionCount;
+
+document.getElementById("ticketCount").textContent=ticketCount;
+
+}
+
+if(sessionStorage.getItem(SESSION_KEY)==="true"){
+
+showDashboard();
+
+}
+
+</script>
+
+</body>
+
+</html>
