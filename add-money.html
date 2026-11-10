@@ -12,6 +12,8 @@
 
 <style>
 
+*{box-sizing:border-box}
+
 body{font-family:Arial,sans-serif;background:#f3f5f9;color:#07152e;padding:20px}
 
 .container{max-width:450px;margin:30px auto;background:white;padding:25px;border-radius:12px}
@@ -20,17 +22,25 @@ h2{text-align:center;letter-spacing:2px}
 
 .brand{text-align:center;color:#b58a2b;font-size:12px}
 
+.tagline{text-align:center;font-size:11px;color:#687386;margin-top:7px}
+
 label{display:block;margin-top:18px;font-weight:bold}
 
-input,select{width:100%;padding:13px;margin-top:8px;box-sizing:border-box;border:1px solid #ccc;border-radius:7px;font-size:16px}
+input,select{width:100%;padding:13px;margin-top:8px;border:1px solid #ccc;border-radius:7px;font-size:16px}
 
-button{width:100%;padding:14px;margin-top:22px;background:#07152e;color:white;border:0;border-radius:7px;font-weight:bold}
+button{width:100%;padding:14px;margin-top:22px;background:#07152e;color:white;border:0;border-radius:7px;font-weight:bold;cursor:pointer}
 
-#message{margin-top:18px;line-height:1.6;overflow-wrap:anywhere}
+button:disabled{opacity:.6}
+
+#message{margin-top:18px;line-height:1.6;overflow-wrap:anywhere;font-size:14px}
 
 a{color:#07152e}
 
-.notice{font-size:12px;color:#666;margin-top:20px}
+.notice{font-size:12px;color:#666;margin-top:20px;line-height:1.6}
+
+.success{color:#16803c}
+
+.error{color:#b42318}
 
 </style>
 
@@ -44,15 +54,17 @@ a{color:#07152e}
 
 <div class="brand">MICROFINANCE BANK</div>
 
+<div class="tagline">Your money. Your future. Our priority.</div>
+
 <h3>Add Money</h3>
 
 <form id="addMoneyForm">
 
-<label>Amount (₦)</label>
+<label for="amount">Amount (₦)</label>
 
 <input type="number" id="amount" min="100" step="1" required placeholder="Enter amount">
 
-<label>Payment Method</label>
+<label for="method">Payment Method</label>
 
 <select id="method" required>
 
@@ -74,7 +86,13 @@ a{color:#07152e}
 
 <p><a href="transactions.html">View Transaction History</a></p>
 
-<p class="notice">Demonstration only. No real money will be transferred or added to your wallet.</p>
+<p class="notice">
+
+Demonstration only. No real money will be transferred or added to your wallet.
+
+Your request will be recorded for administrative demonstration purposes.
+
+</p>
 
 </div>
 
@@ -82,7 +100,9 @@ a{color:#07152e}
 
 <script>
 
-const client = window.supabase.createClient(
+// SUPABASE CONNECTION
+
+const client=window.supabase.createClient(
 
 "https://wrjvcvxswdojpxzcwyqw.supabase.co",
 
@@ -90,17 +110,31 @@ const client = window.supabase.createClient(
 
 );
 
-const form = document.getElementById("addMoneyForm");
+// PAGE ELEMENTS
 
-const message = document.getElementById("message");
+const form=document.getElementById("addMoneyForm");
 
-const button = document.getElementById("submitButton");
+const message=document.getElementById("message");
+
+const button=document.getElementById("submitButton");
+
+// MESSAGE DISPLAY
+
+function showMessage(text,type){
+
+message.textContent=text;
+
+message.className=type;
+
+}
+
+// GET AUTHENTICATED CUSTOMER
 
 async function getUser(){
 
 const {data,error}=await client.auth.getUser();
 
-if(error || !data.user){
+if(error||!data.user){
 
 window.location.href="login.html";
 
@@ -112,6 +146,16 @@ return data.user;
 
 }
 
+// GENERATE REFERENCE
+
+function generateReference(){
+
+return "BEEPER"+Date.now()+Math.floor(Math.random()*1000);
+
+}
+
+// SAVE ADD MONEY REQUEST
+
 form.addEventListener("submit",async function(e){
 
 e.preventDefault();
@@ -120,13 +164,17 @@ button.disabled=true;
 
 button.textContent="SAVING...";
 
-message.textContent="";
+showMessage("Saving your demonstration request...","");
 
 try{
 
 const user=await getUser();
 
-if(!user)return;
+if(!user){
+
+throw new Error("Please sign in to continue.");
+
+}
 
 const amount=Number(document.getElementById("amount").value);
 
@@ -138,45 +186,69 @@ throw new Error("Enter an amount of at least ₦100.");
 
 }
 
+if(!Number.isInteger(amount)){
+
+throw new Error("Enter a whole number amount.");
+
+}
+
 if(!method){
 
 throw new Error("Select a payment method.");
 
 }
 
-const key="beeperpay_demo_transactions_"+user.id;
+const reference=generateReference();
 
-let records=JSON.parse(localStorage.getItem(key)||"[]");
+const {data,error}=await client
 
-if(!Array.isArray(records))records=[];
+.from("transaction_requests")
 
-const reference="BEEPER"+Date.now();
+.insert({
 
-records.push({
+user_id:user.id,
 
-type:"Add Money",
+transaction_type:"Add Money",
 
 amount:amount,
 
-reference:reference,
+description:"Payment Method: "+method+" | Reference: "+reference,
 
-date:new Date().toLocaleString("en-NG"),
+status:"Pending"
 
-method:method,
+})
 
-status:"Demo request only"
+.select("id,amount,status,created_at")
 
-});
+.single();
 
-localStorage.setItem(key,JSON.stringify(records));
+if(error){
 
-message.textContent="Demo request saved successfully! Reference: "+reference+". No money was transferred.";
+throw error;
+
+}
+
+showMessage(
+
+"Your Add Money demonstration request was saved successfully. Reference: "+reference+". Amount: ₦"+Number(data.amount).toLocaleString("en-NG")+". Status: "+data.status+". No money was transferred.",
+
+"success"
+
+);
 
 form.reset();
 
 }catch(error){
 
-message.textContent="Unable to save: "+error.message;
+console.error("Add Money Error:",error);
+
+showMessage(
+
+"Unable to save request: "+error.message,
+
+"error"
+
+);
 
 }finally{
 
@@ -188,6 +260,8 @@ button.textContent="CONTINUE";
 
 });
 
+// CHECK CUSTOMER SESSION
+
 getUser();
 
 </script>
@@ -195,4 +269,3 @@ getUser();
 </body>
 
 </html>
-
