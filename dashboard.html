@@ -6,41 +6,51 @@
 
 <meta charset="UTF-8">
 
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Beeperpay Dashboard</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
 
 *{box-sizing:border-box}
 
-body{margin:0;background:#f4f6fa;font-family:Arial;color:#17243a}
+body{margin:0;font-family:Arial,sans-serif;background:#f3f5f9;color:#07152e}
 
-header{background:#07152e;color:white;text-align:center;padding:25px}
+header{background:#07152e;color:white;text-align:center;padding:24px 15px}
 
-header h1{color:#e4b84e;margin:0}
+header h2{color:#e4b84e;margin:0}
 
-main{max-width:650px;margin:25px auto;padding:15px}
+header p{margin:7px 0}
 
-.card{background:white;padding:20px;border-radius:12px;margin-bottom:18px}
+main{max-width:900px;margin:auto;padding:20px}
 
-h2{color:#07152e;margin-top:0}
+.card{background:white;padding:20px;border-radius:12px;margin-bottom:18px;box-shadow:0 2px 8px #0000000c}
 
-.balance{font-size:30px;font-weight:bold;color:#07152e}
+.balance{background:#07152e;color:white;text-align:center}
 
-.stats{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.balance h1{color:#e4b84e}
 
-.stat{background:#f4f6fa;padding:15px;border-radius:8px}
+.summary{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
 
-.stat strong{display:block;font-size:20px;margin-top:8px;color:#07152e}
+.summary div{background:#f3f5f9;padding:15px;border-radius:8px}
 
-.service{display:block;padding:15px;margin:10px 0;background:#07152e;color:#e4b84e;text-align:center;text-decoration:none;border-radius:8px;font-weight:bold}
+.summary strong{display:block;font-size:20px;margin-top:8px}
 
-.transaction{padding:12px 0;border-bottom:1px solid #eee;font-size:13px;line-height:1.6}
+.services{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
 
-.logout{width:100%;padding:14px;background:#a52a2a;color:white;border:0;border-radius:8px;font-weight:bold}
+.services a{display:block;background:#f3f5f9;color:#07152e;padding:17px 10px;text-decoration:none;border-radius:9px;text-align:center;font-weight:bold}
 
-footer{text-align:center;color:#777;padding:20px;font-size:12px}
+.services a:hover{background:#e7edf6}
+
+button{background:#b88a20;color:white;border:0;padding:13px 25px;border-radius:7px;cursor:pointer}
+
+#recent p{border-bottom:1px solid #eee;padding:10px 0;font-size:14px}
+
+footer{text-align:center;padding:20px;color:#666;font-size:12px}
+
+@media(max-width:500px){.services{grid-template-columns:1fr 1fr}}
 
 </style>
 
@@ -50,7 +60,7 @@ footer{text-align:center;color:#777;padding:20px;font-size:12px}
 
 <header>
 
-<h1>BEEPERPAY</h1>
+<h2>BEEPERPAY</h2>
 
 <p>MICROFINANCE BANK</p>
 
@@ -60,87 +70,85 @@ footer{text-align:center;color:#777;padding:20px;font-size:12px}
 
 <main>
 
-<section class="card">
+<div class="card">
 
-<h2 id="welcome">Welcome to Beeperpay</h2>
+<h3 id="welcome">Welcome</h3>
 
-<p>My Dashboard</p>
+<h2>My Dashboard</h2>
+
+</div>
+
+<div class="card balance">
 
 <p>Demo Wallet Balance</p>
 
-<div class="balance">₦0.00</div>
+<h1>₦0.00</h1>
 
 <p>Demonstration account only.</p>
 
-</section>
-
-<section class="card">
-
-<h2>Account Overview</h2>
-
-<div class="stats">
-
-<div class="stat">
-
-Add Money Requests
-
-<strong id="addTotal">₦0</strong>
-
 </div>
 
-<div class="stat">
+<div class="card">
 
-Transfer Requests
+<h3>Account Overview</h3>
 
-<strong id="transferTotal">₦0</strong>
+<div class="summary">
+
+<div>Add Money Requests<strong id="addTotal">₦0.00</strong></div>
+
+<div>Transfer Requests<strong id="transferTotal">₦0.00</strong></div>
 
 </div>
 
 </div>
 
-</section>
+<div class="card">
 
-<section class="card">
+<h3>Recent Transactions</h3>
 
-<h2>Recent Transactions</h2>
-
-<div id="recent">
-
-Loading transactions...
+<div id="recent">Loading records...</div>
 
 </div>
 
-</section>
+<div class="card">
 
-<section class="card">
+<h3>Quick Services</h3>
 
-<h2>Quick Services</h2>
+<div class="services">
 
-<a class="service" href="add-money.html">💰 Add Money</a>
+<a href="add-money.html">💰 Add Money</a>
 
-<a class="service" href="transfer.html">💸 Transfer Money</a>
+<a href="transfer.html">💸 Transfer Money</a>
 
-<a class="service" href="transactions.html">📄 Transaction History</a>
+<a href="transactions.html">📄 Transaction History</a>
 
-<a class="service" href="profile.html">👤 My Profile</a>
+<a href="statement.html">📑 Account Statement</a>
 
-<a class="service" href="support.html">🎧 Customer Support</a>
+<a href="profile.html">👤 My Profile</a>
 
-<a class="service" href="notifications.html">🔔 Notifications</a>
+<a href="support.html">🎧 Customer Support</a>
 
-</section>
+<a href="notifications.html">🔔 Notifications</a>
 
-<section class="card">
+</div>
 
-<h2>Account Information</h2>
+</div>
 
-<p id="email">Loading account...</p>
+<div class="card">
+
+<h3>Account Information</h3>
+
+<p>Email: <span id="email">Loading...</span></p>
 
 <p>Account Status: Demo Account</p>
 
-</section>
+</div>
 
-<button class="logout" id="logout">LOGOUT</button>
+<div class="card" style="text-align:center">
+
+<button id="logout">LOGOUT</button>
+
+</div>
 
 </main>
 
@@ -152,103 +160,109 @@ Demonstration website only. No real banking transactions.
 
 </footer>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
 <script>
 
-const SUPABASE_URL="https://wrjvcvxswdojpxzcwyqw.supabase.co";
+const SUPABASE_URL = "https://wrjvcvxswdojpxzcwyqw.supabase.co";
 
-const SUPABASE_KEY="sb_publishable_zTksapAhIoJp_0-9w1twlQ_j7WECGcv";
+const SUPABASE_KEY = "sb_publishable_zTksapAhIoJp_0-9w1twlQ_j7WECGcv";
 
-const client=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+const client = window.supabase.createClient(
+
+SUPABASE_URL,
+
+SUPABASE_KEY
+
+);
+
+const money = value => "₦" + (Number(value)||0).toLocaleString("en-NG",{
+
+minimumFractionDigits:2,
+
+maximumFractionDigits:2
+
+});
 
 async function loadDashboard(){
 
-const {data,error}=await client.auth.getUser();
+const {data:{user},error} = await client.auth.getUser();
 
-if(error||!data.user){
+if(error || !user){
 
-window.location.href="login.html";
+window.location.href = "login.html";
 
 return;
 
 }
 
-const user=data.user;
+const name = user.user_metadata?.full_name || "Customer";
 
-document.getElementById("welcome").textContent=
+document.getElementById("welcome").textContent = "Welcome, " + name;
 
-"Welcome, "+(user.user_metadata?.full_name||"Customer");
+document.getElementById("email").textContent = user.email || "Not available";
 
-document.getElementById("email").textContent=
+const key = "beeperpay_demo_transactions_" + user.id;
 
-"Email: "+(user.email||"Not available");
+let records = [];
 
 try{
 
-const key="beeperpay_demo_transactions_"+user.id;
+records = JSON.parse(localStorage.getItem(key) || "[]");
 
-const transactions=JSON.parse(localStorage.getItem(key)||"[]");
-
-let addTotal=0;
-
-let transferTotal=0;
-
-transactions.forEach(item=>{
-
-const amount=Number(item.amount)||0;
-
-if(item.type==="Add Money")addTotal+=amount;
-
-if(item.type==="Transfer")transferTotal+=amount;
-
-});
-
-document.getElementById("addTotal").textContent=
-
-"₦"+addTotal.toLocaleString("en-NG");
-
-document.getElementById("transferTotal").textContent=
-
-"₦"+transferTotal.toLocaleString("en-NG");
-
-const recent=document.getElementById("recent");
-
-recent.textContent="";
-
-if(transactions.length===0){
-
-recent.textContent="No transactions yet.";
-
-}else{
-
-transactions.slice().reverse().slice(0,5).forEach(item=>{
-
-const div=document.createElement("div");
-
-div.className="transaction";
-
-div.textContent=
-
-(item.type||"Transaction")+" — ₦"+
-
-(Number(item.amount)||0).toLocaleString("en-NG")+
-
-" | "+(item.date||"Date unavailable")+
-
-" | "+(item.status||"Demo request");
-
-recent.appendChild(div);
-
-});
-
-}
+if(!Array.isArray(records)) records = [];
 
 }catch(error){
 
-document.getElementById("recent").textContent=
+records = [];
 
-"Unable to load demonstration records.";
+}
+
+let addTotal = 0;
+
+let transferTotal = 0;
+
+records.forEach(item=>{
+
+const amount = Number(item.amount)||0;
+
+if(item.type === "Add Money") addTotal += amount;
+
+if(item.type === "Transfer") transferTotal += amount;
+
+});
+
+document.getElementById("addTotal").textContent = money(addTotal);
+
+document.getElementById("transferTotal").textContent = money(transferTotal);
+
+const recent = document.getElementById("recent");
+
+recent.replaceChildren();
+
+const latest = records.slice().reverse().slice(0,5);
+
+if(latest.length === 0){
+
+recent.textContent = "No transactions yet.";
+
+}else{
+
+latest.forEach(item=>{
+
+const p = document.createElement("p");
+
+const date = item.date ? new Date(item.date).toLocaleString("en-NG") : "";
+
+p.textContent =
+
+(item.type || "Transaction") + " — " +
+
+money(item.amount) + " | " +
+
+date + " | Demo request only";
+
+recent.appendChild(p);
+
+});
 
 }
 
@@ -258,7 +272,7 @@ document.getElementById("logout").addEventListener("click",async()=>{
 
 await client.auth.signOut();
 
-window.location.href="login.html";
+window.location.href = "login.html";
 
 });
 
@@ -267,7 +281,5 @@ loadDashboard();
 </script>
 
 </body>
-
-<a href="statement.html">📑 Account Statement</a>
 
 </html>
