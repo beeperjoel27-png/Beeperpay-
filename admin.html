@@ -8,113 +8,59 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Beeperpay | Administration Portal</title>
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<title>Admin Transaction Management | Beeperpay</title>
 
 <style>
 
-*{box-sizing:border-box;margin:0;padding:0}
+*{box-sizing:border-box}
 
-body{font-family:Arial,sans-serif;background:#f2f5fa;color:#17233d}
+body{margin:0;padding:20px;background:#f3f5f9;color:#07152e;font-family:Arial,sans-serif}
 
-header{background:#071b49;color:white;padding:22px 18px;border-bottom:4px solid #d6a83e}
+.container{max-width:900px;margin:25px auto;background:white;padding:24px;border-radius:12px;box-shadow:0 4px 18px rgba(0,0,0,.07)}
 
-.brand{font-size:27px;font-weight:bold;letter-spacing:1px}
+.brand{text-align:center}
 
-.brand span{color:#e2b54c}
+.brand h2{letter-spacing:2px;margin-bottom:5px}
 
-header p{font-size:12px;letter-spacing:2px;margin-top:5px}
+.brand p{color:#b58a2b;font-size:12px;margin:5px}
 
-.tagline{font-size:12px;margin-top:8px;color:#e5eaf3}
+h3{margin-top:28px}
 
-main{max-width:1150px;margin:30px auto;padding:0 15px}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin:20px 0}
 
-#loginSection{max-width:430px;margin:55px auto;background:white;padding:28px;border-radius:12px;box-shadow:0 3px 15px #00000012}
+.stat{background:#f3f5f9;padding:15px;border-radius:8px;text-align:center;font-size:13px}
 
-#loginSection h2{color:#071b49;margin-bottom:10px}
+.stat strong{display:block;font-size:23px;margin-top:8px;color:#071b49}
 
-.description{color:#687386;font-size:13px;line-height:1.6;margin-bottom:22px}
+.transaction{border:1px solid #e0e4eb;border-radius:9px;padding:16px;margin:14px 0}
 
-label{display:block;margin:15px 0 7px;font-size:13px;font-weight:bold}
+.transaction h4{margin:0 0 10px;color:#071b49}
 
-input{width:100%;padding:13px;border:1px solid #d4dae4;border-radius:6px;font-size:14px;outline-color:#d6a83e}
+.amount{font-size:21px;font-weight:bold;margin:8px 0}
 
-button,.nav-link{display:inline-block;padding:12px 16px;border:none;border-radius:6px;font-size:13px;font-weight:bold;cursor:pointer;text-decoration:none;text-align:center}
+.detail{font-size:13px;color:#555;line-height:1.8;overflow-wrap:anywhere}
 
-.primary{background:#071b49;color:white}
+.customer{background:#f3f5f9;padding:12px;border-radius:7px;margin:12px 0}
 
-.gold{background:#d6a83e;color:#071b49}
+.customer strong{color:#071b49}
 
-.danger{background:#b42318;color:white}
+.status{display:inline-block;background:#fff3d5;color:#76520b;padding:6px 9px;border-radius:5px;font-size:11px;margin:10px 0}
 
-#loginBtn{width:100%;margin-top:22px}
+select,button{padding:11px;border-radius:6px;border:1px solid #ccd2dc;margin:5px 5px 5px 0}
+
+button{background:#07152e;color:white;border:0;cursor:pointer}
 
 button:disabled{opacity:.6;cursor:wait}
 
-.message{font-size:13px;margin-top:15px;line-height:1.5;overflow-wrap:anywhere}
+.message{padding:15px;color:#555;text-align:center}
 
-.error{color:#b42318}
+a{color:#07152e;font-weight:bold}
 
-.success{color:#16803c}
+.notice{font-size:12px;color:#666;line-height:1.6;margin-top:20px}
 
-#adminSection{display:none}
+@media(max-width:500px){
 
-.welcome{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:15px;margin-bottom:22px}
-
-.welcome h1{font-size:24px;color:#071b49}
-
-.welcome p{font-size:13px;color:#687386;margin-top:7px}
-
-.actions{display:flex;gap:9px;flex-wrap:wrap}
-
-.navigation{display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:12px;margin-bottom:25px}
-
-.navigation a{background:white;color:#071b49;padding:17px 12px;border-radius:8px;text-decoration:none;font-size:13px;font-weight:bold;border:1px solid #e3e8f0;text-align:center}
-
-.navigation a:hover{border-color:#d6a83e;background:#fffaf0}
-
-.navigation .highlight{background:#071b49;color:white;border-color:#071b49}
-
-.section-title{font-size:19px;color:#071b49;margin-bottom:15px}
-
-.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:15px;margin-bottom:25px}
-
-.stat-card{background:white;padding:21px;border-radius:10px;border-left:4px solid #d6a83e;box-shadow:0 2px 9px #0000000c}
-
-.stat-card p{color:#687386;font-size:13px;margin-bottom:11px}
-
-.stat-card h2{font-size:25px;color:#071b49}
-
-.stat-card small{display:block;margin-top:8px;color:#8490a1;font-size:11px}
-
-.panel{background:white;padding:22px;border-radius:10px;box-shadow:0 2px 9px #0000000c;margin-bottom:20px}
-
-.panel h2{color:#071b49;font-size:18px;margin-bottom:12px}
-
-.panel p{color:#687386;font-size:13px;line-height:1.7}
-
-.status{margin-top:15px;font-size:13px;color:#536174}
-
-.service-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px;margin-top:15px}
-
-.service-grid a{display:block;background:#f3f5f9;padding:16px;border-radius:8px;color:#071b49;text-decoration:none;font-size:13px;font-weight:bold;border:1px solid #e3e8f0}
-
-.service-grid a:hover{border-color:#d6a83e;background:#fffaf0}
-
-.notice{background:#fff9e9;border-left:4px solid #d6a83e;padding:15px;border-radius:6px;margin-top:15px}
-
-.notice p{font-size:13px;color:#685323}
-
-footer{text-align:center;padding:25px 12px;color:#7b8493;font-size:12px;line-height:1.8}
-
-@media(max-width:600px){
-
-.welcome h1{font-size:21px}
-
-#loginSection{margin:35px auto;padding:22px}
-
-.panel{padding:17px}
+.container{padding:17px}
 
 }
 
@@ -124,315 +70,91 @@ footer{text-align:center;padding:25px 12px;color:#7b8493;font-size:12px;line-hei
 
 <body>
 
-<header>
+<div class="container">
 
-<div class="brand">BEEPER<span>PAY</span></div>
+<div class="brand">
+
+<h2>BEEPERPAY</h2>
 
 <p>MICROFINANCE BANK</p>
 
-<div class="tagline">Your money. Your future. Our priority.</div>
-
-</header>
-
-<main>
-
-<section id="loginSection">
-
-<h2>Administrator Login</h2>
-
-<p class="description">
-
-Sign in with your registered Beeperpay administrator account.
-
-Access is restricted to approved administrators.
-
-</p>
-
-<form id="loginForm">
-
-<label for="email">Email Address</label>
-
-<input type="email" id="email" placeholder="Administrator email" autocomplete="username" required>
-
-<label for="password">Password</label>
-
-<input type="password" id="password" placeholder="Enter your password" autocomplete="current-password" required>
-
-<button type="submit" class="primary" id="loginBtn">SIGN IN</button>
-
-</form>
-
-<p id="loginMessage" class="message"></p>
-
-</section>
-
-<section id="adminSection">
-
-<div class="welcome">
-
-<div>
-
-<h1>Administration Portal</h1>
-
-<p id="welcomeMessage">Welcome, Administrator</p>
-
-<p id="adminEmail"></p>
+<p>Your money. Your future. Our priority.</p>
 
 </div>
 
-<div class="actions">
+<h3>Admin Transaction Management</h3>
 
-<button class="gold" id="refreshBtn">Refresh Dashboard</button>
-
-<button class="danger" id="logoutBtn">Logout</button>
-
-</div>
-
-</div>
-
-<nav class="navigation">
-
-<a href="admin.html">Dashboard</a>
-
-<a href="customers.html" class="highlight">Customer Management</a>
-
-<a href="customer-reports.html">Customer Account Management Reports</a>
-
-<a href="customer-activity.html">Customer Activity Monitoring</a>
-
-<a href="verification-management.html">Customer Verification Management</a>
-
-<a href="transactions.html">Transaction History</a>
-
-<a href="admin-transactions.html" class="highlight">Admin Transaction Management</a>
-
-<a href="support-history.html">Support Ticket History</a>
-
-<a href="customer-support.html">Customer Support</a>
-
-<a href="dashboard.html">Customer Dashboard</a>
-
-<a href="profile.html">Customer Profile</a>
-
-<a href="statement.html">Account Statement</a>
-
-<a href="add-money.html">Add Money</a>
-
-<a href="transfer.html">Transfer Money</a>
-
-</nav>
-
-<h2 class="section-title">Beeperpay Administration Overview</h2>
-
-<div class="notice">
-
-<p>
-
-<strong>DEMONSTRATION ADMIN PORTAL.</strong>
-
-The figures below are local demo records, not live banking or customer account data.
-
-</p>
-
-</div>
-
-<h2 class="section-title" style="margin-top:22px">Transaction Overview</h2>
+<p>View and manage customer transaction requests.</p>
 
 <div class="stats">
 
-<div class="stat-card">
+<div class="stat">Total Requests<strong id="total">0</strong></div>
 
-<p>Registered Customers</p>
+<div class="stat">Pending<strong id="pending">0</strong></div>
 
-<h2 id="customerCount">0</h2>
+<div class="stat">Approved<strong id="approved">0</strong></div>
 
-<small>Supabase customer profiles</small>
-
-</div>
-
-<div class="stat-card">
-
-<p>Add Money Requests</p>
-
-<h2 id="addMoneyTotal">₦0.00</h2>
-
-<small>Browser-local demo records</small>
+<div class="stat">Rejected<strong id="rejected">0</strong></div>
 
 </div>
 
-<div class="stat-card">
+<button type="button" onclick="loadTransactions()">Refresh Transactions</button>
 
-<p>Transfer Requests</p>
+<div id="transactions" class="message">Loading transactions...</div>
 
-<h2 id="transferTotal">₦0.00</h2>
+<p><a href="admin.html">Back to Admin Dashboard</a></p>
 
-<small>Browser-local demo records</small>
+<p class="notice">
 
-</div>
-
-<div class="stat-card">
-
-<p>Total Transaction Records</p>
-
-<h2 id="transactionCount">0</h2>
-
-<small>Browser-local demo records</small>
-
-</div>
-
-<div class="stat-card">
-
-<p>Support Tickets</p>
-
-<h2 id="supportCount">0</h2>
-
-<small>Browser-local demo records</small>
-
-</div>
-
-</div>
-
-<section class="panel">
-
-<h2>Administration Services</h2>
-
-<p>Access Beeperpay customer and administration services.</p>
-
-<div class="service-grid">
-
-<a href="customers.html">Customer Management</a>
-
-<a href="customer-reports.html">Customer Account Management Reports</a>
-
-<a href="customer-activity.html">Customer Activity Monitoring</a>
-
-<a href="verification-management.html">Customer Verification Management</a>
-
-<a href="admin-transactions.html">Admin Transaction Management</a>
-
-<a href="dashboard.html">Customer Dashboard</a>
-
-<a href="transactions.html">Transaction History</a>
-
-<a href="support-history.html">Support Ticket History</a>
-
-<a href="customer-support.html">Customer Support</a>
-
-<a href="profile.html">Customer Profile</a>
-
-<a href="statement.html">Account Statement</a>
-
-<a href="add-money.html">Add Money Requests</a>
-
-<a href="transfer.html">Transfer Requests</a>
-
-</div>
-
-</section>
-
-<section class="panel">
-
-<h2>Administrator Actions</h2>
-
-<p>Transaction monitoring: Demo records only.</p>
-
-<p>Customer support: Demo records only.</p>
-
-<p>Account management: Demonstration features enabled.</p>
-
-<p id="dashboardStatus" class="status">Checking database connection...</p>
-
-</section>
-
-<section class="panel">
-
-<h2>Security Information</h2>
-
-<p>
-
-This portal verifies administrator identity through Supabase.
-
-Customer profile access is controlled by database Row Level Security policies.
+Demonstration transaction management only. Approving a request does not transfer money or add funds to a customer's wallet.
 
 </p>
 
-<p>
+</div>
 
-Transaction and support figures remain browser-local demonstration records.
-
-No real banking services are enabled.
-
-</p>
-
-</section>
-
-</section>
-
-</main>
-
-<footer>
-
-BEEPERPAY MICROFINANCE BANK<br>
-
-Your money. Your future. Our priority.<br>
-
-Demonstration portal only. No real banking services are active.
-
-</footer>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <script>
 
-// SUPABASE CONNECTION
+const client=window.supabase.createClient(
 
-const SUPABASE_URL="https://wrjvcvxswdojpxzcwyqw.supabase.co";
+"https://wrjvcvxswdojpxzcwyqw.supabase.co",
 
-const SUPABASE_KEY="sb_publishable_zTksapAhIoJp_0-9w1twlQ_j7WECGcv";
+"sb_publishable_zTksapAhIoJp_0-9w1twlQ_j7WECGcv"
 
-const client=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+);
 
-// ELEMENTS
+const container=document.getElementById("transactions");
 
-const loginSection=document.getElementById("loginSection");
+async function checkAdmin(){
 
-const adminSection=document.getElementById("adminSection");
+const {data,error}=await client.auth.getUser();
 
-const loginMessage=document.getElementById("loginMessage");
+if(error||!data.user){
 
-const loginBtn=document.getElementById("loginBtn");
+window.location.href="login.html";
 
-function showLoginMessage(message,type){
-
-loginMessage.textContent=message;
-
-loginMessage.className="message "+type;
+return false;
 
 }
 
-// ADMIN ROLE VERIFICATION
-
-async function verifyAdministrator(user){
-
-const {data,error}=await client
+const {data:role,error:roleError}=await client
 
 .from("user_roles")
 
 .select("role")
 
-.eq("user_id",user.id)
+.eq("user_id",data.user.id)
 
 .eq("role","admin")
 
 .maybeSingle();
 
-if(error){
+if(roleError||!role){
 
-throw new Error("Administrator verification failed: "+error.message);
+container.textContent="Administrator access required.";
 
-}
-
-if(!data){
-
-throw new Error("Access denied. Administrator permission required.");
+return false;
 
 }
 
@@ -440,325 +162,257 @@ return true;
 
 }
 
-// SAFE DEMO STORAGE READER
+function detail(parent,label,value){
 
-function readDemoRecords(keys){
+const line=document.createElement("div");
 
-for(const key of keys){
+line.className="detail";
 
-try{
+line.textContent=label+": "+(value||"Not provided");
 
-const value=localStorage.getItem(key);
-
-if(!value)continue;
-
-const parsed=JSON.parse(value);
-
-if(Array.isArray(parsed))return parsed;
-
-if(parsed&&Array.isArray(parsed.records))return parsed.records;
-
-if(parsed&&Array.isArray(parsed.transactions))return parsed.transactions;
-
-}catch(error){
-
-console.warn("Demo storage could not be read:",key,error);
+parent.appendChild(line);
 
 }
 
-}
+async function loadTransactions(){
 
-return [];
+container.textContent="Loading transactions...";
 
-}
+if(!await checkAdmin())return;
 
-// FORMAT NAIRA
+const {data:records,error}=await client
 
-function formatNaira(value){
+.from("transaction_requests")
 
-const amount=Number(value)||0;
+.select("id,user_id,transaction_type,amount,description,status,created_at")
 
-return "₦"+amount.toLocaleString("en-NG",{
+.order("created_at",{ascending:false});
 
-minimumFractionDigits:2,
+if(error){
 
-maximumFractionDigits:2
+console.error(error);
 
-});
+container.textContent="Unable to load transactions: "+error.message;
 
-}
-
-// GET AMOUNT FROM DEMO RECORD
-
-function getAmount(record){
-
-return Number(
-
-record.amount ??
-
-record.transfer_amount ??
-
-record.add_money_amount ??
-
-record.value ??
-
-0
-
-)||0;
+return;
 
 }
 
-// DEMO TRANSACTION OVERVIEW
+const customerIds=[...new Set(records.map(r=>r.user_id))];
 
-function loadDemoOverview(){
+let profiles=[];
 
-const addRecords=readDemoRecords([
+let profileError=null;
 
-"beeperpay_add_money_requests",
+if(customerIds.length){
 
-"beeperpayAddMoneyRequests",
-
-"addMoneyRequests",
-
-"add_money_requests"
-
-]);
-
-const transferRecords=readDemoRecords([
-
-"beeperpay_transfer_requests",
-
-"beeperpayTransferRequests",
-
-"transferRequests",
-
-"transfer_requests"
-
-]);
-
-const transactionRecords=readDemoRecords([
-
-"beeperpay_transactions",
-
-"beeperpayTransactions",
-
-"transactions",
-
-"transactionHistory"
-
-]);
-
-const supportRecords=readDemoRecords([
-
-"beeperpay_support_tickets",
-
-"beeperpaySupportTickets",
-
-"supportTickets",
-
-"support_tickets"
-
-]);
-
-const addTotal=addRecords.reduce(
-
-(total,item)=>total+getAmount(item),0
-
-);
-
-const transferTotal=transferRecords.reduce(
-
-(total,item)=>total+getAmount(item),0
-
-);
-
-document.getElementById("addMoneyTotal").textContent=formatNaira(addTotal);
-
-document.getElementById("transferTotal").textContent=formatNaira(transferTotal);
-
-document.getElementById("transactionCount").textContent=transactionRecords.length;
-
-document.getElementById("supportCount").textContent=supportRecords.length;
-
-}
-
-// LOAD CUSTOMER COUNT FROM SUPABASE
-
-async function loadDashboardData(){
-
-const status=document.getElementById("dashboardStatus");
-
-status.textContent="Loading database information...";
-
-const {count,error}=await client
+const result=await client
 
 .from("customer_profiles")
 
-.select("id",{count:"exact",head:true});
+.select("id,full_name,email,phone_number")
+
+.in("id",customerIds);
+
+profiles=result.data||[];
+
+profileError=result.error;
+
+if(profileError){
+
+console.error("Customer profile loading error:",profileError);
+
+}
+
+}
+
+const profileMap={};
+
+profiles.forEach(profile=>{
+
+profileMap[profile.id]=profile;
+
+});
+
+document.getElementById("total").textContent=records.length;
+
+document.getElementById("pending").textContent=
+
+records.filter(r=>r.status==="Pending").length;
+
+document.getElementById("approved").textContent=
+
+records.filter(r=>r.status==="Approved").length;
+
+document.getElementById("rejected").textContent=
+
+records.filter(r=>r.status==="Rejected").length;
+
+container.replaceChildren();
+
+if(!records.length){
+
+container.textContent="No transaction requests found.";
+
+return;
+
+}
+
+if(profileError){
+
+const warning=document.createElement("p");
+
+warning.className="message";
+
+warning.textContent="Customer profile details could not be loaded. Transaction records are still available.";
+
+container.appendChild(warning);
+
+}
+
+records.forEach(record=>{
+
+const card=document.createElement("div");
+
+card.className="transaction";
+
+const profile=profileMap[record.user_id]||{};
+
+const heading=document.createElement("h4");
+
+heading.textContent=record.transaction_type||"Transaction";
+
+card.appendChild(heading);
+
+const customerBox=document.createElement("div");
+
+customerBox.className="customer";
+
+const customerTitle=document.createElement("strong");
+
+customerTitle.textContent="CUSTOMER INFORMATION";
+
+customerBox.appendChild(customerTitle);
+
+detail(customerBox,"Full Name",profile.full_name||"Profile not found");
+
+detail(customerBox,"Email Address",profile.email||"Not available");
+
+detail(customerBox,"Phone Number",profile.phone_number||"Not available");
+
+detail(customerBox,"Customer ID",record.user_id);
+
+card.appendChild(customerBox);
+
+const amount=document.createElement("div");
+
+amount.className="amount";
+
+amount.textContent="₦"+Number(record.amount||0).toLocaleString("en-NG");
+
+card.appendChild(amount);
+
+detail(card,"Transaction ID",record.id);
+
+detail(card,"Date",
+
+record.created_at
+
+?new Date(record.created_at).toLocaleString("en-NG")
+
+:"Not provided"
+
+);
+
+detail(card,"Description",record.description);
+
+const status=document.createElement("span");
+
+status.className="status";
+
+status.textContent="Current Status: "+record.status;
+
+card.appendChild(status);
+
+const controls=document.createElement("div");
+
+const select=document.createElement("select");
+
+["Pending","Approved","Rejected"].forEach(value=>{
+
+const option=document.createElement("option");
+
+option.value=value;
+
+option.textContent=value;
+
+if(value===record.status){
+
+option.selected=true;
+
+}
+
+select.appendChild(option);
+
+});
+
+const save=document.createElement("button");
+
+save.type="button";
+
+save.textContent="Update Status";
+
+save.addEventListener("click",function(){
+
+updateStatus(record.id,select.value,save);
+
+});
+
+controls.appendChild(select);
+
+controls.appendChild(save);
+
+card.appendChild(controls);
+
+container.appendChild(card);
+
+});
+
+}
+
+async function updateStatus(id,newStatus,button){
+
+button.disabled=true;
+
+button.textContent="Updating...";
+
+const {error}=await client
+
+.from("transaction_requests")
+
+.update({status:newStatus})
+
+.eq("id",id);
 
 if(error){
 
-status.textContent="Customer database error: "+error.message;
+alert("Status update failed: "+error.message);
 
-status.className="status error";
+button.disabled=false;
 
-return;
-
-}
-
-document.getElementById("customerCount").textContent=count??0;
-
-status.textContent="Supabase connected. Customer records loaded successfully.";
-
-status.className="status success";
-
-loadDemoOverview();
-
-}
-
-// OPEN ADMIN DASHBOARD
-
-async function openAdminDashboard(user){
-
-await verifyAdministrator(user);
-
-loginSection.style.display="none";
-
-adminSection.style.display="block";
-
-document.getElementById("welcomeMessage").textContent="Welcome, Administrator";
-
-document.getElementById("adminEmail").textContent="Signed in as: "+user.email;
-
-await loadDashboardData();
-
-}
-
-// LOGIN
-
-document.getElementById("loginForm").addEventListener("submit",async function(event){
-
-event.preventDefault();
-
-loginBtn.disabled=true;
-
-loginBtn.textContent="VERIFYING...";
-
-showLoginMessage("Checking administrator credentials...","");
-
-const email=document.getElementById("email").value.trim();
-
-const password=document.getElementById("password").value;
-
-try{
-
-const {data,error}=await client.auth.signInWithPassword({
-
-email:email,
-
-password:password
-
-});
-
-if(error)throw new Error(error.message);
-
-if(!data.user)throw new Error("Unable to identify administrator.");
-
-await openAdminDashboard(data.user);
-
-}catch(error){
-
-console.error(error);
-
-showLoginMessage(error.message,"error");
-
-await client.auth.signOut();
-
-}finally{
-
-loginBtn.disabled=false;
-
-loginBtn.textContent="SIGN IN";
-
-}
-
-});
-
-// EXISTING SESSION
-
-async function checkExistingSession(){
-
-try{
-
-const {data,error}=await client.auth.getUser();
-
-if(error||!data.user)return;
-
-await openAdminDashboard(data.user);
-
-}catch(error){
-
-console.error(error);
-
-loginSection.style.display="block";
-
-adminSection.style.display="none";
-
-showLoginMessage(error.message,"error");
-
-}
-
-}
-
-// REFRESH
-
-document.getElementById("refreshBtn").addEventListener("click",async function(){
-
-const {data,error}=await client.auth.getUser();
-
-if(error||!data.user){
-
-window.location.reload();
+button.textContent="Update Status";
 
 return;
 
 }
 
-try{
+alert("Transaction status successfully updated to "+newStatus+".");
 
-await verifyAdministrator(data.user);
-
-await loadDashboardData();
-
-}catch(error){
-
-alert(error.message);
+await loadTransactions();
 
 }
 
-});
-
-// LOGOUT
-
-document.getElementById("logoutBtn").addEventListener("click",async function(){
-
-const {error}=await client.auth.signOut();
-
-if(error){
-
-alert("Logout failed: "+error.message);
-
-return;
-
-}
-
-window.location.reload();
-
-});
-
-// START
-
-checkExistingSession();
+loadTransactions();
 
 </script>
 
