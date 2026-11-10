@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Beeperpay Support Ticket History</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+
+*{box-sizing:border-box}
+
+body{margin:0;background:#f3f5f9;color:#07152e;font-family:Arial,sans-serif}
+
+header{background:#07152e;color:white;text-align:center;padding:23px}
+
+header h2{color:#e4b84e;margin:0}
+
+header p{font-size:13px}
+
+main{max-width:850px;margin:25px auto;padding:15px}
+
+.card{background:white;padding:20px;border-radius:12px;margin-bottom:17px;box-shadow:0 2px 8px #0000000c}
+
+.ticket{border:1px solid #e2e6ed;border-radius:9px;padding:16px;margin:14px 0}
+
+.ticket h3{margin-top:0}
+
+.reference{font-weight:bold;color:#b88a20;overflow-wrap:anywhere}
+
+.status{display:inline-block;background:#fff1cc;color:#805900;padding:7px 12px;border-radius:20px;font-size:12px}
+
+.label{font-weight:bold}
+
+.message{background:#f5f6f9;padding:12px;border-radius:7px;line-height:1.6;overflow-wrap:anywhere}
+
+a{display:inline-block;background:#07152e;color:white;text-decoration:none;padding:12px 17px;border-radius:7px;margin:5px}
+
+.empty{text-align:center;padding:25px;color:#666}
+
+.notice{background:#fff4d6;color:#795400;padding:13px;border-radius:8px;font-size:12px;line-height:1.6}
+
+footer{text-align:center;color:#777;font-size:12px;padding:20px}
+
+</style>
+
+</head>
+
+<body>
+
+<header>
+
+<h2>BEEPERPAY</h2>
+
+<p>MICROFINANCE BANK</p>
+
+<h3>SUPPORT TICKET HISTORY</h3>
+
+<p>Your money. Your future. Our priority.</p>
+
+</header>
+
+<main>
+
+<div class="card">
+
+<h2>My Support Requests</h2>
+
+<p>Customer: <strong id="customer">Loading...</strong></p>
+
+<p>Email: <span id="email">Loading...</span></p>
+
+<p>Total Tickets: <strong id="total">0</strong></p>
+
+</div>
+
+<div class="card">
+
+<h3>My Submitted Tickets</h3>
+
+<div id="tickets">Loading support tickets...</div>
+
+</div>
+
+<div class="notice">
+
+<strong>Important:</strong> These are demonstration support records saved in this browser. They have not been delivered to a live customer support team.
+
+</div>
+
+<div style="text-align:center;margin-top:20px">
+
+<a href="support.html">Submit Support Request</a>
+
+<a href="dashboard.html">Back to Dashboard</a>
+
+</div>
+
+</main>
+
+<footer>
+
+© 2026 Beeperpay Microfinance Bank. Demonstration website only.
+
+</footer>
+
+<script>
+
+const SUPABASE_URL = "https://wrjvcvxswdojpxzcwyqw.supabase.co";
+
+const SUPABASE_KEY = "sb_publishable_zTksapAhIoJp_0-9w1twlQ_j7WECGcv";
+
+const client = window.supabase.createClient(
+
+SUPABASE_URL,
+
+SUPABASE_KEY
+
+);
+
+function addText(parent, tag, value, className){
+
+const element = document.createElement(tag);
+
+element.textContent = value || "Not available";
+
+if(className) element.className = className;
+
+parent.appendChild(element);
+
+return element;
+
+}
+
+async function loadTickets(){
+
+const {data:{user},error} = await client.auth.getUser();
+
+if(error || !user){
+
+window.location.href = "login.html";
+
+return;
+
+}
+
+document.getElementById("customer").textContent =
+
+user.user_metadata?.full_name || "Customer";
+
+document.getElementById("email").textContent =
+
+user.email || "Not available";
+
+const storageKey = "beeperpay_demo_support_" + user.id;
+
+let records = [];
+
+try{
+
+records = JSON.parse(localStorage.getItem(storageKey) || "[]");
+
+if(!Array.isArray(records)) records = [];
+
+}catch(error){
+
+records = [];
+
+}
+
+document.getElementById("total").textContent = records.length;
+
+const container = document.getElementById("tickets");
+
+container.replaceChildren();
+
+if(records.length === 0){
+
+const empty = document.createElement("div");
+
+empty.className = "empty";
+
+empty.textContent = "You have not submitted any support tickets yet.";
+
+container.appendChild(empty);
+
+return;
+
+}
+
+records.slice().reverse().forEach(ticket=>{
+
+const card = document.createElement("div");
+
+card.className = "ticket";
+
+addText(card,"h3",ticket.subject || "Support Request");
+
+addText(card,"p","Ticket Reference: " + (ticket.reference || "Unavailable"),"reference");
+
+addText(card,"p","Category: " + (ticket.category || "General"));
+
+addText(card,"p","Date: " + (ticket.date || "Not available"));
+
+addText(card,"p","Status: " + (ticket.status || "Demo Request"),"status");
+
+addText(card,"p","Message:","label");
+
+addText(card,"div",ticket.message || "No message available.","message");
+
+container.appendChild(card);
+
+});
+
+}
+
+loadTickets();
+
+</script>
+
+</body>
+
+</html>
