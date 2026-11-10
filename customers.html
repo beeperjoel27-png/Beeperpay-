@@ -4,389 +4,109 @@
 
 <head>
 
-  <meta charset="UTF-8">
+<meta charset="UTF-8">
 
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Customer Management | Beeperpay</title>
+<title>Customer Management | Beeperpay</title>
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-  <style>
+<style>
 
-    * {
+*{box-sizing:border-box;margin:0;padding:0}
 
-      box-sizing: border-box;
+body{font-family:Arial,sans-serif;background:#f3f5f9;color:#17233d}
 
-      margin: 0;
+header{background:#071b49;color:white;padding:22px 18px;border-bottom:4px solid #d6a83e}
 
-      padding: 0;
+.brand{font-size:25px;font-weight:bold;letter-spacing:1px}
 
-    }
+.brand span{color:#e2b54c}
 
-    body {
+header p{font-size:12px;margin-top:6px;letter-spacing:2px}
 
-      font-family: Arial, sans-serif;
+main{max-width:1150px;margin:25px auto;padding:0 15px}
 
-      background: #f3f5f9;
+.topbar{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-bottom:22px}
 
-      color: #17233d;
+h1{font-size:24px;color:#071b49}
 
-    }
+.subtitle{color:#6b7280;margin-top:7px;font-size:14px}
 
-    header {
+.actions{display:flex;gap:9px;flex-wrap:wrap}
 
-      background: #071b49;
+button,.back-link{border:none;border-radius:6px;padding:11px 15px;font-size:13px;font-weight:bold;cursor:pointer;text-decoration:none}
 
-      color: white;
+.refresh{background:#071b49;color:white}
 
-      padding: 22px 18px;
+.logout{background:#b42318;color:white}
 
-      border-bottom: 4px solid #d6a83e;
+.back-link{background:#e8edf5;color:#071b49;display:inline-block}
 
-    }
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:15px;margin-bottom:22px}
 
-    .brand {
+.stat-card{background:white;padding:20px;border-radius:10px;box-shadow:0 2px 9px #0000000c;border-left:4px solid #d6a83e}
 
-      font-size: 25px;
+.stat-card p{font-size:13px;color:#687386;margin-bottom:10px}
 
-      font-weight: bold;
+.stat-card h2{color:#071b49;font-size:27px}
 
-      letter-spacing: 1px;
+.panel{background:white;padding:20px;border-radius:10px;box-shadow:0 2px 9px #0000000c;margin-bottom:20px}
 
-    }
+.panel h2{font-size:19px;margin-bottom:15px;color:#071b49}
 
-    .brand span {
+input{width:100%;padding:13px;border:1px solid #d4dae4;border-radius:6px;font-size:14px;margin-bottom:17px;outline-color:#d6a83e}
 
-      color: #e2b54c;
+.table-wrap{width:100%;overflow-x:auto}
 
-    }
+table{width:100%;border-collapse:collapse;min-width:850px}
 
-    header p {
+th,td{padding:13px 11px;text-align:left;border-bottom:1px solid #e9edf3;font-size:13px}
 
-      font-size: 12px;
+th{background:#f3f5f9;color:#071b49;font-weight:bold}
 
-      margin-top: 6px;
+td{color:#465166}
 
-      letter-spacing: 2px;
+.status{margin:14px 0;font-size:13px;color:#536174}
 
-    }
+.error{color:#b42318}
 
-    main {
+.success{color:#16803c}
 
-      max-width: 1150px;
+.empty{text-align:center;padding:25px;color:#7b8493}
 
-      margin: 25px auto;
+.view-btn{background:#071b49;color:white;padding:9px 12px}
 
-      padding: 0 15px;
+.close-btn{background:#e8edf5;color:#071b49}
 
-    }
+.detail-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}
 
-    .topbar {
+.detail-item{background:#f3f5f9;padding:15px;border-radius:7px;overflow-wrap:anywhere}
 
-      display: flex;
+.detail-item small{display:block;color:#687386;margin-bottom:8px;font-size:12px}
 
-      justify-content: space-between;
+.detail-item strong{display:block;color:#071b49;font-size:14px}
 
-      align-items: center;
+#detailsPanel{display:none}
 
-      flex-wrap: wrap;
+footer{text-align:center;padding:25px 12px;color:#778092;font-size:12px;line-height:1.8}
 
-      gap: 12px;
+#app{display:none}
 
-      margin-bottom: 22px;
+#loading{max-width:600px;margin:70px auto;padding:20px;text-align:center;color:#071b49}
 
-    }
+@media(max-width:600px){
 
-    h1 {
+h1{font-size:21px}
 
-      font-size: 24px;
+.topbar{align-items:flex-start}
 
-      color: #071b49;
+.panel{padding:13px}
 
-    }
+}
 
-    .subtitle {
-
-      color: #6b7280;
-
-      margin-top: 7px;
-
-      font-size: 14px;
-
-    }
-
-    .actions {
-
-      display: flex;
-
-      gap: 9px;
-
-      flex-wrap: wrap;
-
-    }
-
-    button, .back-link {
-
-      border: none;
-
-      border-radius: 6px;
-
-      padding: 11px 15px;
-
-      font-size: 13px;
-
-      font-weight: bold;
-
-      cursor: pointer;
-
-      text-decoration: none;
-
-    }
-
-    .refresh {
-
-      background: #071b49;
-
-      color: white;
-
-    }
-
-    .logout {
-
-      background: #b42318;
-
-      color: white;
-
-    }
-
-    .back-link {
-
-      background: #e8edf5;
-
-      color: #071b49;
-
-      display: inline-block;
-
-    }
-
-    .stats {
-
-      display: grid;
-
-      grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
-
-      gap: 15px;
-
-      margin-bottom: 22px;
-
-    }
-
-    .stat-card {
-
-      background: white;
-
-      padding: 20px;
-
-      border-radius: 10px;
-
-      box-shadow: 0 2px 9px #0000000c;
-
-      border-left: 4px solid #d6a83e;
-
-    }
-
-    .stat-card p {
-
-      font-size: 13px;
-
-      color: #687386;
-
-      margin-bottom: 10px;
-
-    }
-
-    .stat-card h2 {
-
-      color: #071b49;
-
-      font-size: 27px;
-
-    }
-
-    .panel {
-
-      background: white;
-
-      padding: 20px;
-
-      border-radius: 10px;
-
-      box-shadow: 0 2px 9px #0000000c;
-
-    }
-
-    .panel h2 {
-
-      font-size: 19px;
-
-      margin-bottom: 15px;
-
-      color: #071b49;
-
-    }
-
-    input {
-
-      width: 100%;
-
-      padding: 13px;
-
-      border: 1px solid #d4dae4;
-
-      border-radius: 6px;
-
-      font-size: 14px;
-
-      margin-bottom: 17px;
-
-      outline-color: #d6a83e;
-
-    }
-
-    .table-wrap {
-
-      width: 100%;
-
-      overflow-x: auto;
-
-    }
-
-    table {
-
-      width: 100%;
-
-      border-collapse: collapse;
-
-      min-width: 760px;
-
-    }
-
-    th, td {
-
-      padding: 13px 11px;
-
-      text-align: left;
-
-      border-bottom: 1px solid #e9edf3;
-
-      font-size: 13px;
-
-    }
-
-    th {
-
-      background: #f3f5f9;
-
-      color: #071b49;
-
-      font-weight: bold;
-
-    }
-
-    td {
-
-      color: #465166;
-
-    }
-
-    .status {
-
-      margin: 14px 0;
-
-      font-size: 13px;
-
-      color: #536174;
-
-    }
-
-    .error {
-
-      color: #b42318;
-
-    }
-
-    .success {
-
-      color: #16803c;
-
-    }
-
-    .empty {
-
-      text-align: center;
-
-      padding: 25px;
-
-      color: #7b8493;
-
-    }
-
-    footer {
-
-      text-align: center;
-
-      padding: 25px 12px;
-
-      color: #778092;
-
-      font-size: 12px;
-
-    }
-
-    #app {
-
-      display: none;
-
-    }
-
-    #loading {
-
-      max-width: 600px;
-
-      margin: 70px auto;
-
-      padding: 20px;
-
-      text-align: center;
-
-      color: #071b49;
-
-    }
-
-    @media (max-width: 600px) {
-
-      h1 {
-
-        font-size: 21px;
-
-      }
-
-      .topbar {
-
-        align-items: flex-start;
-
-      }
-
-      .panel {
-
-        padding: 13px;
-
-      }
-
-    }
-
-  </style>
+</style>
 
 </head>
 
@@ -394,419 +114,539 @@
 
 <header>
 
-  <div class="brand">BEEPER<span>PAY</span></div>
+<div class="brand">BEEPER<span>PAY</span></div>
 
-  <p>MICROFINANCE BANK</p>
+<p>MICROFINANCE BANK</p>
 
 </header>
 
-<div id="loading">
-
-  Checking administrator access...
-
-</div>
+<div id="loading">Checking administrator access...</div>
 
 <main id="app">
 
-  <div class="topbar">
+<div class="topbar">
 
-    <div>
+<div>
 
-      <h1>Customer Management</h1>
+<h1>Customer Management</h1>
 
-      <p class="subtitle">View and search registered Beeperpay customers.</p>
+<p class="subtitle">View and search registered Beeperpay customers.</p>
 
-    </div>
+</div>
 
-    <div class="actions">
+<div class="actions">
 
-      <a class="back-link" href="admin.html">Admin Dashboard</a>
+<a class="back-link" href="admin.html">Admin Dashboard</a>
 
-      <button class="refresh" id="refreshBtn">Refresh</button>
+<button class="refresh" id="refreshBtn">Refresh</button>
 
-      <button class="logout" id="logoutBtn">Logout</button>
+<button class="logout" id="logoutBtn">Logout</button>
 
-    </div>
+</div>
 
-  </div>
+</div>
 
-  <div class="stats">
+<div class="stats">
 
-    <div class="stat-card">
+<div class="stat-card">
 
-      <p>Total Registered Customers</p>
+<p>Total Registered Customers</p>
 
-      <h2 id="totalCustomers">0</h2>
+<h2 id="totalCustomers">0</h2>
 
-    </div>
+</div>
 
-    <div class="stat-card">
+<div class="stat-card">
 
-      <p>Matching Search Results</p>
+<p>Matching Search Results</p>
 
-      <h2 id="matchingCustomers">0</h2>
+<h2 id="matchingCustomers">0</h2>
 
-    </div>
+</div>
 
-  </div>
+</div>
 
-  <section class="panel">
+<section class="panel">
 
-    <h2>Registered Customers</h2>
+<h2>Registered Customers</h2>
 
-    <input
+<input
 
-      type="search"
+type="search"
 
-      id="searchInput"
+id="searchInput"
 
-      placeholder="Search by name, email, phone or customer ID..."
+placeholder="Search by name, email, phone or customer ID..."
 
-      autocomplete="off"
+autocomplete="off"
 
-    >
+>
 
-    <p class="status" id="statusMessage">
+<p class="status" id="statusMessage">Loading customer records...</p>
 
-      Loading customer records...
+<div class="table-wrap">
 
-    </p>
+<table>
 
-    <div class="table-wrap">
+<thead>
 
-      <table>
+<tr>
 
-        <thead>
+<th>Full Name</th>
 
-          <tr>
+<th>Email Address</th>
 
-            <th>Full Name</th>
+<th>Phone Number</th>
 
-            <th>Email Address</th>
+<th>Customer ID</th>
 
-            <th>Phone Number</th>
+<th>Registration Date</th>
 
-            <th>Customer ID</th>
+<th>Action</th>
 
-            <th>Registration Date</th>
+</tr>
 
-          </tr>
+</thead>
 
-        </thead>
+<tbody id="customerTable">
 
-        <tbody id="customerTable">
+<tr>
 
-          <tr>
+<td colspan="6" class="empty">Loading customers...</td>
 
-            <td colspan="5" class="empty">
+</tr>
 
-              Loading customers...
+</tbody>
 
-            </td>
+</table>
 
-          </tr>
+</div>
 
-        </tbody>
+</section>
 
-      </table>
+<section class="panel" id="detailsPanel">
 
-    </div>
+<div class="topbar">
 
-  </section>
+<h2>Customer Details</h2>
 
-  <footer>
+<button class="close-btn" id="closeDetailsBtn">Close Details</button>
 
-    BEEPERPAY MICROFINANCE BANK<br>
+</div>
 
-    Demonstration customer management portal.
+<div class="detail-grid">
 
-    No real banking services are active.
+<div class="detail-item">
 
-  </footer>
+<small>Full Name</small>
+
+<strong id="detailName">Not available</strong>
+
+</div>
+
+<div class="detail-item">
+
+<small>Email Address</small>
+
+<strong id="detailEmail">Not available</strong>
+
+</div>
+
+<div class="detail-item">
+
+<small>Phone Number</small>
+
+<strong id="detailPhone">Not available</strong>
+
+</div>
+
+<div class="detail-item">
+
+<small>Customer ID</small>
+
+<strong id="detailId">Not available</strong>
+
+</div>
+
+<div class="detail-item">
+
+<small>Registration Date</small>
+
+<strong id="detailDate">Not available</strong>
+
+</div>
+
+<div class="detail-item">
+
+<small>Account Status</small>
+
+<strong id="detailStatus">Demo Account</strong>
+
+</div>
+
+</div>
+
+</section>
+
+<footer>
+
+BEEPERPAY MICROFINANCE BANK<br>
+
+Your money. Your future. Our priority.<br>
+
+Demonstration customer management portal. No real banking services are active.
+
+</footer>
 
 </main>
 
 <script>
 
-  const SUPABASE_URL =
+const SUPABASE_URL = "https://wrjvcvxswdojpxzcwyqw.supabase.co";
 
-    "https://wrjvcvxswdojpxzcwyqw.supabase.co";
+const SUPABASE_KEY = "sb_publishable_zTksapAhIoJp_0-9w1twlQ_j7WECGcv";
 
-  const SUPABASE_KEY =
+const client = window.supabase.createClient(
 
-    "sb_publishable_zTksapAhIoJp_0-9w1twlQ_j7WECGcv";
+SUPABASE_URL,
 
-  const client = window.supabase.createClient(
+SUPABASE_KEY
 
-    SUPABASE_URL,
+);
 
-    SUPABASE_KEY
+let customers = [];
 
-  );
+const loading = document.getElementById("loading");
 
-  let customers = [];
+const app = document.getElementById("app");
 
-  const loading = document.getElementById("loading");
+const statusMessage = document.getElementById("statusMessage");
 
-  const app = document.getElementById("app");
+const customerTable = document.getElementById("customerTable");
 
-  const statusMessage = document.getElementById("statusMessage");
+const searchInput = document.getElementById("searchInput");
 
-  const customerTable = document.getElementById("customerTable");
+const detailsPanel = document.getElementById("detailsPanel");
 
-  const searchInput = document.getElementById("searchInput");
+function setStatus(message,type=""){
 
-  function setStatus(message, type = "") {
+statusMessage.textContent = message;
 
-    statusMessage.textContent = message;
+statusMessage.className = "status " + type;
 
-    statusMessage.className = "status " + type;
+}
 
-  }
+function formatDate(value){
 
-  function formatDate(value) {
+if(!value) return "Not available";
 
-    if (!value) return "Not available";
+const date = new Date(value);
 
-    const date = new Date(value);
+if(Number.isNaN(date.getTime())){
 
-    if (Number.isNaN(date.getTime())) {
+return "Not available";
 
-      return "Not available";
+}
 
-    }
+return date.toLocaleDateString("en-NG",{
 
-    return date.toLocaleDateString("en-NG", {
+day:"2-digit",
 
-      day: "2-digit",
+month:"short",
 
-      month: "short",
+year:"numeric"
 
-      year: "numeric"
+});
 
-    });
+}
 
-  }
+function addCell(row,value){
 
-  function addCell(row, value) {
+const cell = document.createElement("td");
 
-    const cell = document.createElement("td");
+cell.textContent = value || "Not provided";
 
-    cell.textContent = value || "Not provided";
+row.appendChild(cell);
 
-    row.appendChild(cell);
+}
 
-  }
+function showCustomerDetails(customer){
 
-  function renderCustomers(list) {
+document.getElementById("detailName").textContent =
 
-    customerTable.replaceChildren();
+customer.full_name || "Not provided";
 
-    document.getElementById("totalCustomers").textContent =
+document.getElementById("detailEmail").textContent =
 
-      customers.length;
+customer.email || "Not provided";
 
-    document.getElementById("matchingCustomers").textContent =
+document.getElementById("detailPhone").textContent =
 
-      list.length;
+customer.phone_number || "Not provided";
 
-    if (list.length === 0) {
+document.getElementById("detailId").textContent =
 
-      const row = document.createElement("tr");
+customer.id || "Not available";
 
-      const cell = document.createElement("td");
+document.getElementById("detailDate").textContent =
 
-      cell.colSpan = 5;
+formatDate(customer.created_at);
 
-      cell.className = "empty";
+document.getElementById("detailStatus").textContent =
 
-      cell.textContent = "No customer records found.";
+"Demo Account";
 
-      row.appendChild(cell);
+detailsPanel.style.display = "block";
 
-      customerTable.appendChild(row);
+detailsPanel.scrollIntoView({
 
-      return;
+behavior:"smooth",
 
-    }
+block:"start"
 
-    list.forEach(customer => {
+});
 
-      const row = document.createElement("tr");
+}
 
-      addCell(row, customer.full_name);
+function renderCustomers(list){
 
-      addCell(row, customer.email);
+customerTable.replaceChildren();
 
-      addCell(row, customer.phone_number);
+document.getElementById("totalCustomers").textContent =
 
-      addCell(row, customer.id);
+customers.length;
 
-      addCell(row, formatDate(customer.created_at));
+document.getElementById("matchingCustomers").textContent =
 
-      customerTable.appendChild(row);
+list.length;
 
-    });
+if(list.length === 0){
 
-  }
+const row = document.createElement("tr");
 
-  function filterCustomers() {
+const cell = document.createElement("td");
 
-    const term = searchInput.value.trim().toLowerCase();
+cell.colSpan = 6;
 
-    const filtered = customers.filter(customer => {
+cell.className = "empty";
 
-      return [
+cell.textContent = "No customer records found.";
 
-        customer.full_name,
+row.appendChild(cell);
 
-        customer.email,
+customerTable.appendChild(row);
 
-        customer.phone_number,
+return;
 
-        customer.id
+}
 
-      ].some(value =>
+list.forEach(customer=>{
 
-        String(value || "").toLowerCase().includes(term)
+const row = document.createElement("tr");
 
-      );
+addCell(row,customer.full_name);
 
-    });
+addCell(row,customer.email);
 
-    renderCustomers(filtered);
+addCell(row,customer.phone_number);
 
-  }
+addCell(row,customer.id);
 
-  async function loadCustomers() {
+addCell(row,formatDate(customer.created_at));
 
-    setStatus("Loading customer records...");
+const actionCell = document.createElement("td");
 
-    const { data, error } = await client
+const viewButton = document.createElement("button");
 
-      .from("customer_profiles")
+viewButton.type = "button";
 
-      .select("id, email, full_name, phone_number, created_at")
+viewButton.className = "view-btn";
 
-      .order("created_at", { ascending: false });
+viewButton.textContent = "View Details";
 
-    if (error) {
+viewButton.addEventListener("click",()=>{
 
-      console.error(error);
+showCustomerDetails(customer);
 
-      customers = [];
+});
 
-      renderCustomers([]);
+actionCell.appendChild(viewButton);
 
-      setStatus(
+row.appendChild(actionCell);
 
-        "Could not load customers: " + error.message,
+customerTable.appendChild(row);
 
-        "error"
+});
 
-      );
+}
 
-      return;
+function filterCustomers(){
 
-    }
+const term = searchInput.value.trim().toLowerCase();
 
-    customers = data || [];
+const filtered = customers.filter(customer=>{
 
-    filterCustomers();
+return [
 
-    setStatus(
+customer.full_name,
 
-      "Customer records loaded successfully.",
+customer.email,
 
-      "success"
+customer.phone_number,
 
-    );
+customer.id
 
-  }
+].some(value=>
 
-  async function checkAdministrator() {
+String(value || "").toLowerCase().includes(term)
 
-    try {
+);
 
-      const { data: userData, error: userError } =
+});
 
-        await client.auth.getUser();
+renderCustomers(filtered);
 
-      if (userError || !userData.user) {
+}
 
-        window.location.replace("admin.html");
+async function loadCustomers(){
 
-        return;
+setStatus("Loading customer records...");
 
-      }
+detailsPanel.style.display = "none";
 
-      const user = userData.user;
+const {data,error} = await client
 
-      const { data: roleData, error: roleError } = await client
+.from("customer_profiles")
 
-        .from("user_roles")
+.select("id, email, full_name, phone_number, created_at")
 
-        .select("role")
+.order("created_at",{ascending:false});
 
-        .eq("user_id", user.id)
+if(error){
 
-        .eq("role", "admin")
+console.error(error);
 
-        .maybeSingle();
+customers = [];
 
-      if (roleError || !roleData) {
+renderCustomers([]);
 
-        loading.textContent =
+setStatus(
 
-          "Access denied. Administrator permission is required.";
+"Could not load customers: " + error.message,
 
-        return;
+"error"
 
-      }
+);
 
-      loading.style.display = "none";
+return;
 
-      app.style.display = "block";
+}
 
-      await loadCustomers();
+customers = data || [];
 
-    } catch (error) {
+filterCustomers();
 
-      console.error(error);
+setStatus(
 
-      loading.textContent =
+"Customer records loaded successfully.",
 
-        "Unable to verify administrator access. Please try again.";
+"success"
 
-    }
+);
 
-  }
+}
 
-  searchInput.addEventListener("input", filterCustomers);
+async function checkAdministrator(){
 
-  document.getElementById("refreshBtn")
+try{
 
-    .addEventListener("click", loadCustomers);
+const {data:userData,error:userError} =
 
-  document.getElementById("logoutBtn")
+await client.auth.getUser();
 
-    .addEventListener("click", async () => {
+if(userError || !userData.user){
 
-      const { error } = await client.auth.signOut();
+window.location.replace("admin.html");
 
-      if (error) {
+return;
 
-        alert("Logout failed: " + error.message);
+}
 
-        return;
+const user = userData.user;
 
-      }
+const {data:roleData,error:roleError} = await client
 
-      window.location.replace("admin.html");
+.from("user_roles")
 
-    });
+.select("role")
 
-  checkAdministrator();
+.eq("user_id",user.id)
+
+.eq("role","admin")
+
+.maybeSingle();
+
+if(roleError || !roleData){
+
+loading.textContent =
+
+"Access denied. Administrator permission is required.";
+
+return;
+
+}
+
+loading.style.display = "none";
+
+app.style.display = "block";
+
+await loadCustomers();
+
+}catch(error){
+
+console.error(error);
+
+loading.textContent =
+
+"Unable to verify administrator access. Please try again.";
+
+}
+
+}
+
+searchInput.addEventListener("input",filterCustomers);
+
+document.getElementById("refreshBtn")
+
+.addEventListener("click",loadCustomers);
+
+document.getElementById("closeDetailsBtn")
+
+.addEventListener("click",()=>{
+
+detailsPanel.style.display = "none";
+
+});
+
+document.getElementById("logoutBtn")
+
+.addEventListener("click",async()=>{
+
+const {error} = await client.auth.signOut();
+
+if(error){
+
+alert("Logout failed: " + error.message);
+
+return;
+
+}
+
+window.location.replace("admin.html");
+
+});
+
+checkAdministrator();
 
 </script>
 
