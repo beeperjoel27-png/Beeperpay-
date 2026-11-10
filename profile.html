@@ -1,25 +1,213 @@
-<a href="security.html" style="
+<!DOCTYPE html>
 
-display:block;
+<html lang="en">
 
-background:#07152e;
+<head>
 
-color:#e4b84e;
+<meta charset="UTF-8">
 
-padding:15px;
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
-margin:10px 0;
+<title>Beeperpay My Profile</title>
 
-border-radius:8px;
+<style>
 
-text-align:center;
+*{box-sizing:border-box}
 
-text-decoration:none;
+body{margin:0;background:#f4f6fa;font-family:Arial;color:#17243a}
 
-font-weight:bold;
+header{background:#07152e;color:white;text-align:center;padding:25px}
 
-">
+header h1{color:#e4b84e;margin:0}
 
-🔐 SECURITY SETTINGS
+main{max-width:650px;margin:25px auto;padding:15px}
 
-</a>
+.card{background:white;padding:20px;border-radius:12px;margin-bottom:18px}
+
+h2{color:#07152e}
+
+.info{padding:13px 0;border-bottom:1px solid #eee}
+
+.info:last-child{border:0}
+
+.label{font-size:12px;color:#777}
+
+.value{font-size:15px;font-weight:bold;margin-top:5px;overflow-wrap:anywhere}
+
+.service{display:block;background:#07152e;color:#e4b84e;padding:15px;margin:10px 0;border-radius:8px;text-align:center;text-decoration:none;font-weight:bold}
+
+button{width:100%;background:#a52a2a;color:white;padding:14px;border:0;border-radius:8px;font-weight:bold}
+
+nav{text-align:center;padding:15px;line-height:2}
+
+nav a{color:#07152e;margin:5px 8px;font-weight:bold;font-size:13px}
+
+footer{text-align:center;color:#777;padding:20px;font-size:12px}
+
+</style>
+
+</head>
+
+<body>
+
+<header>
+
+<h1>BEEPERPAY</h1>
+
+<p>MICROFINANCE BANK</p>
+
+<p>Your money. Your future. Our priority.</p>
+
+</header>
+
+<main>
+
+<section class="card">
+
+<h2>My Profile</h2>
+
+<p>Customer Information</p>
+
+<div class="info">
+
+<div class="label">Full Name</div>
+
+<div class="value" id="name">Loading...</div>
+
+</div>
+
+<div class="info">
+
+<div class="label">Email Address</div>
+
+<div class="value" id="email">Loading...</div>
+
+</div>
+
+<div class="info">
+
+<div class="label">Phone Number</div>
+
+<div class="value" id="phone">Loading...</div>
+
+</div>
+
+<div class="info">
+
+<div class="label">Customer ID</div>
+
+<div class="value" id="customerId">Loading...</div>
+
+</div>
+
+<div class="info">
+
+<div class="label">Account Status</div>
+
+<div class="value">Demo Account</div>
+
+</div>
+
+</section>
+
+<section class="card">
+
+<h2>Account Information</h2>
+
+<p>Your Beeperpay demonstration profile is connected to Supabase authentication.</p>
+
+<p>No real banking account or financial services are active.</p>
+
+</section>
+
+<section class="card">
+
+<h2>Security Settings</h2>
+
+<a class="service" href="security.html">🔐 SECURITY SETTINGS</a>
+
+</section>
+
+<nav>
+
+<a href="index.html">Home</a>
+
+<a href="dashboard.html">Dashboard</a>
+
+<a href="transactions.html">Transactions</a>
+
+<a href="notifications.html">Notifications</a>
+
+<a href="support.html">Support</a>
+
+</nav>
+
+<button id="logout">LOGOUT</button>
+
+</main>
+
+<footer>
+
+© 2026 Beeperpay Microfinance Bank. Demonstration website only.
+
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+
+const SUPABASE_URL="https://wrjvcvxswdojpxzcwyqw.supabase.co";
+
+const SUPABASE_KEY="sb_publishable_zTksapAhIoJp_0-9w1twlQ_j7WECGcv";
+
+const client=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+
+async function loadProfile(){
+
+const {data,error}=await client.auth.getUser();
+
+if(error||!data.user){
+
+window.location.href="login.html";
+
+return;
+
+}
+
+const user=data.user;
+
+const metadata=user.user_metadata||{};
+
+document.getElementById("name").textContent=
+
+metadata.full_name||"Not provided";
+
+document.getElementById("email").textContent=
+
+user.email||"Not available";
+
+document.getElementById("phone").textContent=
+
+metadata.phone_number||"Not provided";
+
+document.getElementById("customerId").textContent=
+
+user.id;
+
+}
+
+document.getElementById("logout").addEventListener("click",async()=>{
+
+await client.auth.signOut();
+
+window.location.href="login.html";
+
+});
+
+loadProfile();
+
+</script>
+
+</body>
+
+</html>
