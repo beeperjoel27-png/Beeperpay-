@@ -4,173 +4,503 @@
 
 <head>
 
-<meta charset="UTF-8">
+  <meta charset="UTF-8">
 
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Beeperpay Administration Portal</title>
+  <title>Beeperpay | Administration Portal</title>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-<style>
+  <style>
 
-*{box-sizing:border-box}
+    * {
 
-body{
+      box-sizing: border-box;
 
- margin:0;
+      margin: 0;
 
- font-family:Arial,sans-serif;
+      padding: 0;
 
- background:#f3f5f9;
+    }
 
- color:#122747;
+    body {
 
-}
+      font-family: Arial, sans-serif;
 
-header{
+      background: #f2f5fa;
 
- background:#07152e;
+      color: #17233d;
 
- color:white;
+    }
 
- padding:24px 18px;
+    header {
 
- text-align:center;
+      background: #071b49;
 
- border-bottom:4px solid #e4b84e;
+      color: white;
 
-}
+      padding: 22px 18px;
 
-.logo{font-size:27px;font-weight:bold;letter-spacing:1px}
+      border-bottom: 4px solid #d6a83e;
 
-.sub{color:#e4b84e;font-size:13px;margin-top:5px}
+    }
 
-.tagline{margin-top:12px;font-size:14px}
+    .brand {
 
-main{max-width:950px;margin:25px auto;padding:0 15px}
+      font-size: 27px;
 
-.panel{
+      font-weight: bold;
 
- background:white;
+      letter-spacing: 1px;
 
- padding:22px;
+    }
 
- border-radius:12px;
+    .brand span {
 
- margin-bottom:20px;
+      color: #e2b54c;
 
- box-shadow:0 3px 12px #0000000d;
+    }
 
-}
+    header p {
 
-h2{margin-top:0;color:#07152e}
+      font-size: 12px;
 
-input{
+      letter-spacing: 2px;
 
- width:100%;
+      margin-top: 5px;
 
- padding:14px;
+    }
 
- border:1px solid #ccd3df;
+    .tagline {
 
- border-radius:7px;
+      font-size: 12px;
 
- margin:9px 0;
+      letter-spacing: 0;
 
- font-size:16px;
+      margin-top: 8px;
 
-}
+      color: #e5eaf3;
 
-button{
+    }
 
- background:#07152e;
+    main {
 
- color:white;
+      max-width: 1150px;
 
- border:0;
+      margin: 30px auto;
 
- padding:13px 18px;
+      padding: 0 15px;
 
- border-radius:7px;
+    }
 
- font-size:15px;
+    #loginSection {
 
- cursor:pointer;
+      max-width: 430px;
 
-}
+      margin: 55px auto;
 
-button.gold{background:#b78b28}
+      background: white;
 
-button.logout{background:#9b2525}
+      padding: 28px;
 
-.grid{
+      border-radius: 12px;
 
- display:grid;
+      box-shadow: 0 3px 15px #00000012;
 
- grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+    }
 
- gap:14px;
+    #loginSection h2 {
 
-}
+      color: #071b49;
 
-.stat{
+      margin-bottom: 10px;
 
- background:#f5f7fb;
+    }
 
- border-left:4px solid #e4b84e;
+    .description {
 
- padding:18px;
+      color: #687386;
 
- border-radius:8px;
+      font-size: 13px;
 
-}
+      line-height: 1.6;
 
-.stat strong{display:block;font-size:23px;margin-top:9px}
+      margin-bottom: 22px;
 
-.services a{
+    }
 
- display:block;
+    label {
 
- padding:14px;
+      display: block;
 
- margin:9px 0;
+      margin: 15px 0 7px;
 
- background:#f5f7fb;
+      font-size: 13px;
 
- border-radius:7px;
+      font-weight: bold;
 
- color:#07152e;
+    }
 
- text-decoration:none;
+    input {
 
- font-weight:bold;
+      width: 100%;
 
-}
+      padding: 13px;
 
-.services a:hover{background:#e9edf5}
+      border: 1px solid #d4dae4;
 
-.notice{
+      border-radius: 6px;
 
- background:#fff6df;
+      font-size: 14px;
 
- padding:13px;
+      outline-color: #d6a83e;
 
- border-radius:7px;
+    }
 
- font-size:13px;
+    button, .nav-link {
 
- line-height:1.5;
+      display: inline-block;
 
-}
+      padding: 12px 16px;
 
-#message{margin-top:12px;color:#a32626;font-size:14px}
+      border: none;
 
-footer{text-align:center;padding:20px;color:#657085;font-size:12px}
+      border-radius: 6px;
 
-[hidden]{display:none!important}
+      font-size: 13px;
 
-</style>
+      font-weight: bold;
+
+      cursor: pointer;
+
+      text-decoration: none;
+
+      text-align: center;
+
+    }
+
+    .primary {
+
+      background: #071b49;
+
+      color: white;
+
+    }
+
+    .gold {
+
+      background: #d6a83e;
+
+      color: #071b49;
+
+    }
+
+    .danger {
+
+      background: #b42318;
+
+      color: white;
+
+    }
+
+    #loginBtn {
+
+      width: 100%;
+
+      margin-top: 22px;
+
+    }
+
+    button:disabled {
+
+      opacity: 0.6;
+
+      cursor: wait;
+
+    }
+
+    .message {
+
+      font-size: 13px;
+
+      margin-top: 15px;
+
+      line-height: 1.5;
+
+      overflow-wrap: anywhere;
+
+    }
+
+    .error {
+
+      color: #b42318;
+
+    }
+
+    .success {
+
+      color: #16803c;
+
+    }
+
+    #adminSection {
+
+      display: none;
+
+    }
+
+    .welcome {
+
+      display: flex;
+
+      justify-content: space-between;
+
+      align-items: center;
+
+      flex-wrap: wrap;
+
+      gap: 15px;
+
+      margin-bottom: 22px;
+
+    }
+
+    .welcome h1 {
+
+      font-size: 24px;
+
+      color: #071b49;
+
+    }
+
+    .welcome p {
+
+      font-size: 13px;
+
+      color: #687386;
+
+      margin-top: 7px;
+
+    }
+
+    .actions {
+
+      display: flex;
+
+      gap: 9px;
+
+      flex-wrap: wrap;
+
+    }
+
+    .navigation {
+
+      display: grid;
+
+      grid-template-columns: repeat(auto-fit, minmax(155px, 1fr));
+
+      gap: 12px;
+
+      margin-bottom: 25px;
+
+    }
+
+    .navigation a {
+
+      background: white;
+
+      color: #071b49;
+
+      padding: 17px 12px;
+
+      border-radius: 8px;
+
+      text-decoration: none;
+
+      font-size: 13px;
+
+      font-weight: bold;
+
+      border: 1px solid #e3e8f0;
+
+      text-align: center;
+
+    }
+
+    .navigation a:hover {
+
+      border-color: #d6a83e;
+
+      background: #fffaf0;
+
+    }
+
+    .navigation .highlight {
+
+      background: #071b49;
+
+      color: white;
+
+      border-color: #071b49;
+
+    }
+
+    .section-title {
+
+      font-size: 19px;
+
+      color: #071b49;
+
+      margin-bottom: 15px;
+
+    }
+
+    .stats {
+
+      display: grid;
+
+      grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+
+      gap: 15px;
+
+      margin-bottom: 25px;
+
+    }
+
+    .stat-card {
+
+      background: white;
+
+      padding: 21px;
+
+      border-radius: 10px;
+
+      border-left: 4px solid #d6a83e;
+
+      box-shadow: 0 2px 9px #0000000c;
+
+    }
+
+    .stat-card p {
+
+      color: #687386;
+
+      font-size: 13px;
+
+      margin-bottom: 11px;
+
+    }
+
+    .stat-card h2 {
+
+      font-size: 25px;
+
+      color: #071b49;
+
+    }
+
+    .stat-card small {
+
+      display: block;
+
+      margin-top: 8px;
+
+      color: #8490a1;
+
+      font-size: 11px;
+
+    }
+
+    .panel {
+
+      background: white;
+
+      padding: 22px;
+
+      border-radius: 10px;
+
+      box-shadow: 0 2px 9px #0000000c;
+
+      margin-bottom: 20px;
+
+    }
+
+    .panel h2 {
+
+      color: #071b49;
+
+      font-size: 18px;
+
+      margin-bottom: 12px;
+
+    }
+
+    .panel p {
+
+      color: #687386;
+
+      font-size: 13px;
+
+      line-height: 1.7;
+
+    }
+
+    .status {
+
+      margin-top: 15px;
+
+      font-size: 13px;
+
+      color: #536174;
+
+    }
+
+    .customer-link {
+
+      margin-top: 15px;
+
+    }
+
+    footer {
+
+      text-align: center;
+
+      padding: 25px 12px;
+
+      color: #7b8493;
+
+      font-size: 12px;
+
+      line-height: 1.8;
+
+    }
+
+    @media (max-width: 600px) {
+
+      .welcome h1 {
+
+        font-size: 21px;
+
+      }
+
+      #loginSection {
+
+        margin: 35px auto;
+
+        padding: 22px;
+
+      }
+
+      .panel {
+
+        padding: 17px;
+
+      }
+
+    }
+
+  </style>
 
 </head>
 
@@ -178,413 +508,623 @@ footer{text-align:center;padding:20px;color:#657085;font-size:12px}
 
 <header>
 
- <div class="logo">BEEPERPAY</div>
+  <div class="brand">BEEPER<span>PAY</span></div>
 
- <div class="sub">MICROFINANCE BANK</div>
+  <p>MICROFINANCE BANK</p>
 
- <h3>ADMINISTRATION PORTAL</h3>
+  <div class="tagline">
 
- <div class="tagline">Your money. Your future. Our priority.</div>
+    Your money. Your future. Our priority.
+
+  </div>
 
 </header>
 
 <main>
 
-<section id="loginPanel" class="panel">
+  <!-- ADMIN LOGIN -->
 
- <h2>Administrator Login</h2>
+  <section id="loginSection">
 
- <p>Sign in using your registered Beeperpay administrator account.</p>
+    <h2>Administrator Login</h2>
 
- <form id="loginForm">
+    <p class="description">
 
-  <input id="email" type="email" placeholder="Administrator Email" required>
+      Sign in with your registered Beeperpay administrator account.
 
-  <input id="password" type="password" placeholder="Password" required>
+      Access is restricted to approved administrators.
 
-  <button type="submit">LOGIN SECURELY</button>
+    </p>
 
- </form>
+    <form id="loginForm">
 
- <p id="message"></p>
+      <label for="email">Email Address</label>
 
-</section>
+      <input
 
-<section id="adminPanel" hidden>
+        type="email"
 
- <div class="panel">
+        id="email"
 
-  <h2>Welcome, Administrator</h2>
+        placeholder="Administrator email"
 
-  <p id="adminEmail"></p>
+        autocomplete="username"
 
-  <p>Beeperpay Administration Overview</p>
+        required
 
-  <button class="logout" id="logoutButton">LOGOUT</button>
+      >
 
- </div>
+      <label for="password">Password</label>
 
- <div class="panel">
+      <input
 
-  <div class="notice">
+        type="password"
 
-   DEMONSTRATION ADMIN PORTAL. Figures below are local demo records,
+        id="password"
 
-   not live banking or customer account data.
+        placeholder="Enter your password"
 
-  </div>
+        autocomplete="current-password"
 
- </div>
+        required
 
- <div class="panel">
+      >
 
-  <h2>Transaction Overview</h2>
+      <button type="submit" class="primary" id="loginBtn">
 
-  <div class="grid">
+        SIGN IN
 
-   <div class="stat">
+      </button>
 
-    Add Money Requests
+    </form>
 
-    <strong id="addTotal">₦0.00</strong>
+    <p id="loginMessage" class="message"></p>
 
-   </div>
+  </section>
 
-   <div class="stat">
+  <!-- ADMIN DASHBOARD -->
 
-    Transfer Requests
+  <section id="adminSection">
 
-    <strong id="transferTotal">₦0.00</strong>
+    <div class="welcome">
 
-   </div>
+      <div>
 
-   <div class="stat">
+        <h1>Administration Portal</h1>
 
-    Total Transaction Records
+        <p id="welcomeMessage">Welcome, Administrator</p>
 
-    <strong id="transactionCount">0</strong>
+      </div>
 
-   </div>
+      <div class="actions">
 
-   <div class="stat">
+        <button class="gold" id="refreshBtn">
 
-    Support Tickets
+          Refresh Dashboard
 
-    <strong id="supportCount">0</strong>
+        </button>
 
-   </div>
+        <button class="danger" id="logoutBtn">
 
-  </div>
+          Logout
 
- </div>
+        </button>
 
- <div class="panel services">
+      </div>
 
-  <h2>Administration Services</h2>
+    </div>
 
-  <a href="dashboard.html">Customer Dashboard</a>
+    <!-- ADMIN NAVIGATION -->
 
-  <a href="transactions.html">Transaction History</a>
+    <nav class="navigation">
 
-  <a href="support-tickets.html">Support Ticket History</a>
+      <a href="admin.html">Dashboard</a>
 
-  <a href="support.html">Customer Support</a>
+      <a href="customers.html" class="highlight">
 
-  <a href="profile.html">Customer Profile</a>
+        Customer Management
 
-  <a href="statement.html">Account Statement</a>
+      </a>
 
- </div>
+      <a href="transactions.html">
 
- <div class="panel">
+        Transaction History
 
-  <h2>Administrator Actions</h2>
+      </a>
 
-  <p>Transaction monitoring: Demo records only.</p>
+      <a href="add-money.html">
 
-  <p>Customer support: Demo records only.</p>
+        Add Money
 
-  <p>Account management: Not enabled.</p>
+      </a>
 
- </div>
+      <a href="transfer.html">
 
- <div class="panel">
+        Transfer Money
 
-  <div class="notice">
+      </a>
 
-   Security notice: This portal verifies administrator identity
+      <a href="dashboard.html">
 
-   through Supabase. Transaction and support figures remain
+        Customer Portal
 
-   browser-local demonstration records. No real banking services
+      </a>
 
-   are enabled.
+    </nav>
 
-  </div>
+    <!-- OVERVIEW -->
 
- </div>
+    <h2 class="section-title">
 
-</section>
+      Beeperpay Administration Overview
+
+    </h2>
+
+    <div class="stats">
+
+      <div class="stat-card">
+
+        <p>Registered Customers</p>
+
+        <h2 id="customerCount">0</h2>
+
+        <small>Supabase customer records</small>
+
+      </div>
+
+      <div class="stat-card">
+
+        <p>Add Money Requests</p>
+
+        <h2>Demo</h2>
+
+        <small>Not connected to live banking</small>
+
+      </div>
+
+      <div class="stat-card">
+
+        <p>Transfer Requests</p>
+
+        <h2>Demo</h2>
+
+        <small>Not connected to live banking</small>
+
+      </div>
+
+      <div class="stat-card">
+
+        <p>Transaction Records</p>
+
+        <h2>Demo</h2>
+
+        <small>Demonstration records only</small>
+
+      </div>
+
+    </div>
+
+    <!-- CUSTOMER MANAGEMENT -->
+
+    <section class="panel">
+
+      <h2>Customer Management</h2>
+
+      <p>
+
+        View registered customer profiles, email addresses,
+
+        phone numbers, customer IDs and registration dates.
+
+      </p>
+
+      <a href="customers.html"
+
+         class="nav-link primary customer-link">
+
+        OPEN CUSTOMER MANAGEMENT
+
+      </a>
+
+    </section>
+
+    <!-- TRANSACTION MODULE -->
+
+    <section class="panel">
+
+      <h2>Transaction Administration</h2>
+
+      <p>
+
+        Access the demonstration transaction history and
+
+        customer transaction pages.
+
+        No real deposits, transfers or payments are processed.
+
+      </p>
+
+      <a href="transactions.html"
+
+         class="nav-link primary customer-link">
+
+        VIEW TRANSACTIONS
+
+      </a>
+
+    </section>
+
+    <!-- SECURITY INFORMATION -->
+
+    <section class="panel">
+
+      <h2>Administrator Security</h2>
+
+      <p>
+
+        Your administrator access is checked against the
+
+        Beeperpay Supabase user_roles table.
+
+        Customer records are protected by database
+
+        Row Level Security policies.
+
+      </p>
+
+      <p id="adminEmail" class="status"></p>
+
+      <p id="dashboardStatus" class="status">
+
+        Checking database connection...
+
+      </p>
+
+    </section>
+
+  </section>
 
 </main>
 
 <footer>
 
- BEEPERPAY MICROFINANCE BANK<br>
+  BEEPERPAY MICROFINANCE BANK<br>
 
- Demonstration portal only.
+  Your money. Your future. Our priority.<br>
+
+  Demonstration administration portal.
+
+  No real banking services are active.
 
 </footer>
 
 <script>
 
-const SUPABASE_URL =
+  // SUPABASE CONNECTION
 
- "https://wrjvcvxswdojpxzcwyqw.supabase.co";
+  const SUPABASE_URL =
 
-const SUPABASE_KEY =
+    "https://wrjvcvxswdojpxzcwyqw.supabase.co";
 
- "sb_publishable_zTksapAhIoJp_0-9w1twlQ_j7WECGcv";
+  const SUPABASE_KEY =
 
-const client = window.supabase.createClient(
+    "sb_publishable_zTksapAhIoJp_0-9w1twlQ_j7WECGcv";
 
- SUPABASE_URL,
+  const client = window.supabase.createClient(
 
- SUPABASE_KEY
+    SUPABASE_URL,
 
-);
-
-const loginPanel = document.getElementById("loginPanel");
-
-const adminPanel = document.getElementById("adminPanel");
-
-const message = document.getElementById("message");
-
-function showLogin(error = "") {
-
- loginPanel.hidden = false;
-
- adminPanel.hidden = true;
-
- message.textContent = error;
-
-}
-
-function formatNaira(amount) {
-
- return Number(amount || 0).toLocaleString("en-NG", {
-
-  style: "currency",
-
-  currency: "NGN"
-
- });
-
-}
-
-function getLocalRecords(prefix) {
-
- let records = [];
-
- for (let i = 0; i < localStorage.length; i++) {
-
-  const key = localStorage.key(i);
-
-  if (key && key.startsWith(prefix)) {
-
-   try {
-
-    const data = JSON.parse(localStorage.getItem(key));
-
-    if (Array.isArray(data)) {
-
-     records = records.concat(data);
-
-    } else if (data && Array.isArray(data.transactions)) {
-
-     records = records.concat(data.transactions);
-
-    } else if (data && Array.isArray(data.tickets)) {
-
-     records = records.concat(data.tickets);
-
-    }
-
-   } catch (error) {
-
-    console.warn("Could not read demo record:", key);
-
-   }
-
-  }
-
- }
-
- return records;
-
-}
-
-function loadDemoOverview() {
-
- const transactions =
-
-  getLocalRecords("beeperpay_demo_transactions_");
-
- const tickets =
-
-  getLocalRecords("beeperpay_demo_support_");
-
- let addMoney = 0;
-
- let transfers = 0;
-
- transactions.forEach(item => {
-
-  const type = String(
-
-   item.type || item.transaction_type || item.request_type || ""
-
-  ).toLowerCase();
-
-  const amount = Number(
-
-   item.amount || item.transferAmount || item.value || 0
+    SUPABASE_KEY
 
   );
 
-  if (type.includes("add")) {
+  // PAGE ELEMENTS
 
-   addMoney += amount;
+  const loginSection =
 
-  }
+    document.getElementById("loginSection");
 
-  if (type.includes("transfer")) {
+  const adminSection =
 
-   transfers += amount;
+    document.getElementById("adminSection");
 
-  }
+  const loginMessage =
 
- });
+    document.getElementById("loginMessage");
 
- document.getElementById("addTotal").textContent =
+  const loginBtn =
 
-  formatNaira(addMoney);
+    document.getElementById("loginBtn");
 
- document.getElementById("transferTotal").textContent =
+  function showLoginMessage(message, type) {
 
-  formatNaira(transfers);
+    loginMessage.textContent = message;
 
- document.getElementById("transactionCount").textContent =
-
-  transactions.length;
-
- document.getElementById("supportCount").textContent =
-
-  tickets.length;
-
-}
-
-async function verifyAdmin() {
-
- const { data, error } = await client.auth.getSession();
-
- if (error || !data.session) {
-
-  showLogin();
-
-  return;
-
- }
-
- const user = data.session.user;
-
- const { data: roleData, error: roleError } =
-
-  await client
-
-   .from("user_roles")
-
-   .select("role")
-
-   .eq("user_id", user.id)
-
-   .maybeSingle();
-
- if (roleError || !roleData || roleData.role !== "admin") {
-
-  await client.auth.signOut();
-
-  showLogin("Administrator access denied. Your account does not have the admin role.");
-
-  return;
-
- }
-
- loginPanel.hidden = true;
-
- adminPanel.hidden = false;
-
- document.getElementById("adminEmail").textContent =
-
-  "Signed in as: " + user.email;
-
- loadDemoOverview();
-
-}
-
-document.getElementById("loginForm")
-
- .addEventListener("submit", async function(event) {
-
-  event.preventDefault();
-
-  message.textContent = "Checking your account...";
-
-  const email = document.getElementById("email").value.trim();
-
-  const password = document.getElementById("password").value;
-
-  const { error } = await client.auth.signInWithPassword({
-
-   email,
-
-   password
-
-  });
-
-  if (error) {
-
-   showLogin("Login failed: " + error.message);
-
-   return;
+    loginMessage.className = "message " + type;
 
   }
 
-  await verifyAdmin();
+  // CHECK ADMINISTRATOR ROLE
 
- });
+  async function verifyAdministrator(user) {
 
-document.getElementById("logoutButton")
+    const { data, error } = await client
 
- .addEventListener("click", async function() {
+      .from("user_roles")
 
-  await client.auth.signOut();
+      .select("role")
 
-  showLogin();
+      .eq("user_id", user.id)
 
- });
+      .eq("role", "admin")
 
-client.auth.onAuthStateChange((event, session) => {
+      .maybeSingle();
 
- if (event === "SIGNED_OUT") {
+    if (error) {
 
-  showLogin();
+      throw new Error(
 
- }
+        "Could not verify administrator role: " +
 
-});
+        error.message
 
-verifyAdmin();
+      );
+
+    }
+
+    if (!data) {
+
+      throw new Error(
+
+        "Access denied. This account is not an administrator."
+
+      );
+
+    }
+
+    return true;
+
+  }
+
+  // LOAD ADMIN DASHBOARD
+
+  async function openAdminDashboard(user) {
+
+    await verifyAdministrator(user);
+
+    loginSection.style.display = "none";
+
+    adminSection.style.display = "block";
+
+    document.getElementById("welcomeMessage").textContent =
+
+      "Welcome, Administrator";
+
+    document.getElementById("adminEmail").textContent =
+
+      "Signed in as: " + user.email;
+
+    await loadDashboardData();
+
+  }
+
+  // LOAD CUSTOMER COUNT
+
+  async function loadDashboardData() {
+
+    const status =
+
+      document.getElementById("dashboardStatus");
+
+    status.textContent = "Loading database information...";
+
+    const { count, error } = await client
+
+      .from("customer_profiles")
+
+      .select("id", {
+
+        count: "exact",
+
+        head: true
+
+      });
+
+    if (error) {
+
+      status.textContent =
+
+        "Customer database error: " + error.message;
+
+      status.className = "status error";
+
+      return;
+
+    }
+
+    document.getElementById("customerCount").textContent =
+
+      count ?? 0;
+
+    status.textContent =
+
+      "Database connected. Customer information loaded successfully.";
+
+    status.className = "status success";
+
+  }
+
+  // ADMINISTRATOR LOGIN
+
+  document.getElementById("loginForm")
+
+    .addEventListener("submit", async function(event) {
+
+      event.preventDefault();
+
+      loginBtn.disabled = true;
+
+      loginBtn.textContent = "VERIFYING...";
+
+      showLoginMessage(
+
+        "Checking administrator credentials...",
+
+        ""
+
+      );
+
+      const email =
+
+        document.getElementById("email").value.trim();
+
+      const password =
+
+        document.getElementById("password").value;
+
+      try {
+
+        const { data, error } =
+
+          await client.auth.signInWithPassword({
+
+            email: email,
+
+            password: password
+
+          });
+
+        if (error) {
+
+          throw new Error(error.message);
+
+        }
+
+        if (!data.user) {
+
+          throw new Error("Unable to identify administrator.");
+
+        }
+
+        await openAdminDashboard(data.user);
+
+      } catch (error) {
+
+        console.error(error);
+
+        showLoginMessage(
+
+          error.message,
+
+          "error"
+
+        );
+
+        await client.auth.signOut();
+
+      } finally {
+
+        loginBtn.disabled = false;
+
+        loginBtn.textContent = "SIGN IN";
+
+      }
+
+    });
+
+  // CHECK EXISTING LOGIN SESSION
+
+  async function checkExistingSession() {
+
+    try {
+
+      const { data, error } =
+
+        await client.auth.getUser();
+
+      if (error || !data.user) {
+
+        return;
+
+      }
+
+      await openAdminDashboard(data.user);
+
+    } catch (error) {
+
+      console.error(error);
+
+      loginSection.style.display = "block";
+
+      adminSection.style.display = "none";
+
+      showLoginMessage(
+
+        error.message,
+
+        "error"
+
+      );
+
+    }
+
+  }
+
+  // REFRESH DASHBOARD
+
+  document.getElementById("refreshBtn")
+
+    .addEventListener("click", async function() {
+
+      const { data, error } =
+
+        await client.auth.getUser();
+
+      if (error || !data.user) {
+
+        window.location.reload();
+
+        return;
+
+      }
+
+      try {
+
+        await verifyAdministrator(data.user);
+
+        await loadDashboardData();
+
+      } catch (error) {
+
+        alert(error.message);
+
+      }
+
+    });
+
+  // LOGOUT
+
+  document.getElementById("logoutBtn")
+
+    .addEventListener("click", async function() {
+
+      const { error } = await client.auth.signOut();
+
+      if (error) {
+
+        alert("Logout failed: " + error.message);
+
+        return;
+
+      }
+
+      window.location.reload();
+
+    });
+
+  // START
+
+  checkExistingSession();
 
 </script>
 
