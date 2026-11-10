@@ -1,1 +1,209 @@
+<!DOCTYPE html>
 
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Beeperpay | Transactions</title>
+
+<style>
+
+* { box-sizing: border-box; }
+
+body {
+
+  margin: 0;
+
+  padding: 20px 15px;
+
+  background: #07152e;
+
+  color: white;
+
+  font-family: Arial, sans-serif;
+
+}
+
+.container {
+
+  max-width: 500px;
+
+  margin: 25px auto;
+
+}
+
+h1 {
+
+  color: #e4b84e;
+
+  text-align: center;
+
+}
+
+.card {
+
+  background: #122747;
+
+  padding: 20px;
+
+  margin: 15px 0;
+
+  border-radius: 12px;
+
+}
+
+.transaction {
+
+  padding: 15px 0;
+
+  border-bottom: 1px solid #43516a;
+
+  line-height: 1.6;
+
+  overflow-wrap: anywhere;
+
+}
+
+.status {
+
+  color: #e4b84e;
+
+  font-weight: bold;
+
+}
+
+a { color: #e4b84e; }
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>BEEPERPAY</h1>
+
+<p style="text-align:center">MICROFINANCE BANK</p>
+
+<h2>Transaction History</h2>
+
+<div class="card">
+
+  <h3>My Transactions</h3>
+
+  <div id="transactions">Loading transactions...</div>
+
+</div>
+
+<p style="text-align:center">
+
+<a href="dashboard.html">Back to Dashboard</a>
+
+</p>
+
+<p style="text-align:center;font-size:12px;color:#bbb">
+
+Demo transaction records only. No real banking transactions have occurred.
+
+</p>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+
+const client = window.supabase.createClient(
+
+  "https://wrjvcvxswdojpxzcwyqw.supabase.co",
+
+  "sb_publishable_zTksapAhIoJp_0-9w1twlQ_j7WECGcv"
+
+);
+
+const storageKey = "beeperpay_demo_transactions";
+
+function escapeHTML(value) {
+
+  return String(value).replace(/[&<>"']/g, function(c) {
+
+    return {
+
+      "&": "&amp;",
+
+      "<": "&lt;",
+
+      ">": "&gt;",
+
+      '"': "&quot;",
+
+      "'": "&#039;"
+
+    }[c];
+
+  });
+
+}
+
+async function loadTransactions() {
+
+  const { data, error } = await client.auth.getUser();
+
+  if (error || !data.user) {
+
+    window.location.href = "login.html";
+
+    return;
+
+  }
+
+  const key = storageKey + "_" + data.user.id;
+
+  const transactions = JSON.parse(
+
+    localStorage.getItem(key) || "[]"
+
+  );
+
+  const container = document.getElementById("transactions");
+
+  if (transactions.length === 0) {
+
+    container.textContent = "No transactions yet.";
+
+    return;
+
+  }
+
+  container.innerHTML = transactions.slice().reverse().map(t => `
+
+    <div class="transaction">
+
+      <strong>${escapeHTML(t.type)}</strong><br>
+
+      Amount: ₦${Number(t.amount).toLocaleString("en-NG")}<br>
+
+      Reference: ${escapeHTML(t.reference)}<br>
+
+      Date: ${escapeHTML(t.date)}<br>
+
+      <span class="status">Demo request only</span>
+
+    </div>
+
+  `).join("");
+
+}
+
+loadTransactions();
+
+</script>
+
+</body>
+
+</html>
