@@ -14,9 +14,35 @@
 
 *{box-sizing:border-box}
 
-body{margin:0;padding:20px;background:#f3f5f9;color:#07152e;font-family:Arial,sans-serif}
+body{
 
-.container{max-width:900px;margin:25px auto;background:white;padding:24px;border-radius:12px;box-shadow:0 4px 18px rgba(0,0,0,.07)}
+margin:0;
+
+padding:20px;
+
+background:#f3f5f9;
+
+color:#07152e;
+
+font-family:Arial,sans-serif
+
+}
+
+.container{
+
+max-width:900px;
+
+margin:25px auto;
+
+background:white;
+
+padding:24px;
+
+border-radius:12px;
+
+box-shadow:0 4px 18px rgba(0,0,0,.07)
+
+}
 
 .brand{text-align:center}
 
@@ -26,49 +52,251 @@ body{margin:0;padding:20px;background:#f3f5f9;color:#07152e;font-family:Arial,sa
 
 h3{margin-top:28px}
 
-.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:20px 0}
+.stats,.summary-grid{
 
-.stat{background:#f3f5f9;padding:15px;border-radius:8px;text-align:center}
+display:grid;
 
-.stat strong{display:block;font-size:23px;margin-top:8px}
+grid-template-columns:repeat(4,1fr);
 
-.transaction{border:1px solid #e0e4eb;border-radius:9px;padding:16px;margin:14px 0}
+gap:10px;
+
+margin:20px 0
+
+}
+
+.stat,.summary-card{
+
+background:#f3f5f9;
+
+padding:15px;
+
+border-radius:8px;
+
+text-align:center
+
+}
+
+.stat strong,.summary-card strong{
+
+display:block;
+
+font-size:23px;
+
+margin-top:8px;
+
+overflow-wrap:anywhere
+
+}
+
+.summary-section{margin-top:28px}
+
+.summary-grid{grid-template-columns:repeat(3,1fr)}
+
+.summary-card{border:1px solid #e0e4eb}
+
+.summary-card span{
+
+font-size:12px;
+
+color:#555
+
+}
+
+.summary-card strong{font-size:19px}
+
+.transaction{
+
+border:1px solid #e0e4eb;
+
+border-radius:9px;
+
+padding:16px;
+
+margin:14px 0
+
+}
 
 .transaction h4{margin:0 0 10px}
 
-.amount{font-size:21px;font-weight:bold;margin:8px 0}
+.amount{
 
-.detail{font-size:13px;color:#555;line-height:1.8;overflow-wrap:anywhere}
+font-size:21px;
 
-.customer{background:#f3f5f9;padding:12px;border-radius:7px;margin:12px 0}
+font-weight:bold;
+
+margin:8px 0
+
+}
+
+.detail{
+
+font-size:13px;
+
+color:#555;
+
+line-height:1.8;
+
+overflow-wrap:anywhere
+
+}
+
+.customer{
+
+background:#f3f5f9;
+
+padding:12px;
+
+border-radius:7px;
+
+margin:12px 0
+
+}
 
 .customer strong{color:#07152e}
 
-.status{display:inline-block;background:#fff3d5;color:#76520b;padding:6px 9px;border-radius:5px;font-size:11px;margin:10px 0}
+.status{
 
-select,button,input{padding:11px;border-radius:6px;border:1px solid #ccd2dc;margin:5px 5px 5px 0;font-size:14px}
+display:inline-block;
 
-button{background:#07152e;color:white;border:0;cursor:pointer}
+background:#fff3d5;
+
+color:#76520b;
+
+padding:6px 9px;
+
+border-radius:5px;
+
+font-size:11px;
+
+margin:10px 0
+
+}
+
+select,button,input{
+
+padding:11px;
+
+border-radius:6px;
+
+border:1px solid #ccd2dc;
+
+margin:5px 5px 5px 0;
+
+font-size:14px
+
+}
+
+button{
+
+background:#07152e;
+
+color:white;
+
+border:0;
+
+cursor:pointer
+
+}
 
 button:disabled{opacity:.6}
 
-.export-button{background:#b58a2b;color:#07152e;font-weight:bold}
+.export-button{
 
-.message{padding:15px;color:#555;text-align:center}
+background:#b58a2b;
 
-.warning{color:#a15c00;background:#fff3d5;padding:10px;border-radius:6px;margin:10px 0;font-size:13px}
+color:#07152e;
 
-.search-area{background:#f3f5f9;padding:15px;border-radius:8px;margin:18px 0}
+font-weight:bold
 
-.search-area input,.search-area select{width:100%;margin:8px 0;background:white}
+}
 
-.search-label{font-size:13px;font-weight:bold;display:block;margin-top:10px}
+.message{
 
-.result-count{font-size:13px;color:#555;margin:12px 0}
+padding:15px;
 
-a{color:#07152e;font-weight:bold}
+color:#555;
 
-@media(max-width:600px){.stats{grid-template-columns:repeat(2,1fr)}.container{padding:16px}}
+text-align:center
+
+}
+
+.warning{
+
+color:#a15c00;
+
+background:#fff3d5;
+
+padding:10px;
+
+border-radius:6px;
+
+margin:10px 0;
+
+font-size:13px
+
+}
+
+.search-area{
+
+background:#f3f5f9;
+
+padding:15px;
+
+border-radius:8px;
+
+margin:18px 0
+
+}
+
+.search-area input,.search-area select{
+
+width:100%;
+
+margin:8px 0;
+
+background:white
+
+}
+
+.search-label{
+
+font-size:13px;
+
+font-weight:bold;
+
+display:block;
+
+margin-top:10px
+
+}
+
+.result-count{
+
+font-size:13px;
+
+color:#555;
+
+margin:12px 0
+
+}
+
+a{
+
+color:#07152e;
+
+font-weight:bold
+
+}
+
+@media(max-width:600px){
+
+.stats{grid-template-columns:repeat(2,1fr)}
+
+.summary-grid{grid-template-columns:repeat(2,1fr)}
+
+.container{padding:16px}
+
+}
 
 </style>
 
@@ -94,29 +322,131 @@ a{color:#07152e;font-weight:bold}
 
 <div class="stats">
 
-<div class="stat">Total Requests<strong id="total">0</strong></div>
+<div class="stat">
 
-<div class="stat">Pending<strong id="pending">0</strong></div>
+Total Requests
 
-<div class="stat">Approved<strong id="approved">0</strong></div>
-
-<div class="stat">Rejected<strong id="rejected">0</strong></div>
+<strong id="total">0</strong>
 
 </div>
 
-<button type="button" onclick="loadTransactions()">Refresh Transactions</button>
+<div class="stat">
+
+Pending
+
+<strong id="pending">0</strong>
+
+</div>
+
+<div class="stat">
+
+Approved
+
+<strong id="approved">0</strong>
+
+</div>
+
+<div class="stat">
+
+Rejected
+
+<strong id="rejected">0</strong>
+
+</div>
+
+</div>
+
+<div class="summary-section">
+
+<h3>Overall Transaction Summary</h3>
+
+<p class="detail">Summary of all customer transaction requests.</p>
+
+<div class="summary-grid">
+
+<div class="summary-card">
+
+<span>Total Amount Requested</span>
+
+<strong id="totalAmount">₦0.00</strong>
+
+</div>
+
+<div class="summary-card">
+
+<span>Pending Amount</span>
+
+<strong id="pendingAmount">₦0.00</strong>
+
+</div>
+
+<div class="summary-card">
+
+<span>Approved Amount</span>
+
+<strong id="approvedAmount">₦0.00</strong>
+
+</div>
+
+<div class="summary-card">
+
+<span>Rejected Amount</span>
+
+<strong id="rejectedAmount">₦0.00</strong>
+
+</div>
+
+<div class="summary-card">
+
+<span>Add Money Requests</span>
+
+<strong id="addMoneyCount">0</strong>
+
+</div>
+
+<div class="summary-card">
+
+<span>Transfer Requests</span>
+
+<strong id="transferCount">0</strong>
+
+</div>
+
+</div>
+
+</div>
+
+<button type="button" onclick="loadTransactions()">
+
+Refresh Transactions
+
+</button>
 
 <div class="search-area">
 
-<label class="search-label" for="search">Search Transactions</label>
+<label class="search-label" for="search">
 
-<input type="search" id="search"
+Search Transactions
+
+</label>
+
+<input
+
+type="search"
+
+id="search"
 
 placeholder="Search customer name, email, phone, transaction ID or reference..."
 
-oninput="displayTransactions()">
+oninput="displayTransactions()"
 
-<label class="search-label" for="statusFilter">Filter by Transaction Status</label>
+>
+
+<label class="search-label" for="statusFilter">
+
+Filter by Transaction Status
+
+</label>
 
 <select id="statusFilter" onchange="displayTransactions()">
 
@@ -138,11 +468,23 @@ oninput="displayTransactions()">
 
 <input type="date" id="endDate" onchange="displayTransactions()">
 
-<button type="button" onclick="clearFilters()">Clear Search and Filters</button>
+<button type="button" onclick="clearFilters()">
+
+Clear Search and Filters
+
+</button>
 
 </div>
 
-<button type="button" class="export-button" onclick="exportTransactions()">
+<button
+
+type="button"
+
+class="export-button"
+
+onclick="exportTransactions()"
+
+>
 
 Download Transaction Report (CSV)
 
@@ -152,13 +494,19 @@ Download Transaction Report (CSV)
 
 <div id="resultCount" class="result-count"></div>
 
-<div id="transactions" class="message">Loading transactions...</div>
+<div id="transactions" class="message">
+
+Loading transactions...
+
+</div>
 
 <p><a href="admin.html">Back to Admin Dashboard</a></p>
 
 <p class="detail">
 
-Demonstration transaction management only. Approving a request does not transfer money or add funds to a wallet.
+Demonstration transaction management only.
+
+Approving a request does not transfer money or add funds to a wallet.
 
 </p>
 
@@ -183,6 +531,18 @@ const warning=document.getElementById("warning");
 let allTransactions=[];
 
 let profileMap={};
+
+function formatMoney(amount){
+
+return "₦"+Number(amount||0).toLocaleString("en-NG",{
+
+minimumFractionDigits:2,
+
+maximumFractionDigits:2
+
+});
+
+}
 
 async function checkAdmin(){
 
@@ -232,6 +592,66 @@ parent.appendChild(line);
 
 }
 
+function updateSummary(){
+
+const totalAmount=allTransactions.reduce(
+
+(sum,r)=>sum+Number(r.amount||0),0
+
+);
+
+const pendingAmount=allTransactions
+
+.filter(r=>r.status==="Pending")
+
+.reduce((sum,r)=>sum+Number(r.amount||0),0);
+
+const approvedAmount=allTransactions
+
+.filter(r=>r.status==="Approved")
+
+.reduce((sum,r)=>sum+Number(r.amount||0),0);
+
+const rejectedAmount=allTransactions
+
+.filter(r=>r.status==="Rejected")
+
+.reduce((sum,r)=>sum+Number(r.amount||0),0);
+
+const addMoneyCount=allTransactions
+
+.filter(r=>r.transaction_type==="Add Money").length;
+
+const transferCount=allTransactions
+
+.filter(r=>r.transaction_type==="Transfer").length;
+
+document.getElementById("totalAmount").textContent=
+
+formatMoney(totalAmount);
+
+document.getElementById("pendingAmount").textContent=
+
+formatMoney(pendingAmount);
+
+document.getElementById("approvedAmount").textContent=
+
+formatMoney(approvedAmount);
+
+document.getElementById("rejectedAmount").textContent=
+
+formatMoney(rejectedAmount);
+
+document.getElementById("addMoneyCount").textContent=
+
+addMoneyCount;
+
+document.getElementById("transferCount").textContent=
+
+transferCount;
+
+}
+
 async function loadTransactions(){
 
 container.textContent="Loading transactions...";
@@ -252,7 +672,9 @@ if(error){
 
 console.error(error);
 
-container.textContent="Unable to load transactions: "+error.message;
+container.textContent=
+
+"Unable to load transactions: "+error.message;
 
 return;
 
@@ -260,17 +682,31 @@ return;
 
 allTransactions=records||[];
 
-document.getElementById("total").textContent=allTransactions.length;
+document.getElementById("total").textContent=
 
-document.getElementById("pending").textContent=allTransactions.filter(r=>r.status==="Pending").length;
+allTransactions.length;
 
-document.getElementById("approved").textContent=allTransactions.filter(r=>r.status==="Approved").length;
+document.getElementById("pending").textContent=
 
-document.getElementById("rejected").textContent=allTransactions.filter(r=>r.status==="Rejected").length;
+allTransactions.filter(r=>r.status==="Pending").length;
+
+document.getElementById("approved").textContent=
+
+allTransactions.filter(r=>r.status==="Approved").length;
+
+document.getElementById("rejected").textContent=
+
+allTransactions.filter(r=>r.status==="Rejected").length;
+
+updateSummary();
 
 profileMap={};
 
-const customerIds=[...new Set(allTransactions.map(r=>r.user_id).filter(Boolean))];
+const customerIds=[
+
+...new Set(allTransactions.map(r=>r.user_id).filter(Boolean))
+
+];
 
 if(customerIds.length){
 
@@ -290,7 +726,9 @@ const message=document.createElement("div");
 
 message.className="warning";
 
-message.textContent="Customer details could not be loaded: "+result.error.message;
+message.textContent=
+
+"Customer details could not be loaded: "+result.error.message;
 
 warning.appendChild(message);
 
@@ -354,7 +792,9 @@ profile.phone_number
 
 const matchesSearch=searchableText.includes(search);
 
-const matchesStatus=selectedStatus==="All"||record.status===selectedStatus;
+const matchesStatus=
+
+selectedStatus==="All"||record.status===selectedStatus;
 
 const dateOnly=record.created_at.slice(0,10);
 
@@ -386,7 +826,9 @@ if(startDate&&endDate&&startDate>endDate){
 
 container.className="message";
 
-container.textContent="The From Date cannot be later than the To Date.";
+container.textContent=
+
+"The From Date cannot be later than the To Date.";
 
 return;
 
@@ -420,7 +862,7 @@ const amount=document.createElement("div");
 
 amount.className="amount";
 
-amount.textContent="₦"+Number(record.amount).toLocaleString("en-NG");
+amount.textContent=formatMoney(record.amount);
 
 card.appendChild(amount);
 
@@ -590,7 +1032,11 @@ const csv="\uFEFF"+
 
 .join("\r\n");
 
-const blob=new Blob([csv],{type:"text/csv;charset=utf-8;"});
+const blob=new Blob([csv],{
+
+type:"text/csv;charset=utf-8;"
+
+});
 
 const url=URL.createObjectURL(blob);
 
@@ -608,7 +1054,7 @@ link.click();
 
 link.remove();
 
-URL.revokeObjectURL(url);
+setTimeout(()=>URL.revokeObjectURL(url),1000);
 
 }
 
