@@ -14,9 +14,35 @@
 
 *{box-sizing:border-box}
 
-body{margin:0;padding:20px;background:#f3f5f9;color:#07152e;font-family:Arial,sans-serif}
+body{
 
-.container{max-width:900px;margin:25px auto;background:white;padding:24px;border-radius:12px;box-shadow:0 4px 18px rgba(0,0,0,.07)}
+margin:0;
+
+padding:20px;
+
+background:#f3f5f9;
+
+color:#07152e;
+
+font-family:Arial,sans-serif
+
+}
+
+.container{
+
+max-width:900px;
+
+margin:25px auto;
+
+background:white;
+
+padding:24px;
+
+border-radius:12px;
+
+box-shadow:0 4px 18px rgba(0,0,0,.07)
+
+}
 
 .brand{text-align:center}
 
@@ -26,45 +52,199 @@ body{margin:0;padding:20px;background:#f3f5f9;color:#07152e;font-family:Arial,sa
 
 h3{margin-top:28px}
 
-.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:20px 0}
+.stats{
 
-.stat{background:#f3f5f9;padding:15px;border-radius:8px;text-align:center}
+display:grid;
 
-.stat strong{display:block;font-size:23px;margin-top:8px}
+grid-template-columns:repeat(4,1fr);
 
-.transaction{border:1px solid #e0e4eb;border-radius:9px;padding:16px;margin:14px 0}
+gap:10px;
+
+margin:20px 0
+
+}
+
+.stat{
+
+background:#f3f5f9;
+
+padding:15px;
+
+border-radius:8px;
+
+text-align:center
+
+}
+
+.stat strong{
+
+display:block;
+
+font-size:23px;
+
+margin-top:8px
+
+}
+
+.transaction{
+
+border:1px solid #e0e4eb;
+
+border-radius:9px;
+
+padding:16px;
+
+margin:14px 0
+
+}
 
 .transaction h4{margin:0 0 10px}
 
 .amount{font-size:21px;font-weight:bold;margin:8px 0}
 
-.detail{font-size:13px;color:#555;line-height:1.8;overflow-wrap:anywhere}
+.detail{
 
-.customer{background:#f3f5f9;padding:12px;border-radius:7px;margin:12px 0}
+font-size:13px;
+
+color:#555;
+
+line-height:1.8;
+
+overflow-wrap:anywhere
+
+}
+
+.customer{
+
+background:#f3f5f9;
+
+padding:12px;
+
+border-radius:7px;
+
+margin:12px 0
+
+}
 
 .customer strong{color:#07152e}
 
-.status{display:inline-block;background:#fff3d5;color:#76520b;padding:6px 9px;border-radius:5px;font-size:11px;margin:10px 0}
+.status{
 
-select,button,input{padding:11px;border-radius:6px;border:1px solid #ccd2dc;margin:5px 5px 5px 0;font-size:14px}
+display:inline-block;
 
-button{background:#07152e;color:white;border:0;cursor:pointer}
+background:#fff3d5;
+
+color:#76520b;
+
+padding:6px 9px;
+
+border-radius:5px;
+
+font-size:11px;
+
+margin:10px 0
+
+}
+
+select,button,input{
+
+padding:11px;
+
+border-radius:6px;
+
+border:1px solid #ccd2dc;
+
+margin:5px 5px 5px 0;
+
+font-size:14px
+
+}
+
+button{
+
+background:#07152e;
+
+color:white;
+
+border:0;
+
+cursor:pointer
+
+}
 
 button:disabled{opacity:.6}
 
-.message{padding:15px;color:#555;text-align:center}
+.message{
 
-.warning{color:#a15c00;background:#fff3d5;padding:10px;border-radius:6px;margin:10px 0;font-size:13px}
+padding:15px;
 
-.search-area{background:#f3f5f9;padding:15px;border-radius:8px;margin:18px 0}
+color:#555;
 
-.search-area input{width:100%;margin:8px 0}
+text-align:center
 
-.search-area select{width:100%;background:white}
+}
 
-.search-label{font-size:13px;font-weight:bold}
+.warning{
 
-.result-count{font-size:13px;color:#555;margin:12px 0}
+color:#a15c00;
+
+background:#fff3d5;
+
+padding:10px;
+
+border-radius:6px;
+
+margin:10px 0;
+
+font-size:13px
+
+}
+
+.search-area{
+
+background:#f3f5f9;
+
+padding:15px;
+
+border-radius:8px;
+
+margin:18px 0
+
+}
+
+.search-area input,
+
+.search-area select{
+
+width:100%;
+
+margin:8px 0;
+
+background:white
+
+}
+
+.search-label{
+
+font-size:13px;
+
+font-weight:bold;
+
+display:block;
+
+margin-top:10px
+
+}
+
+.result-count{
+
+font-size:13px;
+
+color:#555;
+
+margin:12px 0
+
+}
 
 a{color:#07152e;font-weight:bold}
 
@@ -110,11 +290,19 @@ a{color:#07152e;font-weight:bold}
 
 </div>
 
-<button type="button" onclick="loadTransactions()">Refresh Transactions</button>
+<button type="button" onclick="loadTransactions()">
+
+Refresh Transactions
+
+</button>
 
 <div class="search-area">
 
-<label class="search-label" for="search">Search Transactions</label>
+<label class="search-label" for="search">
+
+Search Transactions
+
+</label>
 
 <input
 
@@ -128,7 +316,11 @@ oninput="displayTransactions()"
 
 >
 
-<label class="search-label" for="statusFilter">Filter by Transaction Status</label>
+<label class="search-label" for="statusFilter">
+
+Filter by Transaction Status
+
+</label>
 
 <select id="statusFilter" onchange="displayTransactions()">
 
@@ -142,7 +334,43 @@ oninput="displayTransactions()"
 
 </select>
 
-<button type="button" onclick="clearFilters()">Clear Search and Filters</button>
+<label class="search-label" for="startDate">
+
+From Date
+
+</label>
+
+<input
+
+type="date"
+
+id="startDate"
+
+onchange="displayTransactions()"
+
+>
+
+<label class="search-label" for="endDate">
+
+To Date
+
+</label>
+
+<input
+
+type="date"
+
+id="endDate"
+
+onchange="displayTransactions()"
+
+>
+
+<button type="button" onclick="clearFilters()">
+
+Clear Search and Filters
+
+</button>
 
 </div>
 
@@ -150,7 +378,11 @@ oninput="displayTransactions()"
 
 <div id="resultCount" class="result-count"></div>
 
-<div id="transactions" class="message">Loading transactions...</div>
+<div id="transactions" class="message">
+
+Loading transactions...
+
+</div>
 
 <p><a href="admin.html">Back to Admin Dashboard</a></p>
 
@@ -328,6 +560,10 @@ const search=document.getElementById("search").value
 
 const selectedStatus=document.getElementById("statusFilter").value;
 
+const startDate=document.getElementById("startDate").value;
+
+const endDate=document.getElementById("endDate").value;
+
 const filtered=allTransactions.filter(record=>{
 
 const profile=profileMap[record.user_id]||{};
@@ -360,7 +596,25 @@ const matchesStatus=
 
 selectedStatus==="All"||record.status===selectedStatus;
 
-return matchesSearch&&matchesStatus;
+const transactionDate=new Date(record.created_at);
+
+const dateOnly=record.created_at.slice(0,10);
+
+const matchesStartDate=
+
+!startDate||dateOnly>=startDate;
+
+const matchesEndDate=
+
+!endDate||dateOnly<=endDate;
+
+return matchesSearch&&
+
+matchesStatus&&
+
+matchesStartDate&&
+
+matchesEndDate;
 
 });
 
@@ -424,7 +678,15 @@ card.appendChild(customer);
 
 detail(card,"Transaction ID",record.id);
 
-detail(card,"Date",new Date(record.created_at).toLocaleString("en-NG"));
+detail(
+
+card,
+
+"Date",
+
+new Date(record.created_at).toLocaleString("en-NG")
+
+);
 
 detail(card,"Description",record.description);
 
@@ -483,6 +745,10 @@ function clearFilters(){
 document.getElementById("search").value="";
 
 document.getElementById("statusFilter").value="All";
+
+document.getElementById("startDate").value="";
+
+document.getElementById("endDate").value="";
 
 displayTransactions();
 
