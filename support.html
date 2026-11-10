@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Beeperpay Customer Support</title>
+
+<style>
+
+*{box-sizing:border-box}
+
+body{margin:0;font-family:Arial,sans-serif;background:#f4f6fa;color:#17243a}
+
+header{background:#07152e;color:white;padding:25px 18px;text-align:center}
+
+header h1{margin:0;color:#e4b84e;letter-spacing:1px}
+
+header p{margin:8px 0 0;font-size:13px}
+
+main{max-width:650px;margin:25px auto;padding:0 15px}
+
+.card{background:white;padding:22px;margin-bottom:18px;border-radius:12px;box-shadow:0 3px 12px #0000000d}
+
+h2{color:#07152e;margin-top:0}
+
+label{display:block;margin:14px 0 6px;font-weight:bold;font-size:14px}
+
+input,select,textarea{width:100%;padding:13px;border:1px solid #ccd3df;border-radius:7px;font-size:15px}
+
+textarea{min-height:120px;resize:vertical}
+
+button{width:100%;background:#07152e;color:white;padding:14px;border:0;border-radius:7px;font-weight:bold;margin-top:18px;font-size:15px}
+
+button:hover{background:#122747}
+
+.notice{font-size:12px;color:#765b20;background:#fff6df;padding:12px;border-radius:7px;line-height:1.5}
+
+.faq{padding:12px 0;border-bottom:1px solid #e5e8ee}
+
+.faq:last-child{border:0}
+
+.faq strong{color:#122747}
+
+.faq p{font-size:14px;line-height:1.5;color:#555}
+
+nav{text-align:center;padding:15px;line-height:2}
+
+nav a{color:#07152e;margin:5px 8px;font-weight:bold;font-size:13px}
+
+#result{display:none;background:#eaf7ee;padding:14px;border-radius:8px;color:#175b2b;line-height:1.5}
+
+footer{text-align:center;color:#777;font-size:12px;padding:20px}
+
+</style>
+
+</head>
+
+<body>
+
+<header>
+
+<h1>BEEPERPAY</h1>
+
+<p>MICROFINANCE BANK</p>
+
+<p>Your money. Your future. Our priority.</p>
+
+</header>
+
+<main>
+
+<section class="card">
+
+<h2>Customer Support</h2>
+
+<p>How can we help you today? Submit a demonstration support request below.</p>
+
+<div class="notice">
+
+This is a demo support page. Requests are saved only in this browser and are not delivered to support staff. Never enter your password, PIN, OTP, card details or sensitive banking information.
+
+</div>
+
+<form id="supportForm">
+
+<label for="name">Full Name</label>
+
+<input id="name" type="text" readonly>
+
+<label for="email">Email Address</label>
+
+<input id="email" type="email" readonly>
+
+<label for="category">Support Category</label>
+
+<select id="category" required>
+
+<option value="">Select a category</option>
+
+<option>Account and Login</option>
+
+<option>Add Money</option>
+
+<option>Transfer</option>
+
+<option>Profile</option>
+
+<option>Technical Issue</option>
+
+<option>Other</option>
+
+</select>
+
+<label for="subject">Subject</label>
+
+<input id="subject" type="text" maxlength="100" required>
+
+<label for="message">Your Message</label>
+
+<textarea id="message" maxlength="1000" required placeholder="Describe the issue you are experiencing..."></textarea>
+
+<button type="submit">SUBMIT SUPPORT REQUEST</button>
+
+</form>
+
+<div id="result"></div>
+
+</section>
+
+<section class="card">
+
+<h2>Frequently Asked Questions</h2>
+
+<div class="faq">
+
+<strong>1. How do I create a Beeperpay account?</strong>
+
+<p>Visit the registration page, enter your details and follow the registration instructions.</p>
+
+</div>
+
+<div class="faq">
+
+<strong>2. I cannot log in. What should I do?</strong>
+
+<p>Check your email and password. If the issue continues, use the support request form above.</p>
+
+</div>
+
+<div class="faq">
+
+<strong>3. Are transfers currently real?</strong>
+
+<p>No. Transfers on this website are demonstrations only. No real money is transferred.</p>
+
+</div>
+
+<div class="faq">
+
+<strong>4. Are Add Money requests real deposits?</strong>
+
+<p>No. Add Money requests are demonstration records and do not deposit actual funds.</p>
+
+</div>
+
+<div class="faq">
+
+<strong>5. Where can I view my transactions?</strong>
+
+<p>Open the Transaction History page from your dashboard.</p>
+
+</div>
+
+</section>
+
+<nav>
+
+<a href="index.html">Home</a>
+
+<a href="dashboard.html">Dashboard</a>
+
+<a href="transactions.html">Transactions</a>
+
+<a href="profile.html">Profile</a>
+
+<a href="#" id="logout">Logout</a>
+
+</nav>
+
+</main>
+
+<footer>
+
+© 2026 Beeperpay Microfinance Bank. Demonstration website only.
+
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+
+const SUPABASE_URL = "https://wrjvcvxswdojpxzcwyqw.supabase.co";
+
+const SUPABASE_KEY = "sb_publishable_zTksapAhIoJp_0-9w1twlQ_j7WECGcv";
+
+const client = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+let currentUser = null;
+
+async function loadUser() {
+
+  const { data, error } = await client.auth.getUser();
+
+  if (error || !data.user) {
+
+    window.location.href = "login.html";
+
+    return;
+
+  }
+
+  currentUser = data.user;
+
+  document.getElementById("name").value =
+
+    data.user.user_metadata?.full_name || "";
+
+  document.getElementById("email").value =
+
+    data.user.email || "";
+
+}
+
+loadUser();
+
+document.getElementById("supportForm").addEventListener("submit", function(e) {
+
+  e.preventDefault();
+
+  if (!currentUser) {
+
+    alert("Please log in again.");
+
+    return;
+
+  }
+
+  const ticket = {
+
+    reference: "BPS" + Date.now(),
+
+    category: document.getElementById("category").value,
+
+    subject: document.getElementById("subject").value.trim(),
+
+    message: document.getElementById("message").value.trim(),
+
+    date: new Date().toLocaleString(),
+
+    status: "Demo Request"
+
+  };
+
+  if (!ticket.subject || !ticket.message || !ticket.category) {
+
+    alert("Please complete all required fields.");
+
+    return;
+
+  }
+
+  const storageKey = "beeperpay_demo_support_" + currentUser.id;
+
+  try {
+
+    const existing = JSON.parse(localStorage.getItem(storageKey) || "[]");
+
+    existing.push(ticket);
+
+    localStorage.setItem(storageKey, JSON.stringify(existing));
+
+    const result = document.getElementById("result");
+
+    result.textContent =
+
+      "Your demo support request has been saved in this browser. Reference: " +
+
+      ticket.reference +
+
+      ". It has not been sent to support staff.";
+
+    result.style.display = "block";
+
+    document.getElementById("supportForm").reset();
+
+    document.getElementById("name").value =
+
+      currentUser.user_metadata?.full_name || "";
+
+    document.getElementById("email").value =
+
+      currentUser.email || "";
+
+  } catch (error) {
+
+    alert("Unable to save the demo request in this browser.");
+
+  }
+
+});
+
+document.getElementById("logout").addEventListener("click", async function(e) {
+
+  e.preventDefault();
+
+  await client.auth.signOut();
+
+  window.location.href = "login.html";
+
+});
+
+</script>
+
+</body>
+
+</html>
