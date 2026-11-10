@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Customer Management | Beeperpay</title>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <style>
+
+    * {
+
+      box-sizing: border-box;
+
+      margin: 0;
+
+      padding: 0;
+
+    }
+
+    body {
+
+      font-family: Arial, sans-serif;
+
+      background: #f3f5f9;
+
+      color: #17233d;
+
+    }
+
+    header {
+
+      background: #071b49;
+
+      color: white;
+
+      padding: 22px 18px;
+
+      border-bottom: 4px solid #d6a83e;
+
+    }
+
+    .brand {
+
+      font-size: 25px;
+
+      font-weight: bold;
+
+      letter-spacing: 1px;
+
+    }
+
+    .brand span {
+
+      color: #e2b54c;
+
+    }
+
+    header p {
+
+      font-size: 12px;
+
+      margin-top: 6px;
+
+      letter-spacing: 2px;
+
+    }
+
+    main {
+
+      max-width: 1150px;
+
+      margin: 25px auto;
+
+      padding: 0 15px;
+
+    }
+
+    .topbar {
+
+      display: flex;
+
+      justify-content: space-between;
+
+      align-items: center;
+
+      flex-wrap: wrap;
+
+      gap: 12px;
+
+      margin-bottom: 22px;
+
+    }
+
+    h1 {
+
+      font-size: 24px;
+
+      color: #071b49;
+
+    }
+
+    .subtitle {
+
+      color: #6b7280;
+
+      margin-top: 7px;
+
+      font-size: 14px;
+
+    }
+
+    .actions {
+
+      display: flex;
+
+      gap: 9px;
+
+      flex-wrap: wrap;
+
+    }
+
+    button, .back-link {
+
+      border: none;
+
+      border-radius: 6px;
+
+      padding: 11px 15px;
+
+      font-size: 13px;
+
+      font-weight: bold;
+
+      cursor: pointer;
+
+      text-decoration: none;
+
+    }
+
+    .refresh {
+
+      background: #071b49;
+
+      color: white;
+
+    }
+
+    .logout {
+
+      background: #b42318;
+
+      color: white;
+
+    }
+
+    .back-link {
+
+      background: #e8edf5;
+
+      color: #071b49;
+
+      display: inline-block;
+
+    }
+
+    .stats {
+
+      display: grid;
+
+      grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+
+      gap: 15px;
+
+      margin-bottom: 22px;
+
+    }
+
+    .stat-card {
+
+      background: white;
+
+      padding: 20px;
+
+      border-radius: 10px;
+
+      box-shadow: 0 2px 9px #0000000c;
+
+      border-left: 4px solid #d6a83e;
+
+    }
+
+    .stat-card p {
+
+      font-size: 13px;
+
+      color: #687386;
+
+      margin-bottom: 10px;
+
+    }
+
+    .stat-card h2 {
+
+      color: #071b49;
+
+      font-size: 27px;
+
+    }
+
+    .panel {
+
+      background: white;
+
+      padding: 20px;
+
+      border-radius: 10px;
+
+      box-shadow: 0 2px 9px #0000000c;
+
+    }
+
+    .panel h2 {
+
+      font-size: 19px;
+
+      margin-bottom: 15px;
+
+      color: #071b49;
+
+    }
+
+    input {
+
+      width: 100%;
+
+      padding: 13px;
+
+      border: 1px solid #d4dae4;
+
+      border-radius: 6px;
+
+      font-size: 14px;
+
+      margin-bottom: 17px;
+
+      outline-color: #d6a83e;
+
+    }
+
+    .table-wrap {
+
+      width: 100%;
+
+      overflow-x: auto;
+
+    }
+
+    table {
+
+      width: 100%;
+
+      border-collapse: collapse;
+
+      min-width: 760px;
+
+    }
+
+    th, td {
+
+      padding: 13px 11px;
+
+      text-align: left;
+
+      border-bottom: 1px solid #e9edf3;
+
+      font-size: 13px;
+
+    }
+
+    th {
+
+      background: #f3f5f9;
+
+      color: #071b49;
+
+      font-weight: bold;
+
+    }
+
+    td {
+
+      color: #465166;
+
+    }
+
+    .status {
+
+      margin: 14px 0;
+
+      font-size: 13px;
+
+      color: #536174;
+
+    }
+
+    .error {
+
+      color: #b42318;
+
+    }
+
+    .success {
+
+      color: #16803c;
+
+    }
+
+    .empty {
+
+      text-align: center;
+
+      padding: 25px;
+
+      color: #7b8493;
+
+    }
+
+    footer {
+
+      text-align: center;
+
+      padding: 25px 12px;
+
+      color: #778092;
+
+      font-size: 12px;
+
+    }
+
+    #app {
+
+      display: none;
+
+    }
+
+    #loading {
+
+      max-width: 600px;
+
+      margin: 70px auto;
+
+      padding: 20px;
+
+      text-align: center;
+
+      color: #071b49;
+
+    }
+
+    @media (max-width: 600px) {
+
+      h1 {
+
+        font-size: 21px;
+
+      }
+
+      .topbar {
+
+        align-items: flex-start;
+
+      }
+
+      .panel {
+
+        padding: 13px;
+
+      }
+
+    }
+
+  </style>
+
+</head>
+
+<body>
+
+<header>
+
+  <div class="brand">BEEPER<span>PAY</span></div>
+
+  <p>MICROFINANCE BANK</p>
+
+</header>
+
+<div id="loading">
+
+  Checking administrator access...
+
+</div>
+
+<main id="app">
+
+  <div class="topbar">
+
+    <div>
+
+      <h1>Customer Management</h1>
+
+      <p class="subtitle">View and search registered Beeperpay customers.</p>
+
+    </div>
+
+    <div class="actions">
+
+      <a class="back-link" href="admin.html">Admin Dashboard</a>
+
+      <button class="refresh" id="refreshBtn">Refresh</button>
+
+      <button class="logout" id="logoutBtn">Logout</button>
+
+    </div>
+
+  </div>
+
+  <div class="stats">
+
+    <div class="stat-card">
+
+      <p>Total Registered Customers</p>
+
+      <h2 id="totalCustomers">0</h2>
+
+    </div>
+
+    <div class="stat-card">
+
+      <p>Matching Search Results</p>
+
+      <h2 id="matchingCustomers">0</h2>
+
+    </div>
+
+  </div>
+
+  <section class="panel">
+
+    <h2>Registered Customers</h2>
+
+    <input
+
+      type="search"
+
+      id="searchInput"
+
+      placeholder="Search by name, email, phone or customer ID..."
+
+      autocomplete="off"
+
+    >
+
+    <p class="status" id="statusMessage">
+
+      Loading customer records...
+
+    </p>
+
+    <div class="table-wrap">
+
+      <table>
+
+        <thead>
+
+          <tr>
+
+            <th>Full Name</th>
+
+            <th>Email Address</th>
+
+            <th>Phone Number</th>
+
+            <th>Customer ID</th>
+
+            <th>Registration Date</th>
+
+          </tr>
+
+        </thead>
+
+        <tbody id="customerTable">
+
+          <tr>
+
+            <td colspan="5" class="empty">
+
+              Loading customers...
+
+            </td>
+
+          </tr>
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+  </section>
+
+  <footer>
+
+    BEEPERPAY MICROFINANCE BANK<br>
+
+    Demonstration customer management portal.
+
+    No real banking services are active.
+
+  </footer>
+
+</main>
+
+<script>
+
+  const SUPABASE_URL =
+
+    "https://wrjvcvxswdojpxzcwyqw.supabase.co";
+
+  const SUPABASE_KEY =
+
+    "sb_publishable_zTksapAhIoJp_0-9w1twlQ_j7WECGcv";
+
+  const client = window.supabase.createClient(
+
+    SUPABASE_URL,
+
+    SUPABASE_KEY
+
+  );
+
+  let customers = [];
+
+  const loading = document.getElementById("loading");
+
+  const app = document.getElementById("app");
+
+  const statusMessage = document.getElementById("statusMessage");
+
+  const customerTable = document.getElementById("customerTable");
+
+  const searchInput = document.getElementById("searchInput");
+
+  function setStatus(message, type = "") {
+
+    statusMessage.textContent = message;
+
+    statusMessage.className = "status " + type;
+
+  }
+
+  function formatDate(value) {
+
+    if (!value) return "Not available";
+
+    const date = new Date(value);
+
+    if (Number.isNaN(date.getTime())) {
+
+      return "Not available";
+
+    }
+
+    return date.toLocaleDateString("en-NG", {
+
+      day: "2-digit",
+
+      month: "short",
+
+      year: "numeric"
+
+    });
+
+  }
+
+  function addCell(row, value) {
+
+    const cell = document.createElement("td");
+
+    cell.textContent = value || "Not provided";
+
+    row.appendChild(cell);
+
+  }
+
+  function renderCustomers(list) {
+
+    customerTable.replaceChildren();
+
+    document.getElementById("totalCustomers").textContent =
+
+      customers.length;
+
+    document.getElementById("matchingCustomers").textContent =
+
+      list.length;
+
+    if (list.length === 0) {
+
+      const row = document.createElement("tr");
+
+      const cell = document.createElement("td");
+
+      cell.colSpan = 5;
+
+      cell.className = "empty";
+
+      cell.textContent = "No customer records found.";
+
+      row.appendChild(cell);
+
+      customerTable.appendChild(row);
+
+      return;
+
+    }
+
+    list.forEach(customer => {
+
+      const row = document.createElement("tr");
+
+      addCell(row, customer.full_name);
+
+      addCell(row, customer.email);
+
+      addCell(row, customer.phone_number);
+
+      addCell(row, customer.id);
+
+      addCell(row, formatDate(customer.created_at));
+
+      customerTable.appendChild(row);
+
+    });
+
+  }
+
+  function filterCustomers() {
+
+    const term = searchInput.value.trim().toLowerCase();
+
+    const filtered = customers.filter(customer => {
+
+      return [
+
+        customer.full_name,
+
+        customer.email,
+
+        customer.phone_number,
+
+        customer.id
+
+      ].some(value =>
+
+        String(value || "").toLowerCase().includes(term)
+
+      );
+
+    });
+
+    renderCustomers(filtered);
+
+  }
+
+  async function loadCustomers() {
+
+    setStatus("Loading customer records...");
+
+    const { data, error } = await client
+
+      .from("customer_profiles")
+
+      .select("id, email, full_name, phone_number, created_at")
+
+      .order("created_at", { ascending: false });
+
+    if (error) {
+
+      console.error(error);
+
+      customers = [];
+
+      renderCustomers([]);
+
+      setStatus(
+
+        "Could not load customers: " + error.message,
+
+        "error"
+
+      );
+
+      return;
+
+    }
+
+    customers = data || [];
+
+    filterCustomers();
+
+    setStatus(
+
+      "Customer records loaded successfully.",
+
+      "success"
+
+    );
+
+  }
+
+  async function checkAdministrator() {
+
+    try {
+
+      const { data: userData, error: userError } =
+
+        await client.auth.getUser();
+
+      if (userError || !userData.user) {
+
+        window.location.replace("admin.html");
+
+        return;
+
+      }
+
+      const user = userData.user;
+
+      const { data: roleData, error: roleError } = await client
+
+        .from("user_roles")
+
+        .select("role")
+
+        .eq("user_id", user.id)
+
+        .eq("role", "admin")
+
+        .maybeSingle();
+
+      if (roleError || !roleData) {
+
+        loading.textContent =
+
+          "Access denied. Administrator permission is required.";
+
+        return;
+
+      }
+
+      loading.style.display = "none";
+
+      app.style.display = "block";
+
+      await loadCustomers();
+
+    } catch (error) {
+
+      console.error(error);
+
+      loading.textContent =
+
+        "Unable to verify administrator access. Please try again.";
+
+    }
+
+  }
+
+  searchInput.addEventListener("input", filterCustomers);
+
+  document.getElementById("refreshBtn")
+
+    .addEventListener("click", loadCustomers);
+
+  document.getElementById("logoutBtn")
+
+    .addEventListener("click", async () => {
+
+      const { error } = await client.auth.signOut();
+
+      if (error) {
+
+        alert("Logout failed: " + error.message);
+
+        return;
+
+      }
+
+      window.location.replace("admin.html");
+
+    });
+
+  checkAdministrator();
+
+</script>
+
+</body>
+
+</html>
