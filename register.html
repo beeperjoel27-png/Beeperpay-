@@ -16,77 +16,107 @@
 
 body {
 
-  margin: 0;
+    margin: 0;
 
-  padding: 25px 15px;
+    padding: 25px 15px;
 
-  background: #07152e;
+    background: #07152e;
 
-  color: white;
+    color: white;
 
-  font-family: Arial, sans-serif;
+    font-family: Arial, sans-serif;
 
 }
 
 .container {
 
-  max-width: 420px;
+    max-width: 420px;
 
-  margin: 35px auto;
+    margin: 35px auto;
 
-  padding: 28px 22px;
+    padding: 28px 22px;
 
-  background: #122747;
+    background: #122747;
 
-  border-radius: 15px;
+    border-radius: 15px;
 
 }
 
-h1 { color: #e4b84e; text-align: center; }
+h1 {
+
+    color: #e4b84e;
+
+    text-align: center;
+
+}
 
 h2 { text-align: center; }
 
-p { text-align: center; color: #ddd; }
+p {
 
-label { display: block; margin-top: 15px; }
+    text-align: center;
+
+    color: #ddd;
+
+}
+
+label {
+
+    display: block;
+
+    margin-top: 15px;
+
+}
 
 input {
 
-  width: 100%;
+    width: 100%;
 
-  padding: 13px;
+    padding: 13px;
 
-  margin-top: 7px;
+    margin-top: 7px;
 
-  border-radius: 7px;
+    border-radius: 7px;
 
-  font-size: 16px;
+    font-size: 16px;
 
 }
 
 button {
 
-  width: 100%;
+    width: 100%;
 
-  margin-top: 22px;
+    margin-top: 22px;
 
-  padding: 14px;
+    padding: 14px;
 
-  background: #e4b84e;
+    background: #e4b84e;
 
-  color: #07152e;
+    color: #07152e;
 
-  border: 0;
+    border: 0;
 
-  border-radius: 7px;
+    border-radius: 7px;
 
-  font-weight: bold;
+    font-weight: bold;
+
+    cursor: pointer;
+
+}
+
+button:disabled {
+
+    opacity: 0.6;
 
 }
 
 a { color: #e4b84e; }
 
-#message { overflow-wrap: anywhere; }
+#message {
+
+    overflow-wrap: anywhere;
+
+}
 
 </style>
 
@@ -106,25 +136,33 @@ a { color: #e4b84e; }
 
 <label>Full Name</label>
 
-<input id="fullName" type="text" required>
+<input id="fullName" type="text" autocomplete="name" required>
 
 <label>Email Address</label>
 
-<input id="email" type="email" required>
+<input id="email" type="email" autocomplete="email" required>
 
 <label>Phone Number</label>
 
-<input id="phone" type="tel" required>
+<input id="phone" type="tel" autocomplete="tel" required>
 
 <label>Password</label>
 
-<input id="password" type="password" minlength="8" required>
+<input id="password" type="password"
+
+minlength="8" autocomplete="new-password" required>
 
 <label>Confirm Password</label>
 
-<input id="confirmPassword" type="password" minlength="8" required>
+<input id="confirmPassword" type="password"
 
-<button id="registerButton" type="submit">CREATE ACCOUNT</button>
+minlength="8" autocomplete="new-password" required>
+
+<button id="registerButton" type="submit">
+
+CREATE ACCOUNT
+
+</button>
 
 </form>
 
@@ -148,87 +186,91 @@ a { color: #e4b84e; }
 
 const client = window.supabase.createClient(
 
-  "https://wrjvcvxswdojpxzcwyqw.supabase.co",
+"https://wrjvcvxswdojpxzcwyqw.supabase.co",
 
-  "sb_publishable_zTksapAhIoJp_0-9w1twlQ_j7WECGcv"
+"sb_publishable_zTksapAhIoJp_0-9w1twlQ_j7WECGcv"
 
 );
 
-document.getElementById("registerForm").addEventListener("submit", async function(e) {
+document.getElementById("registerForm")
 
-  e.preventDefault();
+.addEventListener("submit", async function(e) {
 
-  const name = document.getElementById("fullName").value.trim();
+e.preventDefault();
 
-  const email = document.getElementById("email").value.trim();
+const name = document.getElementById("fullName").value.trim();
 
-  const phone = document.getElementById("phone").value.trim();
+const email = document.getElementById("email").value.trim();
 
-  const password = document.getElementById("password").value;
+const phone = document.getElementById("phone").value.trim();
 
-  const confirm = document.getElementById("confirmPassword").value;
+const password = document.getElementById("password").value;
 
-  const message = document.getElementById("message");
+const confirm = document.getElementById("confirmPassword").value;
 
-  const button = document.getElementById("registerButton");
+const message = document.getElementById("message");
 
-  if (password !== confirm) {
+const button = document.getElementById("registerButton");
+
+if (password !== confirm) {
 
     message.textContent = "Passwords do not match.";
 
     return;
 
-  }
+}
 
-  button.disabled = true;
+button.disabled = true;
 
-  button.textContent = "CREATING ACCOUNT...";
+button.textContent = "CREATING ACCOUNT...";
 
-  message.textContent = "";
+message.textContent = "";
 
-  try {
+try {
 
-    const { error } = await client.auth.signUp({
+const { data, error } = await client.auth.signUp({
 
-      email,
+email: email,
 
-      password,
+password: password,
 
-      options: {
+options: {
 
-        emailRedirectTo: "https://beeperjoel27-png.github.io/Beeperpay-/login.html",
+    emailRedirectTo:
 
-        data: {
+    "https://beeperjoel27-png.github.io/Beeperpay-/login.html",
 
-          full_name: name,
+    data: {
 
-          phone_number: phone
+        full_name: name,
 
-        }
+        phone: phone
 
-      }
+    }
 
-    });
+}
 
-    if (error) throw error;
+});
 
-    message.textContent =
+if (error) throw error;
 
-      "Registration submitted! Check your email for the confirmation link.";
+message.textContent =
 
-    document.getElementById("registerForm").reset();
+"Registration submitted! Check your email for the confirmation link.";
 
-  } catch (error) {
+document.getElementById("registerForm").reset();
 
-    message.textContent = error.message;
+} catch (error) {
 
-  } finally {
+message.textContent = error.message;
 
-    button.disabled = false;
+} finally {
 
-    button.textContent = "CREATE ACCOUNT";
+button.disabled = false;
 
-  }
+button.textContent = "CREATE ACCOUNT";
+
+}
 
 });
 
