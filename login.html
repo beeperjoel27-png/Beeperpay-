@@ -1,222 +1,354 @@
-
-
 <!DOCTYPE html>
 
 <html lang="en">
 
 <head>
 
-  <meta charset="UTF-8">
+<meta charset="UTF-8">
 
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Beeperpay | Customer Login</title>
+<title>Beeperpay | Customer Login</title>
 
-  <style>
+<style>
 
-    * { box-sizing: border-box; }
+* {
 
-    body {
+    box-sizing: border-box;
 
-      margin: 0;
+}
 
-      padding: 25px 15px;
+body {
 
-      background: #07152e;
+    margin: 0;
 
-      color: white;
+    padding: 25px 15px;
 
-      font-family: Arial, sans-serif;
+    background: #07152e;
 
-    }
+    color: white;
 
-    .container {
+    font-family: Arial, sans-serif;
 
-      max-width: 420px;
+}
 
-      margin: 45px auto;
+.container {
 
-      padding: 28px 22px;
+    max-width: 420px;
 
-      background: #122747;
+    margin: 45px auto;
 
-      border-radius: 15px;
+    padding: 28px 22px;
 
-    }
+    background: #122747;
 
-    h1 { color: #e4b84e; text-align: center; }
+    border-radius: 15px;
 
-    h2 { text-align: center; }
+}
 
-    p { text-align: center; color: #ddd; }
+h1 {
 
-    label { display: block; margin-top: 18px; }
+    color: #e4b84e;
 
-    input {
+    text-align: center;
 
-      width: 100%;
+}
 
-      padding: 13px;
+h2 {
 
-      margin-top: 7px;
+    text-align: center;
 
-      border: 1px solid #52627a;
+}
 
-      border-radius: 7px;
+p {
 
-      font-size: 16px;
+    text-align: center;
 
-    }
+    color: #ddd;
 
-    button {
+}
 
-      width: 100%;
+label {
 
-      margin-top: 24px;
+    display: block;
 
-      padding: 14px;
+    margin-top: 18px;
 
-      background: #e4b84e;
+}
 
-      color: #07152e;
+input {
 
-      border: none;
+    width: 100%;
 
-      border-radius: 7px;
+    padding: 13px;
 
-      font-size: 16px;
+    margin-top: 7px;
 
-      font-weight: bold;
+    border: 1px solid #52627a;
 
-    }
+    border-radius: 7px;
 
-    button:disabled { opacity: .6; }
+    font-size: 16px;
 
-    a { color: #e4b84e; }
+}
 
-    #message { margin-top: 18px; overflow-wrap: anywhere; }
+.password-wrapper {
 
-  </style>
+    position: relative;
+
+}
+
+.password-wrapper input {
+
+    padding-right: 65px;
+
+}
+
+.toggle-password {
+
+    position: absolute;
+
+    right: 10px;
+
+    top: 50%;
+
+    transform: translateY(-35%);
+
+    width: auto;
+
+    margin: 0;
+
+    padding: 7px;
+
+    background: transparent;
+
+    color: #e4b84e;
+
+    border: none;
+
+    font-size: 13px;
+
+    cursor: pointer;
+
+}
+
+.login-button {
+
+    width: 100%;
+
+    margin-top: 24px;
+
+    padding: 14px;
+
+    background: #e4b84e;
+
+    color: #07152e;
+
+    border: none;
+
+    border-radius: 7px;
+
+    font-size: 16px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+}
+
+.login-button:disabled {
+
+    opacity: .6;
+
+}
+
+a {
+
+    color: #e4b84e;
+
+}
+
+#message {
+
+    margin-top: 18px;
+
+    overflow-wrap: anywhere;
+
+}
+
+</style>
 
 </head>
 
 <body>
 
-  <div class="container">
+<div class="container">
 
-    <h1>BEEPERPAY</h1>
+<h1>BEEPERPAY</h1>
 
-    <p>MICROFINANCE BANK</p>
+<p>MICROFINANCE BANK</p>
 
-    <h2>Customer Login</h2>
+<h2>Customer Login</h2>
 
-    <form id="loginForm">
+<form id="loginForm">
 
-      <label>Email Address</label>
+<label for="email">Email Address</label>
 
-      <input id="email" type="email" required>
+<input id="email" type="email" required>
 
-      <label>Password</label>
+<label for="password">Password</label>
 
-      <input id="password" type="password" required>
+<div class="password-wrapper">
 
-      <button id="loginButton" type="submit">LOGIN</button>
+    <input id="password" type="password" required>
 
-    </form>
+    <button
 
-    <p id="message" role="status"></p>
+        type="button"
 
-    <p>Don't have an account?
+        class="toggle-password"
 
-      <a href="register.html">Register here</a>
+        id="togglePassword"
 
-    </p>
+        aria-label="Show password"
 
-    <p><a href="index.html">Back to Home</a></p>
+        aria-pressed="false">
 
-    <p>Your money. Your future. Our priority.</p>
+        SHOW
 
-    <p>Demo website. No live banking services are connected.</p>
+    </button>
 
-  </div>
+</div>
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<button id="loginButton" class="login-button" type="submit">
 
-  <script>
+LOGIN
 
-    const SUPABASE_URL =
+</button>
 
-      "https://wrjvcvxswdojpxzcwyqw.supabase.co";
+</form>
 
-    const SUPABASE_KEY =
+<p id="message" role="status"></p>
 
-      "sb_publishable_zTksapAhIoJp_0-9w1twlQ_j7WECGcv";
+<p>Don't have an account?
 
-    const client = window.supabase.createClient(
+<a href="register.html">Register here</a>
 
-      SUPABASE_URL,
+</p>
 
-      SUPABASE_KEY
+<p><a href="index.html">Back to Home</a></p>
+
+<p>Your money. Your future. Our priority.</p>
+
+<p>Demo website. No live banking services are connected.</p>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+
+const SUPABASE_URL = "https://wrjvcvxswdojpxzcwyqw.supabase.co";
+
+const SUPABASE_KEY = "sb_publishable_zTksapAhIoJp_0-9w1twlQ_j7WECGcv";
+
+const client = window.supabase.createClient(
+
+    SUPABASE_URL,
+
+    SUPABASE_KEY
+
+);
+
+const form = document.getElementById("loginForm");
+
+const message = document.getElementById("message");
+
+const button = document.getElementById("loginButton");
+
+const passwordInput = document.getElementById("password");
+
+const togglePassword = document.getElementById("togglePassword");
+
+// Show and hide password
+
+togglePassword.addEventListener("click", function() {
+
+    const isHidden = passwordInput.type === "password";
+
+    passwordInput.type = isHidden ? "text" : "password";
+
+    togglePassword.textContent = isHidden ? "HIDE" : "SHOW";
+
+    togglePassword.setAttribute(
+
+        "aria-label",
+
+        isHidden ? "Hide password" : "Show password"
 
     );
 
-    const form = document.getElementById("loginForm");
+    togglePassword.setAttribute(
 
-    const message = document.getElementById("message");
+        "aria-pressed",
 
-    const button = document.getElementById("loginButton");
+        String(isHidden)
 
-    form.addEventListener("submit", async function(event) {
+    );
 
-      event.preventDefault();
+});
 
-      const email = document.getElementById("email").value.trim();
+// Customer login
 
-      const password = document.getElementById("password").value;
+form.addEventListener("submit", async function(event) {
 
-      button.disabled = true;
+    event.preventDefault();
 
-      button.textContent = "SIGNING IN...";
+    const email = document.getElementById("email").value.trim();
 
-      message.textContent = "";
+    const password = passwordInput.value;
 
-      try {
+    button.disabled = true;
 
-        const { data, error } =
+    button.textContent = "SIGNING IN...";
 
-          await client.auth.signInWithPassword({
+    message.textContent = "";
+
+    try {
+
+        const { data, error } = await client.auth.signInWithPassword({
 
             email: email,
 
             password: password
 
-          });
+        });
 
         if (error) throw error;
 
         window.location.href = "dashboard.html";
 
-      } catch (error) {
+    } catch (error) {
 
         message.textContent =
 
-          error.message === "Invalid login credentials"
+            error.message === "Invalid login credentials"
 
             ? "Email or password is incorrect. Please check and try again."
 
             : error.message;
 
-      } finally {
+    } finally {
 
         button.disabled = false;
 
         button.textContent = "LOGIN";
 
-      }
+    }
 
-    });
+});
 
-  </script>
+</script>
 
 </body>
 
