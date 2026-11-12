@@ -132,6 +132,24 @@ input {
 
 }
 
+.forgot-password {
+
+    text-align: right;
+
+    margin-top: 12px;
+
+    font-size: 14px;
+
+}
+
+.forgot-password a,
+
+a {
+
+    color: #e4b84e;
+
+}
+
 .login-button {
 
     width: 100%;
@@ -162,12 +180,6 @@ input {
 
 }
 
-a {
-
-    color: #e4b84e;
-
-}
-
 #message {
 
     margin-top: 18px;
@@ -194,33 +206,69 @@ a {
 
 <label for="email">Email Address</label>
 
-<input id="email" type="email" required>
+<input
+
+    id="email"
+
+    type="email"
+
+    autocomplete="username"
+
+    required
+
+>
 
 <label for="password">Password</label>
 
 <div class="password-wrapper">
 
-    <input id="password" type="password" required>
+<input
 
-    <button
+    id="password"
 
-        type="button"
+    type="password"
 
-        class="toggle-password"
+    autocomplete="current-password"
 
-        id="togglePassword"
+    required
 
-        aria-label="Show password"
+>
 
-        aria-pressed="false">
+<button
 
-        SHOW
+    type="button"
 
-    </button>
+    class="toggle-password"
+
+    id="togglePassword"
+
+    aria-label="Show password"
+
+    aria-pressed="false"
+
+>
+
+SHOW
+
+</button>
 
 </div>
 
-<button id="loginButton" class="login-button" type="submit">
+<p class="forgot-password">
+
+<a href="forgot-password.html">Forgot Password?</a>
+
+</p>
+
+<button
+
+    id="loginButton"
+
+    class="login-button"
+
+    type="submit"
+
+>
 
 LOGIN
 
@@ -230,7 +278,9 @@ LOGIN
 
 <p id="message" role="status"></p>
 
-<p>Don't have an account?
+<p>
+
+Don't have an account?
 
 <a href="register.html">Register here</a>
 
@@ -248,9 +298,13 @@ LOGIN
 
 <script>
 
-const SUPABASE_URL = "https://wrjvcvxswdojpxzcwyqw.supabase.co";
+const SUPABASE_URL =
 
-const SUPABASE_KEY = "sb_publishable_zTksapAhIoJp_0-9w1twlQ_j7WECGcv";
+"https://wrjvcvxswdojpxzcwyqw.supabase.co";
+
+const SUPABASE_KEY =
+
+"sb_publishable_zTksapAhIoJp_0-9w1twlQ_j7WECGcv";
 
 const client = window.supabase.createClient(
 
@@ -266,19 +320,29 @@ const message = document.getElementById("message");
 
 const button = document.getElementById("loginButton");
 
-const passwordInput = document.getElementById("password");
+const passwordInput =
 
-const togglePassword = document.getElementById("togglePassword");
+document.getElementById("password");
+
+const togglePassword =
+
+document.getElementById("togglePassword");
 
 // Show and hide password
 
 togglePassword.addEventListener("click", function() {
 
-    const isHidden = passwordInput.type === "password";
+    const isHidden =
 
-    passwordInput.type = isHidden ? "text" : "password";
+        passwordInput.type === "password";
 
-    togglePassword.textContent = isHidden ? "HIDE" : "SHOW";
+    passwordInput.type =
+
+        isHidden ? "text" : "password";
+
+    togglePassword.textContent =
+
+        isHidden ? "HIDE" : "SHOW";
 
     togglePassword.setAttribute(
 
@@ -304,7 +368,9 @@ form.addEventListener("submit", async function(event) {
 
     event.preventDefault();
 
-    const email = document.getElementById("email").value.trim();
+    const email =
+
+        document.getElementById("email").value.trim();
 
     const password = passwordInput.value;
 
@@ -316,13 +382,15 @@ form.addEventListener("submit", async function(event) {
 
     try {
 
-        const { data, error } = await client.auth.signInWithPassword({
+        const { error } =
 
-            email: email,
+            await client.auth.signInWithPassword({
 
-            password: password
+                email: email,
 
-        });
+                password: password
+
+            });
 
         if (error) throw error;
 
