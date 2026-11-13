@@ -8,7 +8,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Beeperpay Dashboard</title>
+<title>Beeperpay - Home</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
@@ -16,41 +16,607 @@
 
 *{box-sizing:border-box}
 
-body{margin:0;font-family:Arial,sans-serif;background:#f3f5f9;color:#07152e}
+body{
 
-header{background:#07152e;color:white;text-align:center;padding:24px 15px}
+  margin:0;
 
-header h2{color:#e4b84e;margin:0}
+  font-family:Arial,sans-serif;
 
-header p{margin:7px 0}
+  background:#f4f6fa;
 
-main{max-width:950px;margin:auto;padding:20px}
+  color:#101d36;
 
-.card{background:white;padding:20px;border-radius:12px;margin-bottom:18px;box-shadow:0 2px 8px #0000000c}
+  padding-bottom:85px;
 
-.balance{background:#07152e;color:white;text-align:center}
+}
 
-.balance h1{color:#e4b84e;font-size:32px}
+header{
 
-.summary{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+  background:#081831;
 
-.summary div{background:#f3f5f9;padding:15px;border-radius:8px}
+  color:white;
 
-.summary strong{display:block;font-size:20px;margin-top:8px}
+  padding:22px 18px 28px;
 
-.services{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+  border-radius:0 0 23px 23px;
 
-.services a{display:block;background:#f3f5f9;color:#07152e;padding:17px 10px;text-decoration:none;border-radius:9px;text-align:center;font-weight:bold}
+}
 
-.services a:hover{background:#e7edf6}
+.top{
 
-#recent p{border-bottom:1px solid #eee;padding:10px 0;font-size:14px}
+  display:flex;
 
-button{background:#b88a20;color:white;border:0;padding:13px 25px;border-radius:7px;cursor:pointer}
+  justify-content:space-between;
 
-footer{text-align:center;padding:20px;color:#666;font-size:12px}
+  align-items:center;
 
-@media(max-width:500px){.services{grid-template-columns:1fr 1fr}}
+}
+
+.brand-wrap{
+
+  display:flex;
+
+  align-items:center;
+
+  gap:7px;
+
+}
+
+.brand-person{
+
+  font-size:20px;
+
+  line-height:1;
+
+}
+
+.brand{
+
+  color:#e6bb58;
+
+  font-weight:800;
+
+  font-size:20px;
+
+  letter-spacing:1px;
+
+}
+
+.top-icons{
+
+  display:flex;
+
+  align-items:center;
+
+  gap:15px;
+
+  font-size:21px;
+
+}
+
+.notification{
+
+  cursor:pointer;
+
+}
+
+.greeting{
+
+  margin-top:25px;
+
+  font-size:14px;
+
+  color:#cbd4e3;
+
+}
+
+.greeting h2{
+
+  color:white;
+
+  margin:6px 0;
+
+  font-size:23px;
+
+}
+
+.balance-card{
+
+  background:linear-gradient(135deg,#102c52,#07152c);
+
+  color:white;
+
+  border:1px solid #344a67;
+
+  border-radius:17px;
+
+  padding:19px;
+
+  margin-top:22px;
+
+}
+
+.balance-label{
+
+  font-size:13px;
+
+  color:#d5ddeb;
+
+}
+
+.balance-line{
+
+  display:flex;
+
+  align-items:center;
+
+  gap:10px;
+
+  margin:9px 0;
+
+}
+
+.balance-line h1{
+
+  color:#edc568;
+
+  font-size:31px;
+
+  margin:0;
+
+}
+
+.eye{
+
+  background:#263d5e;
+
+  color:white;
+
+  border:0;
+
+  border-radius:50%;
+
+  width:27px;
+
+  height:27px;
+
+  padding:5px;
+
+  display:grid;
+
+  place-items:center;
+
+  cursor:pointer;
+
+  flex-shrink:0;
+
+}
+
+.eye svg{
+
+  width:15px;
+
+  height:15px;
+
+  fill:none;
+
+  stroke:currentColor;
+
+  stroke-width:2;
+
+  stroke-linecap:round;
+
+  stroke-linejoin:round;
+
+}
+
+.earnings{
+
+  color:#cbd4e3;
+
+  font-size:12px;
+
+  margin-top:12px;
+
+}
+
+main{
+
+  max-width:650px;
+
+  margin:auto;
+
+  padding:15px;
+
+}
+
+.section-head{
+
+  display:flex;
+
+  align-items:center;
+
+  justify-content:space-between;
+
+  margin:22px 2px 13px;
+
+}
+
+.section-head h3{
+
+  margin:0;
+
+  font-size:17px;
+
+}
+
+.section-head a{
+
+  text-decoration:none;
+
+  color:#a77b19;
+
+  font-size:12px;
+
+  font-weight:bold;
+
+}
+
+.history-card{
+
+  background:white;
+
+  border-radius:13px;
+
+  padding:16px;
+
+  display:flex;
+
+  align-items:center;
+
+  gap:12px;
+
+  box-shadow:0 2px 8px #00000008;
+
+}
+
+.history-icon{
+
+  width:42px;
+
+  height:42px;
+
+  border-radius:50%;
+
+  display:grid;
+
+  place-items:center;
+
+  background:#f0f2f6;
+
+  font-size:20px;
+
+}
+
+.history-info{
+
+  flex:1;
+
+  min-width:0;
+
+}
+
+.history-info strong{
+
+  font-size:13px;
+
+}
+
+.history-info p{
+
+  margin:5px 0 0;
+
+  color:#8791a1;
+
+  font-size:11px;
+
+}
+
+.history-amount{
+
+  font-size:13px;
+
+  font-weight:bold;
+
+}
+
+.action-grid{
+
+  display:grid;
+
+  grid-template-columns:repeat(4,1fr);
+
+  gap:12px 7px;
+
+}
+
+.action{
+
+  background:white;
+
+  border:0;
+
+  border-radius:12px;
+
+  padding:14px 4px;
+
+  text-align:center;
+
+  color:#142440;
+
+  text-decoration:none;
+
+  min-width:0;
+
+  box-shadow:0 2px 8px #00000007;
+
+  cursor:pointer;
+
+  font-family:inherit;
+
+}
+
+.action .symbol{
+
+  width:43px;
+
+  height:43px;
+
+  margin:0 auto 9px;
+
+  border-radius:13px;
+
+  display:grid;
+
+  place-items:center;
+
+  font-size:22px;
+
+  background:#f0f3f8;
+
+}
+
+.action strong{
+
+  font-size:11px;
+
+  display:block;
+
+}
+
+.action small{
+
+  display:block;
+
+  font-size:9px;
+
+  color:#9a7a32;
+
+  margin-top:5px;
+
+}
+
+.promo{
+
+  background:linear-gradient(115deg,#102c52,#07152c);
+
+  color:white;
+
+  padding:19px;
+
+  border-radius:15px;
+
+  display:flex;
+
+  align-items:center;
+
+  justify-content:space-between;
+
+  gap:12px;
+
+  margin-top:13px;
+
+}
+
+.promo h3{
+
+  margin:0 0 8px;
+
+  color:#edc568;
+
+  font-size:17px;
+
+}
+
+.promo p{
+
+  font-size:12px;
+
+  line-height:1.5;
+
+  margin:0;
+
+  color:#e1e8f1;
+
+}
+
+.promo button{
+
+  background:#e6bb58;
+
+  color:#07152c;
+
+  border:0;
+
+  border-radius:7px;
+
+  padding:10px 13px;
+
+  font-weight:bold;
+
+  white-space:nowrap;
+
+}
+
+.receive-card{
+
+  background:white;
+
+  padding:17px;
+
+  border-radius:13px;
+
+  box-shadow:0 2px 8px #00000007;
+
+}
+
+.receive-card p{
+
+  font-size:12px;
+
+  border-bottom:1px solid #edf0f4;
+
+  padding:9px 0;
+
+  overflow-wrap:anywhere;
+
+}
+
+.receive-card strong{
+
+  color:#263c5e;
+
+}
+
+.copy-btn{
+
+  background:#081831;
+
+  color:white;
+
+  padding:12px;
+
+  border:0;
+
+  border-radius:8px;
+
+  width:100%;
+
+  font-weight:bold;
+
+}
+
+.notice{
+
+  background:#fff6df;
+
+  color:#765817;
+
+  font-size:11px;
+
+  line-height:1.6;
+
+  padding:12px;
+
+  border-radius:9px;
+
+  margin-top:12px;
+
+}
+
+.bottom-nav{
+
+  position:fixed;
+
+  bottom:0;
+
+  left:0;
+
+  right:0;
+
+  background:white;
+
+  border-top:1px solid #e7eaf0;
+
+  display:grid;
+
+  grid-template-columns:repeat(4,1fr);
+
+  padding:10px 5px calc(10px + env(safe-area-inset-bottom));
+
+  z-index:10;
+
+}
+
+.bottom-nav a,
+
+.bottom-nav button{
+
+  text-align:center;
+
+  text-decoration:none;
+
+  color:#8993a2;
+
+  background:none;
+
+  border:0;
+
+  font-size:11px;
+
+  font-weight:bold;
+
+}
+
+.bottom-nav span{
+
+  display:block;
+
+  font-size:20px;
+
+  margin-bottom:5px;
+
+}
+
+.bottom-nav .active{
+
+  color:#b48728;
+
+}
+
+footer{
+
+  text-align:center;
+
+  color:#8993a2;
+
+  font-size:10px;
+
+  line-height:1.6;
+
+  padding:20px 12px;
+
+}
+
+@media(max-width:370px){
+
+  .action-grid{
+
+    grid-template-columns:repeat(3,1fr);
+
+  }
+
+}
 
 </style>
 
@@ -60,221 +626,775 @@ footer{text-align:center;padding:20px;color:#666;font-size:12px}
 
 <header>
 
-<h2>BEEPERPAY</h2>
+  <div class="top">
 
-<p>MICROFINANCE BANK</p>
+    <div class="brand-wrap">
 
-<p>Your money. Your future. Our priority.</p>
+      <span class="brand-person">👨🏿‍⚕️</span>
+
+      <div class="brand">BEEPERPAY</div>
+
+    </div>
+
+    <div class="top-icons">
+
+      <span class="notification"
+
+        title="Notifications"
+
+        onclick="location.href='notifications.html'">🔔</span>
+
+    </div>
+
+  </div>
+
+  <div class="greeting">
+
+    <span>Welcome back</span>
+
+    <h2 id="welcome">Hi, Customer</h2>
+
+    <span>Your money. Your future. Our priority.</span>
+
+  </div>
+
+  <div class="balance-card">
+
+    <div class="balance-label">Available Balance</div>
+
+    <div class="balance-line">
+
+      <h1 id="walletBalance">••••••</h1>
+
+      <button class="eye"
+
+        id="toggleBalance"
+
+        type="button"
+
+        aria-label="Show balance"
+
+        title="Show balance">
+
+        <svg id="eyeIcon" viewBox="0 0 24 24" aria-hidden="true">
+
+          <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"/>
+
+          <circle cx="12" cy="12" r="3"/>
+
+        </svg>
+
+      </button>
+
+    </div>
+
+    <div class="earnings">
+
+      Demo earnings: ₦0.00
+
+    </div>
+
+  </div>
 
 </header>
 
 <main>
 
-<div class="card">
+  <!-- TRANSACTION HISTORY -->
 
-<h3 id="welcome">Welcome</h3>
+  <div class="section-head">
 
-<h2>My Dashboard</h2>
+    <h3>Transaction History</h3>
 
-</div>
+    <a href="transactions.html">VIEW ALL ›</a>
 
-<div class="card balance">
+  </div>
 
-<p>Demo Wallet Balance</p>
+  <div class="history-card" id="latestTransaction">
 
-<h1>₦0.00</h1>
+    <div class="history-icon">📄</div>
 
-<p>Demonstration account only.</p>
+    <div class="history-info">
 
-</div>
+      <strong>No transactions yet</strong>
 
-<div class="card">
+      <p>Your recent activity will appear here.</p>
 
-<h3>Account Overview</h3>
+    </div>
 
-<div class="summary">
+  </div>
 
-<div>Add Money Requests<strong id="addTotal">₦0.00</strong></div>
+  <!-- MONEY SERVICES -->
 
-<div>Transfer Requests<strong id="transferTotal">₦0.00</strong></div>
+  <div class="section-head">
 
-</div>
+    <h3>Money Services</h3>
 
-</div>
+  </div>
 
-<div class="card">
+  <div class="action-grid">
 
-<h3>Recent Transactions</h3>
+    <a class="action" href="add-money.html">
 
-<div id="recent">Loading records...</div>
+      <div class="symbol">💰</div>
 
-</div>
+      <strong>Add Money</strong>
 
-<div class="card">
+    </a>
 
-<h3>Quick Services</h3>
+    <a class="action" href="transfer.html">
 
-<div class="services">
+      <div class="symbol">🏦</div>
 
-<a href="add-money.html">💰 Add Money</a>
+      <strong>To Bank</strong>
 
-<a href="transfer.html">💸 Transfer Money</a>
+    </a>
 
-<a href="transactions.html">📄 Transaction History</a>
+    <a class="action" href="transfer.html">
 
-<a href="statement.html">📑 Account Statement</a>
+      <div class="symbol">🔄</div>
 
-<a href="profile.html">👤 My Profile</a>
+      <strong>To Beeperpay</strong>
 
-<a href="support.html">🎧 Customer Support</a>
+    </a>
 
-<a href="support-tickets.html">🎫 Support Ticket History</a>
+    <button class="action" onclick="comingSoon('Savings')">
 
-<a href="notifications.html">🔔 Notifications</a>
+      <div class="symbol">🐷</div>
 
-</div>
+      <strong>Savings</strong>
 
-</div>
+      <small>Coming soon</small>
 
-<div class="card">
+    </button>
 
-<h3>Account Information</h3>
+    <button class="action" onclick="comingSoon('Loans')">
 
-<p>Email: <span id="email">Loading...</span></p>
+      <div class="symbol">💳</div>
 
-<p>Account Status: Demo Account</p>
+      <strong>Loan</strong>
 
-</div>
+      <small>Coming soon</small>
 
-<div class="card" style="text-align:center">
+    </button>
 
-<button id="logout">LOGOUT</button>
+    <button class="action" onclick="comingSoon('Fund investment')">
 
-</div>
+      <div class="symbol">📈</div>
+
+      <strong>Invest</strong>
+
+      <small>Coming soon</small>
+
+    </button>
+
+    <button class="action" onclick="comingSoon('Rewards')">
+
+      <div class="symbol">🎁</div>
+
+      <strong>Rewards</strong>
+
+      <small>Coming soon</small>
+
+    </button>
+
+    <button class="action"
+
+      onclick="document.getElementById('receiveSection').scrollIntoView({behavior:'smooth'})">
+
+      <div class="symbol">📥</div>
+
+      <strong>Receive</strong>
+
+    </button>
+
+  </div>
+
+  <!-- MORE SERVICES -->
+
+  <div class="section-head">
+
+    <h3>More Services</h3>
+
+  </div>
+
+  <div class="action-grid">
+
+    <button class="action" onclick="comingSoon('Airtime')">
+
+      <div class="symbol">📱</div>
+
+      <strong>Airtime</strong>
+
+      <small>Coming soon</small>
+
+    </button>
+
+    <button class="action" onclick="comingSoon('Data')">
+
+      <div class="symbol">🌐</div>
+
+      <strong>Data</strong>
+
+      <small>Coming soon</small>
+
+    </button>
+
+    <button class="action" onclick="comingSoon('Betting')">
+
+      <div class="symbol">🎮</div>
+
+      <strong>Betting</strong>
+
+      <small>Coming soon</small>
+
+    </button>
+
+    <button class="action" onclick="comingSoon('Electricity')">
+
+      <div class="symbol">💡</div>
+
+      <strong>Electricity</strong>
+
+      <small>Coming soon</small>
+
+    </button>
+
+    <a class="action" href="support.html">
+
+      <div class="symbol">🎧</div>
+
+      <strong>Support</strong>
+
+    </a>
+
+    <a class="action" href="profile.html">
+
+      <div class="symbol">👤</div>
+
+      <strong>My Profile</strong>
+
+    </a>
+
+    <a class="action" href="statement.html">
+
+      <div class="symbol">📑</div>
+
+      <strong>Statement</strong>
+
+    </a>
+
+  </div>
+
+  <!-- FEATURED -->
+
+  <div class="section-head">
+
+    <h3>Featured</h3>
+
+  </div>
+
+  <div class="promo">
+
+    <div>
+
+      <h3>Exclusive Data Deals</h3>
+
+      <p>Special offers are coming to Beeperpay.</p>
+
+    </div>
+
+    <button onclick="comingSoon('Data deals')">
+
+      Explore
+
+    </button>
+
+  </div>
+
+  <!-- RECEIVE MONEY -->
+
+  <div class="section-head" id="receiveSection">
+
+    <h3>Receive Money</h3>
+
+  </div>
+
+  <div class="receive-card">
+
+    <p>
+
+      <strong>Account Name:</strong><br>
+
+      <span id="receiveName">Loading...</span>
+
+    </p>
+
+    <p>
+
+      <strong>Email Address:</strong><br>
+
+      <span id="receiveEmail">Loading...</span>
+
+    </p>
+
+    <p>
+
+      <strong>Phone Number:</strong><br>
+
+      <span id="receivePhone">Loading...</span>
+
+    </p>
+
+    <p>
+
+      <strong>Beeperpay Account Number:</strong><br>
+
+      Not yet assigned
+
+    </p>
+
+    <button class="copy-btn" id="copyDetails">
+
+      COPY MY DETAILS
+
+    </button>
+
+    <p id="copyMessage"></p>
+
+    <div class="notice">
+
+      Demo information only. Incoming payments and real bank transfers
+
+      are not currently enabled. Do not send real funds to these details.
+
+    </div>
+
+  </div>
+
+  <!-- ACCOUNT INFORMATION -->
+
+  <div class="section-head">
+
+    <h3>Account Information</h3>
+
+  </div>
+
+  <div class="receive-card">
+
+    <p>
+
+      <strong>Account Status:</strong>
+
+      <span id="accountStatus">Loading...</span>
+
+    </p>
+
+    <p>
+
+      <strong>Verification:</strong>
+
+      <span id="verificationStatus">Loading...</span>
+
+    </p>
+
+  </div>
 
 </main>
 
 <footer>
 
-© 2026 Beeperpay Microfinance Bank.
+  BEEPERPAY MICROFINANCE BANK<br>
 
-Demonstration website only. No real banking transactions.
+  © 2026 Beeperpay. All rights reserved.<br>
+
+  Demonstration platform only. No live banking services are connected.
 
 </footer>
 
+<!-- BOTTOM NAVIGATION -->
+
+<nav class="bottom-nav">
+
+  <a class="active" href="dashboard.html">
+
+    <span>⌂</span>Home
+
+  </a>
+
+  <button onclick="comingSoon('Loans')">
+
+    <span>💳</span>Loan
+
+  </button>
+
+  <button onclick="comingSoon('Wealth')">
+
+    <span>📊</span>Wealth
+
+  </button>
+
+  <button onclick="comingSoon('Rewards')">
+
+    <span>🎁</span>Reward
+
+  </button>
+
+</nav>
+
 <script>
 
-const SUPABASE_URL = "https://wrjvcvxswdojpxzcwyqw.supabase.co";
+const SUPABASE_URL =
 
-const SUPABASE_KEY = "sb_publishable_zTksapAhIoJp_0-9w1twlQ_j7WECGcv";
+  "https://wrjvcvxswdojpxzcwyqw.supabase.co";
+
+const SUPABASE_KEY =
+
+  "sb_publishable_zTksapAhIoJp_0-9w1twlQ_j7WECGcv";
 
 const client = window.supabase.createClient(
 
-SUPABASE_URL,
+  SUPABASE_URL,
 
-SUPABASE_KEY
+  SUPABASE_KEY
 
 );
 
-const money = value => "₦" + (Number(value)||0).toLocaleString("en-NG",{
+const DEMO_BALANCE = 0;
 
-minimumFractionDigits:2,
+let balanceVisible = false;
 
-maximumFractionDigits:2
+let customerDetails = {
+
+  name:"",
+
+  email:"",
+
+  phone:""
+
+};
+
+const money = value =>
+
+  "₦" + (Number(value)||0).toLocaleString("en-NG",{
+
+    minimumFractionDigits:2,
+
+    maximumFractionDigits:2
+
+  });
+
+// Balance eye icon
+
+function updateBalance(){
+
+  const balance =
+
+    document.getElementById("walletBalance");
+
+  const button =
+
+    document.getElementById("toggleBalance");
+
+  const icon =
+
+    document.getElementById("eyeIcon");
+
+  balance.textContent =
+
+    balanceVisible
+
+      ? money(DEMO_BALANCE)
+
+      : "••••••";
+
+  if(balanceVisible){
+
+    icon.innerHTML = `
+
+      <path d="M3 3l18 18"/>
+
+      <path d="M10.6 10.6a2 2 0 0 0 2.8 2.8"/>
+
+      <path d="M9.9 5.2A10.8 10.8 0 0 1 12 5c6.5 0 10 7 10 7a15 15 0 0 1-3.1 3.8"/>
+
+      <path d="M6.2 6.2C3.5 8 2 12 2 12s3.5 7 10 7c1.2 0 2.3-.2 3.3-.6"/>
+
+    `;
+
+    button.setAttribute("aria-label","Hide balance");
+
+    button.title = "Hide balance";
+
+  }else{
+
+    icon.innerHTML = `
+
+      <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"/>
+
+      <circle cx="12" cy="12" r="3"/>
+
+    `;
+
+    button.setAttribute("aria-label","Show balance");
+
+    button.title = "Show balance";
+
+  }
+
+}
+
+document.getElementById("toggleBalance")
+
+.addEventListener("click",()=>{
+
+  balanceVisible = !balanceVisible;
+
+  updateBalance();
 
 });
+
+updateBalance();
+
+function comingSoon(service){
+
+  alert(service + " is coming soon to Beeperpay.");
+
+}
+
+// Load customer information
 
 async function loadDashboard(){
 
-const {data:{user},error} = await client.auth.getUser();
+  const {
 
-if(error || !user){
+    data:{user},
 
-window.location.href = "login.html";
+    error
 
-return;
+  } = await client.auth.getUser();
+
+  if(error || !user){
+
+    window.location.href = "login.html";
+
+    return;
+
+  }
+
+  const metadata = user.user_metadata || {};
+
+  const name =
+
+    metadata.full_name || "Customer";
+
+  const email =
+
+    user.email || "Not available";
+
+  document.getElementById("welcome").textContent =
+
+    "Hi, " + name;
+
+  const {
+
+    data:profile,
+
+    error:profileError
+
+  } = await client
+
+    .from("customer_profiles")
+
+    .select("full_name,phone_number,account_status,verification_status")
+
+    .eq("id",user.id)
+
+    .maybeSingle();
+
+  const customerName =
+
+    profile?.full_name || name;
+
+  const phone =
+
+    profile?.phone_number ||
+
+    metadata.phone_number ||
+
+    "Not provided";
+
+  customerDetails = {
+
+    name:customerName,
+
+    email:email,
+
+    phone:phone
+
+  };
+
+  document.getElementById("receiveName").textContent =
+
+    customerName;
+
+  document.getElementById("receiveEmail").textContent =
+
+    email;
+
+  document.getElementById("receivePhone").textContent =
+
+    phone;
+
+  document.getElementById("accountStatus").textContent =
+
+    profile?.account_status ||
+
+    (profileError ? "Unable to load" : "Not available");
+
+  document.getElementById("verificationStatus").textContent =
+
+    profile?.verification_status ||
+
+    (profileError ? "Unable to load" : "Not available");
+
+  // Load demo transaction records
+
+  const key =
+
+    "beeperpay_demo_transactions_" + user.id;
+
+  let records = [];
+
+  try{
+
+    records = JSON.parse(
+
+      localStorage.getItem(key) || "[]"
+
+    );
+
+    if(!Array.isArray(records)) records = [];
+
+  }catch(error){
+
+    records = [];
+
+  }
+
+  // Display latest transaction
+
+  const latestBox =
+
+    document.getElementById("latestTransaction");
+
+  latestBox.replaceChildren();
+
+  const latest =
+
+    records.slice().reverse()[0];
+
+  if(!latest){
+
+    latestBox.innerHTML = `
+
+      <div class="history-icon">📄</div>
+
+      <div class="history-info">
+
+        <strong>No transactions yet</strong>
+
+        <p>Your recent activity will appear here.</p>
+
+      </div>
+
+    `;
+
+  }else{
+
+    const icon =
+
+      document.createElement("div");
+
+    icon.className = "history-icon";
+
+    icon.textContent = "📄";
+
+    const info =
+
+      document.createElement("div");
+
+    info.className = "history-info";
+
+    const title =
+
+      document.createElement("strong");
+
+    title.textContent =
+
+      latest.type || "Transaction";
+
+    const date =
+
+      document.createElement("p");
+
+    date.textContent = latest.date
+
+      ? new Date(latest.date).toLocaleString("en-NG")
+
+      : "Date unavailable";
+
+    const amount =
+
+      document.createElement("div");
+
+    amount.className = "history-amount";
+
+    amount.textContent = money(latest.amount);
+
+    info.append(title,date);
+
+    latestBox.append(icon,info,amount);
+
+  }
 
 }
 
-const name = user.user_metadata?.full_name || "Customer";
+// Copy customer information
 
-document.getElementById("welcome").textContent = "Welcome, " + name;
+document.getElementById("copyDetails")
 
-document.getElementById("email").textContent = user.email || "Not available";
+.addEventListener("click",async()=>{
 
-const key = "beeperpay_demo_transactions_" + user.id;
+  const text =
 
-let records = [];
+    "BEEPERPAY DEMO CUSTOMER DETAILS\n" +
 
-try{
+    "Account Name: " + customerDetails.name + "\n" +
 
-records = JSON.parse(localStorage.getItem(key) || "[]");
+    "Email: " + customerDetails.email + "\n" +
 
-if(!Array.isArray(records)) records = [];
+    "Phone: " + customerDetails.phone + "\n" +
 
-}catch(error){
+    "Account Number: Not yet assigned\n" +
 
-records = [];
+    "Demo only - no real payments enabled.";
 
-}
+  try{
 
-let addTotal = 0;
+    await navigator.clipboard.writeText(text);
 
-let transferTotal = 0;
+    document.getElementById("copyMessage").textContent =
 
-records.forEach(item=>{
+      "Customer details copied successfully.";
 
-const amount = Number(item.amount)||0;
+  }catch(error){
 
-if(item.type === "Add Money") addTotal += amount;
+    document.getElementById("copyMessage").textContent =
 
-if(item.type === "Transfer") transferTotal += amount;
+      "Copy unavailable. Please copy the details manually.";
 
-});
-
-document.getElementById("addTotal").textContent = money(addTotal);
-
-document.getElementById("transferTotal").textContent = money(transferTotal);
-
-const recent = document.getElementById("recent");
-
-recent.replaceChildren();
-
-const latest = records.slice().reverse().slice(0,5);
-
-if(latest.length === 0){
-
-recent.textContent = "No transactions yet.";
-
-}else{
-
-latest.forEach(item=>{
-
-const p = document.createElement("p");
-
-const date = item.date ? new Date(item.date).toLocaleString("en-NG") : "";
-
-p.textContent =
-
-(item.type || "Transaction") + " — " +
-
-money(item.amount) + " | " +
-
-date + " | Demo request only";
-
-recent.appendChild(p);
-
-});
-
-}
-
-}
-
-document.getElementById("logout").addEventListener("click",async()=>{
-
-await client.auth.signOut();
-
-window.location.href = "login.html";
+  }
 
 });
 
