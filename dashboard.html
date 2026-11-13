@@ -62,13 +62,7 @@ header{
 
 }
 
-.brand-person{
-
-  font-size:20px;
-
-  line-height:1;
-
-}
+.brand-person{font-size:20px;line-height:1}
 
 .brand{
 
@@ -94,11 +88,7 @@ header{
 
 }
 
-.notification{
-
-  cursor:pointer;
-
-}
+.notification{cursor:pointer}
 
 .greeting{
 
@@ -136,13 +126,7 @@ header{
 
 }
 
-.balance-label{
-
-  font-size:13px;
-
-  color:#d5ddeb;
-
-}
+.balance-label{font-size:13px;color:#d5ddeb}
 
 .balance-line{
 
@@ -242,13 +226,7 @@ main{
 
 }
 
-.section-head h3{
-
-  margin:0;
-
-  font-size:17px;
-
-}
+.section-head h3{margin:0;font-size:17px}
 
 .section-head a{
 
@@ -298,19 +276,9 @@ main{
 
 }
 
-.history-info{
+.history-info{flex:1;min-width:0}
 
-  flex:1;
-
-  min-width:0;
-
-}
-
-.history-info strong{
-
-  font-size:13px;
-
-}
+.history-info strong{font-size:13px}
 
 .history-info p{
 
@@ -322,13 +290,7 @@ main{
 
 }
 
-.history-amount{
-
-  font-size:13px;
-
-  font-weight:bold;
-
-}
+.history-amount{font-size:13px;font-weight:bold}
 
 .action-grid{
 
@@ -386,13 +348,7 @@ main{
 
 }
 
-.action strong{
-
-  font-size:11px;
-
-  display:block;
-
-}
+.action strong{font-size:11px;display:block}
 
 .action small{
 
@@ -492,11 +448,7 @@ main{
 
 }
 
-.receive-card strong{
-
-  color:#263c5e;
-
-}
+.receive-card strong{color:#263c5e}
 
 .copy-btn{
 
@@ -558,9 +510,7 @@ main{
 
 }
 
-.bottom-nav a,
-
-.bottom-nav button{
+.bottom-nav a,.bottom-nav button{
 
   text-align:center;
 
@@ -588,11 +538,7 @@ main{
 
 }
 
-.bottom-nav .active{
-
-  color:#b48728;
-
-}
+.bottom-nav .active{color:#b48728}
 
 footer{
 
@@ -610,11 +556,7 @@ footer{
 
 @media(max-width:370px){
 
-  .action-grid{
-
-    grid-template-columns:repeat(3,1fr);
-
-  }
+  .action-grid{grid-template-columns:repeat(3,1fr)}
 
 }
 
@@ -638,11 +580,9 @@ footer{
 
     <div class="top-icons">
 
-      <span class="notification"
+      <span class="notification" title="Notifications"
 
-        title="Notifications"
-
-        onclick="location.href='notifications.html'">🔔</span>
+      onclick="location.href='notifications.html'">🔔</span>
 
     </div>
 
@@ -666,15 +606,9 @@ footer{
 
       <h1 id="walletBalance">••••••</h1>
 
-      <button class="eye"
+      <button class="eye" id="toggleBalance" type="button"
 
-        id="toggleBalance"
-
-        type="button"
-
-        aria-label="Show balance"
-
-        title="Show balance">
+      aria-label="Show balance" title="Show balance">
 
         <svg id="eyeIcon" viewBox="0 0 24 24" aria-hidden="true">
 
@@ -688,19 +622,13 @@ footer{
 
     </div>
 
-    <div class="earnings">
-
-      Demo earnings: ₦0.00
-
-    </div>
+    <div class="earnings">Demo earnings: ₦0.00</div>
 
   </div>
 
 </header>
 
 <main>
-
-  <!-- TRANSACTION HISTORY -->
 
   <div class="section-head">
 
@@ -742,6 +670,8 @@ footer{
 
     </a>
 
+    <!-- TO BANK: KEEP THIS PAGE -->
+
     <a class="action" href="transfer.html">
 
       <div class="symbol">🏦</div>
@@ -750,7 +680,9 @@ footer{
 
     </a>
 
-    <a class="action" href="transfer.html">
+    <!-- TO BEEPERPAY: NEW DEDICATED PAGE -->
+
+    <a class="action" href="beeperpay-transfer.html">
 
       <div class="symbol">🔄</div>
 
@@ -800,7 +732,7 @@ footer{
 
     <button class="action"
 
-      onclick="document.getElementById('receiveSection').scrollIntoView({behavior:'smooth'})">
+    onclick="document.getElementById('receiveSection').scrollIntoView({behavior:'smooth'})">
 
       <div class="symbol">📥</div>
 
@@ -904,11 +836,7 @@ footer{
 
     </div>
 
-    <button onclick="comingSoon('Data deals')">
-
-      Explore
-
-    </button>
+    <button onclick="comingSoon('Data deals')">Explore</button>
 
   </div>
 
@@ -1012,8 +940,6 @@ footer{
 
 </footer>
 
-<!-- BOTTOM NAVIGATION -->
-
 <nav class="bottom-nav">
 
   <a class="active" href="dashboard.html">
@@ -1046,11 +972,11 @@ footer{
 
 const SUPABASE_URL =
 
-  "https://wrjvcvxswdojpxzcwyqw.supabase.co";
+"https://wrjvcvxswdojpxzcwyqw.supabase.co";
 
 const SUPABASE_KEY =
 
-  "sb_publishable_zTksapAhIoJp_0-9w1twlQ_j7WECGcv";
+"sb_publishable_zTksapAhIoJp_0-9w1twlQ_j7WECGcv";
 
 const client = window.supabase.createClient(
 
@@ -1084,29 +1010,21 @@ const money = value =>
 
   });
 
-// Balance eye icon
+// BALANCE EYE ICON
 
 function updateBalance(){
 
-  const balance =
+  const balance = document.getElementById("walletBalance");
 
-    document.getElementById("walletBalance");
+  const button = document.getElementById("toggleBalance");
 
-  const button =
+  const icon = document.getElementById("eyeIcon");
 
-    document.getElementById("toggleBalance");
+  balance.textContent = balanceVisible
 
-  const icon =
+    ? money(DEMO_BALANCE)
 
-    document.getElementById("eyeIcon");
-
-  balance.textContent =
-
-    balanceVisible
-
-      ? money(DEMO_BALANCE)
-
-      : "••••••";
+    : "••••••";
 
   if(balanceVisible){
 
@@ -1162,17 +1080,11 @@ function comingSoon(service){
 
 }
 
-// Load customer information
+// LOAD CUSTOMER INFORMATION
 
 async function loadDashboard(){
 
-  const {
-
-    data:{user},
-
-    error
-
-  } = await client.auth.getUser();
+  const {data:{user},error} = await client.auth.getUser();
 
   if(error || !user){
 
@@ -1184,25 +1096,15 @@ async function loadDashboard(){
 
   const metadata = user.user_metadata || {};
 
-  const name =
+  const name = metadata.full_name || "Customer";
 
-    metadata.full_name || "Customer";
-
-  const email =
-
-    user.email || "Not available";
+  const email = user.email || "Not available";
 
   document.getElementById("welcome").textContent =
 
     "Hi, " + name;
 
-  const {
-
-    data:profile,
-
-    error:profileError
-
-  } = await client
+  const {data:profile,error:profileError} = await client
 
     .from("customer_profiles")
 
@@ -1212,9 +1114,7 @@ async function loadDashboard(){
 
     .maybeSingle();
 
-  const customerName =
-
-    profile?.full_name || name;
+  const customerName = profile?.full_name || name;
 
   const phone =
 
@@ -1258,11 +1158,9 @@ async function loadDashboard(){
 
     (profileError ? "Unable to load" : "Not available");
 
-  // Load demo transaction records
+  // LOAD DEMO TRANSACTION RECORDS
 
-  const key =
-
-    "beeperpay_demo_transactions_" + user.id;
+  const key = "beeperpay_demo_transactions_" + user.id;
 
   let records = [];
 
@@ -1282,7 +1180,7 @@ async function loadDashboard(){
 
   }
 
-  // Display latest transaction
+  // DISPLAY LATEST TRANSACTION
 
   const latestBox =
 
@@ -1290,9 +1188,7 @@ async function loadDashboard(){
 
   latestBox.replaceChildren();
 
-  const latest =
-
-    records.slice().reverse()[0];
+  const latest = records.slice().reverse()[0];
 
   if(!latest){
 
@@ -1312,41 +1208,29 @@ async function loadDashboard(){
 
   }else{
 
-    const icon =
-
-      document.createElement("div");
+    const icon = document.createElement("div");
 
     icon.className = "history-icon";
 
     icon.textContent = "📄";
 
-    const info =
-
-      document.createElement("div");
+    const info = document.createElement("div");
 
     info.className = "history-info";
 
-    const title =
+    const title = document.createElement("strong");
 
-      document.createElement("strong");
+    title.textContent = latest.type || "Transaction";
 
-    title.textContent =
-
-      latest.type || "Transaction";
-
-    const date =
-
-      document.createElement("p");
+    const date = document.createElement("p");
 
     date.textContent = latest.date
 
-      ? new Date(latest.date).toLocaleString("en-NG")
+      ? latest.date
 
       : "Date unavailable";
 
-    const amount =
-
-      document.createElement("div");
+    const amount = document.createElement("div");
 
     amount.className = "history-amount";
 
@@ -1360,7 +1244,7 @@ async function loadDashboard(){
 
 }
 
-// Copy customer information
+// COPY CUSTOMER INFORMATION
 
 document.getElementById("copyDetails")
 
