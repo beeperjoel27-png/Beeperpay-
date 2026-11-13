@@ -4,275 +4,597 @@
 
 <head>
 
-<meta charset="UTF-8">
+  <meta charset="UTF-8">
 
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Beeperpay | Create Account</title>
+  <title>Create Account | Beeperpay</title>
 
-<style>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-* { box-sizing: border-box; }
+  <style>
 
-body {
+    * {
 
-    margin: 0;
+      box-sizing: border-box;
 
-    padding: 25px 15px;
+      margin: 0;
 
-    background: #07152e;
+      padding: 0;
 
-    color: white;
+    }
 
-    font-family: Arial, sans-serif;
+    body {
 
-}
+      font-family: Arial, sans-serif;
 
-.container {
+      background: #f4f6fa;
 
-    max-width: 420px;
+      color: #14213d;
 
-    margin: 35px auto;
+      min-height: 100vh;
 
-    padding: 28px 22px;
+      display: flex;
 
-    background: #122747;
+      flex-direction: column;
 
-    border-radius: 15px;
+    }
 
-}
+    header {
 
-h1 {
+      background: #071b3a;
 
-    color: #e4b84e;
+      color: white;
 
-    text-align: center;
+      padding: 22px 15px;
 
-}
+      text-align: center;
 
-h2 { text-align: center; }
+    }
 
-p {
+    .brand {
 
-    text-align: center;
+      font-size: 25px;
 
-    color: #ddd;
+      font-weight: bold;
 
-}
+      letter-spacing: 1px;
 
-label {
+    }
 
-    display: block;
+    .brand span {
 
-    margin-top: 15px;
+      color: #d9a62e;
 
-}
+    }
 
-input {
+    .tagline {
 
-    width: 100%;
+      color: #e5e5e5;
 
-    padding: 13px;
+      font-size: 12px;
 
-    margin-top: 7px;
+      margin-top: 6px;
 
-    border-radius: 7px;
+    }
 
-    font-size: 16px;
+    main {
 
-}
+      width: 100%;
 
-button {
+      max-width: 460px;
 
-    width: 100%;
+      margin: 35px auto;
 
-    margin-top: 22px;
+      padding: 0 16px;
 
-    padding: 14px;
+      flex: 1;
 
-    background: #e4b84e;
+    }
 
-    color: #07152e;
+    .form-card {
 
-    border: 0;
+      background: white;
 
-    border-radius: 7px;
+      padding: 30px 24px;
 
-    font-weight: bold;
+      border-radius: 12px;
 
-    cursor: pointer;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.07);
 
-}
+    }
 
-button:disabled {
+    h1 {
 
-    opacity: 0.6;
+      text-align: center;
 
-}
+      font-size: 24px;
 
-a { color: #e4b84e; }
+      margin-bottom: 8px;
 
-#message {
+      color: #071b3a;
 
-    overflow-wrap: anywhere;
+    }
 
-}
+    .subtitle {
 
-</style>
+      text-align: center;
+
+      color: #687386;
+
+      font-size: 14px;
+
+      margin-bottom: 25px;
+
+    }
+
+    label {
+
+      display: block;
+
+      font-weight: bold;
+
+      font-size: 14px;
+
+      margin: 15px 0 7px;
+
+    }
+
+    input {
+
+      width: 100%;
+
+      padding: 13px;
+
+      border: 1px solid #ccd3df;
+
+      border-radius: 7px;
+
+      font-size: 15px;
+
+      outline: none;
+
+    }
+
+    input:focus {
+
+      border-color: #d9a62e;
+
+      box-shadow: 0 0 0 2px rgba(217,166,46,0.15);
+
+    }
+
+    button {
+
+      width: 100%;
+
+      padding: 14px;
+
+      margin-top: 22px;
+
+      background: #071b3a;
+
+      color: white;
+
+      border: none;
+
+      border-radius: 7px;
+
+      font-size: 16px;
+
+      font-weight: bold;
+
+      cursor: pointer;
+
+    }
+
+    button:hover {
+
+      background: #102d58;
+
+    }
+
+    button:disabled {
+
+      opacity: 0.6;
+
+      cursor: not-allowed;
+
+    }
+
+    #message {
+
+      display: none;
+
+      margin-top: 17px;
+
+      padding: 12px;
+
+      border-radius: 7px;
+
+      font-size: 14px;
+
+      line-height: 1.5;
+
+      overflow-wrap: anywhere;
+
+    }
+
+    .success {
+
+      display: block !important;
+
+      background: #e8f7ed;
+
+      color: #176b35;
+
+    }
+
+    .error {
+
+      display: block !important;
+
+      background: #fdecec;
+
+      color: #a52222;
+
+    }
+
+    .links {
+
+      text-align: center;
+
+      margin-top: 22px;
+
+      font-size: 14px;
+
+      line-height: 2;
+
+    }
+
+    a {
+
+      color: #b18418;
+
+      text-decoration: none;
+
+      font-weight: bold;
+
+    }
+
+    footer {
+
+      background: #071b3a;
+
+      color: white;
+
+      text-align: center;
+
+      padding: 20px 12px;
+
+      font-size: 12px;
+
+      line-height: 1.7;
+
+    }
+
+    footer span {
+
+      color: #d9a62e;
+
+    }
+
+  </style>
 
 </head>
 
 <body>
 
-<div class="container">
+<header>
 
-<h1>BEEPERPAY</h1>
+  <div class="brand">BEEPER<span>PAY</span></div>
 
-<p>MICROFINANCE BANK</p>
+  <div class="tagline">MICROFINANCE BANK</div>
 
-<h2>Create Your Account</h2>
+  <div class="tagline">
 
-<form id="registerForm">
+    Your money. Your future. Our priority.
 
-<label>Full Name</label>
+  </div>
 
-<input id="fullName" type="text" autocomplete="name" required>
+</header>
 
-<label>Email Address</label>
+<main>
 
-<input id="email" type="email" autocomplete="email" required>
+  <div class="form-card">
 
-<label>Phone Number</label>
+    <h1>Create Your Account</h1>
 
-<input id="phone" type="tel" autocomplete="tel" required>
+    <p class="subtitle">
 
-<label>Password</label>
+      Register to access your Beeperpay customer demo account.
 
-<input id="password" type="password"
+    </p>
 
-minlength="8" autocomplete="new-password" required>
+    <form id="registerForm">
 
-<label>Confirm Password</label>
+      <label for="fullName">Full Name</label>
 
-<input id="confirmPassword" type="password"
+      <input
 
-minlength="8" autocomplete="new-password" required>
+        type="text"
 
-<button id="registerButton" type="submit">
+        id="fullName"
 
-CREATE ACCOUNT
+        placeholder="Enter your full name"
 
-</button>
+        autocomplete="name"
 
-</form>
+        required
 
-<p id="message" role="status"></p>
+      >
 
-<p>Already have an account?
+      <label for="email">Email Address</label>
 
-<a href="login.html">Login here</a></p>
+      <input
 
-<p><a href="index.html">Back to Home</a></p>
+        type="email"
 
-<p>Your money. Your future. Our priority.</p>
+        id="email"
 
-<p>Demo registration only. No live banking account is created.</p>
+        placeholder="Enter your email address"
 
-</div>
+        autocomplete="email"
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+        required
+
+      >
+
+      <label for="phone">Phone Number</label>
+
+      <input
+
+        type="tel"
+
+        id="phone"
+
+        placeholder="Enter your phone number"
+
+        autocomplete="tel"
+
+        required
+
+      >
+
+      <label for="password">Password</label>
+
+      <input
+
+        type="password"
+
+        id="password"
+
+        placeholder="Create a password"
+
+        minlength="8"
+
+        autocomplete="new-password"
+
+        required
+
+      >
+
+      <label for="confirmPassword">Confirm Password</label>
+
+      <input
+
+        type="password"
+
+        id="confirmPassword"
+
+        placeholder="Confirm your password"
+
+        minlength="8"
+
+        autocomplete="new-password"
+
+        required
+
+      >
+
+      <button type="submit" id="registerButton">
+
+        CREATE ACCOUNT
+
+      </button>
+
+      <div id="message" role="status" aria-live="polite"></div>
+
+    </form>
+
+    <div class="links">
+
+      Already have an account?
+
+      <a href="login.html">Login here</a>
+
+      <br>
+
+      <a href="index.html">Back to Home</a>
+
+    </div>
+
+  </div>
+
+</main>
+
+<footer>
+
+  <strong>BEEPERPAY <span>MICROFINANCE BANK</span></strong>
+
+  <br>
+
+  Your money. Your future. Our priority.
+
+  <br>
+
+  Demo registration only. No live banking account is created.
+
+  <br>
+
+  &copy; 2026 Beeperpay. All rights reserved.
+
+</footer>
 
 <script>
 
-const client = window.supabase.createClient(
+  const SUPABASE_URL =
 
-"https://wrjvcvxswdojpxzcwyqw.supabase.co",
+    "https://wrjvcvxswdojpxzcwyqw.supabase.co";
 
-"sb_publishable_zTksapAhIoJp_0-9w1twlQ_j7WECGcv"
+  const SUPABASE_KEY =
 
-);
+    "sb_publishable_zTksapAhIoJp_0-9w1twlQ_j7WECGcv";
 
-document.getElementById("registerForm")
+  const client = window.supabase.createClient(
 
-.addEventListener("submit", async function(e) {
+    SUPABASE_URL,
 
-e.preventDefault();
+    SUPABASE_KEY
 
-const name = document.getElementById("fullName").value.trim();
+  );
 
-const email = document.getElementById("email").value.trim();
+  const form = document.getElementById("registerForm");
 
-const phone = document.getElementById("phone").value.trim();
+  const button = document.getElementById("registerButton");
 
-const password = document.getElementById("password").value;
+  const message = document.getElementById("message");
 
-const confirm = document.getElementById("confirmPassword").value;
+  function showMessage(text, type) {
 
-const message = document.getElementById("message");
+    message.textContent = text;
 
-const button = document.getElementById("registerButton");
+    message.className = type;
 
-if (password !== confirm) {
+  }
 
-    message.textContent = "Passwords do not match.";
+  form.addEventListener("submit", async function(event) {
 
-    return;
+    event.preventDefault();
 
-}
+    const name = document.getElementById("fullName").value.trim();
 
-button.disabled = true;
+    const email = document.getElementById("email").value.trim();
 
-button.textContent = "CREATING ACCOUNT...";
+    const phone = document.getElementById("phone").value.trim();
 
-message.textContent = "";
+    const password = document.getElementById("password").value;
 
-try {
+    const confirmPassword =
 
-const { data, error } = await client.auth.signUp({
+      document.getElementById("confirmPassword").value;
 
-email: email,
+    if (!name || !email || !phone || !password || !confirmPassword) {
 
-password: password,
+      showMessage("Please complete all fields.", "error");
 
-options: {
-
-    emailRedirectTo:
-
-    "https://beeperjoel27-png.github.io/Beeperpay-/login.html",
-
-    data: {
-
-        full_name: name,
-
-        phone: phone
+      return;
 
     }
 
-}
+    if (password.length < 8) {
 
-});
+      showMessage(
 
-if (error) throw error;
+        "Your password must contain at least 8 characters.",
 
-message.textContent =
+        "error"
 
-"Registration submitted! Check your email for the confirmation link.";
+      );
 
-document.getElementById("registerForm").reset();
+      return;
 
-} catch (error) {
+    }
 
-message.textContent = error.message;
+    if (password !== confirmPassword) {
 
-} finally {
+      showMessage("Your passwords do not match.", "error");
 
-button.disabled = false;
+      return;
 
-button.textContent = "CREATE ACCOUNT";
+    }
 
-}
+    button.disabled = true;
 
-});
+    button.textContent = "CREATING ACCOUNT...";
+
+    message.className = "";
+
+    message.style.display = "none";
+
+    try {
+
+      const { data, error } = await client.auth.signUp({
+
+        email: email,
+
+        password: password,
+
+        options: {
+
+          emailRedirectTo:
+
+            "https://beeperjoel27-png.github.io/Beeperpay-/login.html",
+
+          data: {
+
+            full_name: name,
+
+            phone_number: phone
+
+          }
+
+        }
+
+      });
+
+      if (error) {
+
+        throw error;
+
+      }
+
+      showMessage(
+
+        "Registration submitted successfully. Please check your email for the confirmation link before logging in.",
+
+        "success"
+
+      );
+
+      form.reset();
+
+    } catch (error) {
+
+      console.error("Registration error:", error);
+
+      showMessage(
+
+        error.message || "Registration failed. Please try again.",
+
+        "error"
+
+      );
+
+    } finally {
+
+      button.disabled = false;
+
+      button.textContent = "CREATE ACCOUNT";
+
+    }
+
+  });
 
 </script>
 
