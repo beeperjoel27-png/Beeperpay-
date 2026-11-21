@@ -10,291 +10,341 @@
 
 <title>Admin Transaction Management | Beeperpay</title>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <style>
 
-*{box-sizing:border-box}
+* {
 
-body{
-
-margin:0;
-
-padding:20px;
-
-background:#f3f5f9;
-
-color:#07152e;
-
-font-family:Arial,sans-serif
+  box-sizing: border-box;
 
 }
 
-.container{
+body {
 
-max-width:900px;
+  margin: 0;
 
-margin:25px auto;
+  padding: 20px;
 
-background:white;
+  background: #f3f5f9;
 
-padding:24px;
+  color: #07152e;
 
-border-radius:12px;
-
-box-shadow:0 4px 18px rgba(0,0,0,.07)
+  font-family: Arial, sans-serif;
 
 }
 
-.brand{text-align:center}
+.container {
 
-.brand h2{letter-spacing:2px;margin-bottom:5px}
+  max-width: 900px;
 
-.brand p{color:#b58a2b;font-size:12px;margin:5px}
-
-h3{margin-top:28px}
-
-.stats,.summary-grid{
-
-display:grid;
-
-grid-template-columns:repeat(4,1fr);
-
-gap:10px;
-
-margin:20px 0
+  margin: 20px auto;
 
 }
 
-.stat,.summary-card{
+.header {
 
-background:#f3f5f9;
+  background: #07152e;
 
-padding:15px;
+  color: white;
 
-border-radius:8px;
+  text-align: center;
 
-text-align:center
+  padding: 25px 15px;
 
-}
+  border-radius: 12px;
 
-.stat strong,.summary-card strong{
-
-display:block;
-
-font-size:23px;
-
-margin-top:8px;
-
-overflow-wrap:anywhere
+  margin-bottom: 20px;
 
 }
 
-.summary-section{margin-top:28px}
+.header h1 {
 
-.summary-grid{grid-template-columns:repeat(3,1fr)}
+  margin: 0;
 
-.summary-card{border:1px solid #e0e4eb}
+  color: #d9ad52;
 
-.summary-card span{
-
-font-size:12px;
-
-color:#555
+  letter-spacing: 2px;
 
 }
 
-.summary-card strong{font-size:19px}
+.header h3 {
 
-.transaction{
+  margin: 5px 0;
 
-border:1px solid #e0e4eb;
-
-border-radius:9px;
-
-padding:16px;
-
-margin:14px 0
+  font-size: 15px;
 
 }
 
-.transaction h4{margin:0 0 10px}
+.header p {
 
-.amount{
+  margin-bottom: 0;
 
-font-size:21px;
-
-font-weight:bold;
-
-margin:8px 0
+  color: #ddd;
 
 }
 
-.detail{
+h2 {
 
-font-size:13px;
-
-color:#555;
-
-line-height:1.8;
-
-overflow-wrap:anywhere
+  margin-bottom: 5px;
 
 }
 
-.customer{
+.summary {
 
-background:#f3f5f9;
+  display: grid;
 
-padding:12px;
+  grid-template-columns: repeat(4, 1fr);
 
-border-radius:7px;
+  gap: 12px;
 
-margin:12px 0
-
-}
-
-.customer strong{color:#07152e}
-
-.status{
-
-display:inline-block;
-
-background:#fff3d5;
-
-color:#76520b;
-
-padding:6px 9px;
-
-border-radius:5px;
-
-font-size:11px;
-
-margin:10px 0
+  margin: 20px 0;
 
 }
 
-select,button,input{
+.summary-card {
 
-padding:11px;
+  background: white;
 
-border-radius:6px;
+  padding: 17px 10px;
 
-border:1px solid #ccd2dc;
+  text-align: center;
 
-margin:5px 5px 5px 0;
+  border-radius: 10px;
 
-font-size:14px
-
-}
-
-button{
-
-background:#07152e;
-
-color:white;
-
-border:0;
-
-cursor:pointer
+  box-shadow: 0 2px 8px #0000000d;
 
 }
 
-button:disabled{opacity:.6}
+.summary-card h3 {
 
-.export-button{
+  margin: 0;
 
-background:#b58a2b;
+  font-size: 25px;
 
-color:#07152e;
-
-font-weight:bold
+  color: #07152e;
 
 }
 
-.message{
+.summary-card p {
 
-padding:15px;
+  margin: 7px 0 0;
 
-color:#555;
+  color: #667085;
 
-text-align:center
-
-}
-
-.warning{
-
-color:#a15c00;
-
-background:#fff3d5;
-
-padding:10px;
-
-border-radius:6px;
-
-margin:10px 0;
-
-font-size:13px
+  font-size: 13px;
 
 }
 
-.search-area{
+button, select {
 
-background:#f3f5f9;
+  padding: 11px;
 
-padding:15px;
+  border-radius: 7px;
 
-border-radius:8px;
+  border: 1px solid #d5d9e2;
 
-margin:18px 0
-
-}
-
-.search-area input,.search-area select{
-
-width:100%;
-
-margin:8px 0;
-
-background:white
+  font-size: 14px;
 
 }
 
-.search-label{
+button {
 
-font-size:13px;
+  background: #07152e;
 
-font-weight:bold;
+  color: white;
 
-display:block;
+  cursor: pointer;
 
-margin-top:10px
-
-}
-
-.result-count{
-
-font-size:13px;
-
-color:#555;
-
-margin:12px 0
+  border: none;
 
 }
 
-a{
+button:hover {
 
-color:#07152e;
-
-font-weight:bold
+  opacity: 0.9;
 
 }
 
-@media(max-width:600px){
+.refresh {
 
-.stats{grid-template-columns:repeat(2,1fr)}
+  background: #d9ad52;
 
-.summary-grid{grid-template-columns:repeat(2,1fr)}
+  color: #07152e;
 
-.container{padding:16px}
+  font-weight: bold;
+
+  margin-bottom: 20px;
+
+}
+
+.transaction {
+
+  background: white;
+
+  padding: 20px;
+
+  border-radius: 10px;
+
+  margin-bottom: 16px;
+
+  box-shadow: 0 2px 8px #0000000d;
+
+}
+
+.transaction h3 {
+
+  margin-top: 0;
+
+  color: #07152e;
+
+}
+
+.customer-info {
+
+  background: #f7f8fb;
+
+  padding: 13px;
+
+  border-radius: 8px;
+
+  margin-bottom: 15px;
+
+  line-height: 1.8;
+
+  overflow-wrap: anywhere;
+
+}
+
+.amount {
+
+  color: #07152e;
+
+  font-size: 25px;
+
+  font-weight: bold;
+
+  margin: 12px 0;
+
+}
+
+.status {
+
+  font-weight: bold;
+
+}
+
+.pending {
+
+  color: #b7791f;
+
+}
+
+.approved {
+
+  color: #16834a;
+
+}
+
+.rejected {
+
+  color: #c0392b;
+
+}
+
+.controls {
+
+  display: flex;
+
+  gap: 10px;
+
+  flex-wrap: wrap;
+
+  margin-top: 15px;
+
+}
+
+.controls select {
+
+  flex: 1;
+
+  min-width: 130px;
+
+}
+
+.message {
+
+  padding: 12px;
+
+  background: white;
+
+  border-radius: 8px;
+
+  margin: 15px 0;
+
+  overflow-wrap: anywhere;
+
+}
+
+.back-link {
+
+  display: inline-block;
+
+  margin: 20px 0;
+
+  background: #07152e;
+
+  color: white;
+
+  padding: 13px 18px;
+
+  border-radius: 8px;
+
+  text-decoration: none;
+
+  font-weight: bold;
+
+}
+
+.back-link:hover {
+
+  background: #142b50;
+
+}
+
+.footer {
+
+  text-align: center;
+
+  color: #667085;
+
+  font-size: 12px;
+
+  margin-top: 25px;
+
+  line-height: 1.6;
+
+}
+
+@media(max-width:600px) {
+
+  body {
+
+    padding: 12px;
+
+  }
+
+  .summary {
+
+    grid-template-columns: repeat(2, 1fr);
+
+  }
+
+  .transaction {
+
+    padding: 15px;
+
+  }
 
 }
 
@@ -306,801 +356,449 @@ font-weight:bold
 
 <div class="container">
 
-<div class="brand">
+  <div class="header">
 
-<h2>BEEPERPAY</h2>
+    <h1>BEEPERPAY</h1>
 
-<p>MICROFINANCE BANK</p>
+    <h3>MICROFINANCE BANK</h3>
 
-<p>Your money. Your future. Our priority.</p>
+    <p>Your money. Your future. Our priority.</p>
 
-</div>
+  </div>
 
-<h3>Admin Transaction Management</h3>
+  <h2>Admin Transaction Management</h2>
 
-<p>View and manage customer transaction requests.</p>
+  <p>View and manage customer transaction requests.</p>
 
-<div class="stats">
+  <div class="summary">
 
-<div class="stat">
+    <div class="summary-card">
 
-Total Requests
+      <h3 id="totalRequests">0</h3>
 
-<strong id="total">0</strong>
+      <p>Total Requests</p>
 
-</div>
+    </div>
 
-<div class="stat">
+    <div class="summary-card">
 
-Pending
+      <h3 id="pendingRequests">0</h3>
 
-<strong id="pending">0</strong>
+      <p>Pending</p>
 
-</div>
+    </div>
 
-<div class="stat">
+    <div class="summary-card">
 
-Approved
+      <h3 id="approvedRequests">0</h3>
 
-<strong id="approved">0</strong>
+      <p>Approved</p>
 
-</div>
+    </div>
 
-<div class="stat">
+    <div class="summary-card">
 
-Rejected
+      <h3 id="rejectedRequests">0</h3>
 
-<strong id="rejected">0</strong>
+      <p>Rejected</p>
 
-</div>
+    </div>
 
-</div>
+  </div>
 
-<div class="summary-section">
+  <button class="refresh" onclick="loadTransactions()">
 
-<h3>Overall Transaction Summary</h3>
+    Refresh Transactions
 
-<p class="detail">Summary of all customer transaction requests.</p>
+  </button>
 
-<div class="summary-grid">
+  <div id="message" class="message">
 
-<div class="summary-card">
+    Loading transactions...
 
-<span>Total Amount Requested</span>
+  </div>
 
-<strong id="totalAmount">₦0.00</strong>
+  <div id="transactions"></div>
 
-</div>
+  <a class="back-link" href="./admin.html">
 
-<div class="summary-card">
+    Back to Admin Dashboard
 
-<span>Pending Amount</span>
+  </a>
 
-<strong id="pendingAmount">₦0.00</strong>
+  <div class="footer">
 
-</div>
+    Demonstration transaction management only.<br>
 
-<div class="summary-card">
+    Approving a request does not transfer money or add funds to customer accounts.
 
-<span>Approved Amount</span>
-
-<strong id="approvedAmount">₦0.00</strong>
+  </div>
 
 </div>
-
-<div class="summary-card">
-
-<span>Rejected Amount</span>
-
-<strong id="rejectedAmount">₦0.00</strong>
-
-</div>
-
-<div class="summary-card">
-
-<span>Add Money Requests</span>
-
-<strong id="addMoneyCount">0</strong>
-
-</div>
-
-<div class="summary-card">
-
-<span>Transfer Requests</span>
-
-<strong id="transferCount">0</strong>
-
-</div>
-
-</div>
-
-</div>
-
-<button type="button" onclick="loadTransactions()">
-
-Refresh Transactions
-
-</button>
-
-<div class="search-area">
-
-<label class="search-label" for="search">
-
-Search Transactions
-
-</label>
-
-<input
-
-type="search"
-
-id="search"
-
-placeholder="Search customer name, email, phone, transaction ID or reference..."
-
-oninput="displayTransactions()"
-
->
-
-<label class="search-label" for="statusFilter">
-
-Filter by Transaction Status
-
-</label>
-
-<select id="statusFilter" onchange="displayTransactions()">
-
-<option value="All">All Transactions</option>
-
-<option value="Pending">Pending</option>
-
-<option value="Approved">Approved</option>
-
-<option value="Rejected">Rejected</option>
-
-</select>
-
-<label class="search-label" for="startDate">From Date</label>
-
-<input type="date" id="startDate" onchange="displayTransactions()">
-
-<label class="search-label" for="endDate">To Date</label>
-
-<input type="date" id="endDate" onchange="displayTransactions()">
-
-<button type="button" onclick="clearFilters()">
-
-Clear Search and Filters
-
-</button>
-
-</div>
-
-<button
-
-type="button"
-
-class="export-button"
-
-onclick="exportTransactions()"
-
->
-
-Download Transaction Report (CSV)
-
-</button>
-
-<div id="warning"></div>
-
-<div id="resultCount" class="result-count"></div>
-
-<div id="transactions" class="message">
-
-Loading transactions...
-
-</div>
-
-<p><a href="admin.html">Back to Admin Dashboard</a></p>
-
-<p class="detail">
-
-Demonstration transaction management only.
-
-Approving a request does not transfer money or add funds to a wallet.
-
-</p>
-
-</div>
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <script>
 
-const client=window.supabase.createClient(
+const SUPABASE_URL =
 
-"https://wrjvcvxswdojpxzcwyqw.supabase.co",
+  "https://wrjvcvxswdojpxzcwyqw.supabase.co";
 
-"sb_publishable_zTksapAhIoJp_0-9w1twlQ_j7WECGcv"
+const SUPABASE_KEY =
 
-);
+  "sb_publishable_zTksapAhIoJp_0-9w1twlQ_j7WECGcv";
 
-const container=document.getElementById("transactions");
+const db = window.supabase.createClient(
 
-const warning=document.getElementById("warning");
+  SUPABASE_URL,
 
-let allTransactions=[];
-
-let profileMap={};
-
-function formatMoney(amount){
-
-return "₦"+Number(amount||0).toLocaleString("en-NG",{
-
-minimumFractionDigits:2,
-
-maximumFractionDigits:2
-
-});
-
-}
-
-async function checkAdmin(){
-
-const {data,error}=await client.auth.getUser();
-
-if(error||!data.user){
-
-window.location.href="login.html";
-
-return false;
-
-}
-
-const {data:role,error:roleError}=await client
-
-.from("user_roles")
-
-.select("role")
-
-.eq("user_id",data.user.id)
-
-.eq("role","admin")
-
-.maybeSingle();
-
-if(roleError||!role){
-
-container.textContent="Administrator access required.";
-
-return false;
-
-}
-
-return true;
-
-}
-
-function detail(parent,label,value){
-
-const line=document.createElement("div");
-
-line.className="detail";
-
-line.textContent=label+": "+(value||"Not provided");
-
-parent.appendChild(line);
-
-}
-
-function updateSummary(){
-
-const totalAmount=allTransactions.reduce(
-
-(sum,r)=>sum+Number(r.amount||0),0
+  SUPABASE_KEY
 
 );
 
-const pendingAmount=allTransactions
+const message = document.getElementById("message");
 
-.filter(r=>r.status==="Pending")
+const transactionContainer =
 
-.reduce((sum,r)=>sum+Number(r.amount||0),0);
+  document.getElementById("transactions");
 
-const approvedAmount=allTransactions
+function showMessage(text) {
 
-.filter(r=>r.status==="Approved")
-
-.reduce((sum,r)=>sum+Number(r.amount||0),0);
-
-const rejectedAmount=allTransactions
-
-.filter(r=>r.status==="Rejected")
-
-.reduce((sum,r)=>sum+Number(r.amount||0),0);
-
-const addMoneyCount=allTransactions
-
-.filter(r=>r.transaction_type==="Add Money").length;
-
-const transferCount=allTransactions
-
-.filter(r=>r.transaction_type==="Transfer").length;
-
-document.getElementById("totalAmount").textContent=
-
-formatMoney(totalAmount);
-
-document.getElementById("pendingAmount").textContent=
-
-formatMoney(pendingAmount);
-
-document.getElementById("approvedAmount").textContent=
-
-formatMoney(approvedAmount);
-
-document.getElementById("rejectedAmount").textContent=
-
-formatMoney(rejectedAmount);
-
-document.getElementById("addMoneyCount").textContent=
-
-addMoneyCount;
-
-document.getElementById("transferCount").textContent=
-
-transferCount;
+  message.textContent = text;
 
 }
 
-async function loadTransactions(){
+function formatMoney(amount) {
 
-container.textContent="Loading transactions...";
-
-warning.replaceChildren();
-
-if(!await checkAdmin())return;
-
-const {data:records,error}=await client
-
-.from("transaction_requests")
-
-.select("id,user_id,transaction_type,amount,description,status,created_at")
-
-.order("created_at",{ascending:false});
-
-if(error){
-
-console.error(error);
-
-container.textContent=
-
-"Unable to load transactions: "+error.message;
-
-return;
+  return "₦" + Number(amount || 0).toLocaleString("en-NG");
 
 }
 
-allTransactions=records||[];
+function escapeHTML(value) {
 
-document.getElementById("total").textContent=
+  return String(value ?? "").replace(/[&<>"']/g, char => ({
 
-allTransactions.length;
+    "&": "&amp;",
 
-document.getElementById("pending").textContent=
+    "<": "&lt;",
 
-allTransactions.filter(r=>r.status==="Pending").length;
+    ">": "&gt;",
 
-document.getElementById("approved").textContent=
+    '"': "&quot;",
 
-allTransactions.filter(r=>r.status==="Approved").length;
+    "'": "&#039;"
 
-document.getElementById("rejected").textContent=
-
-allTransactions.filter(r=>r.status==="Rejected").length;
-
-updateSummary();
-
-profileMap={};
-
-const customerIds=[
-
-...new Set(allTransactions.map(r=>r.user_id).filter(Boolean))
-
-];
-
-if(customerIds.length){
-
-const result=await client
-
-.from("customer_profiles")
-
-.select("id,full_name,email,phone_number")
-
-.in("id",customerIds);
-
-if(result.error){
-
-console.error("Customer profile error:",result.error);
-
-const message=document.createElement("div");
-
-message.className="warning";
-
-message.textContent=
-
-"Customer details could not be loaded: "+result.error.message;
-
-warning.appendChild(message);
-
-}else{
-
-(result.data||[]).forEach(profile=>{
-
-profileMap[profile.id]=profile;
-
-});
+  })[char]);
 
 }
 
-}
+async function checkAdmin() {
 
-displayTransactions();
+  const { data: authData, error: authError } =
 
-}
+    await db.auth.getUser();
 
-function getFilteredTransactions(){
+  if (authError || !authData.user) {
 
-const search=document.getElementById("search").value.trim().toLowerCase();
+    window.location.href = "./login.html";
 
-const selectedStatus=document.getElementById("statusFilter").value;
+    return false;
 
-const startDate=document.getElementById("startDate").value;
+  }
 
-const endDate=document.getElementById("endDate").value;
+  const { data: roleData, error: roleError } =
 
-if(startDate&&endDate&&startDate>endDate){
+    await db
 
-return [];
+      .from("user_roles")
 
-}
+      .select("role")
 
-return allTransactions.filter(record=>{
+      .eq("user_id", authData.user.id)
 
-const profile=profileMap[record.user_id]||{};
+      .eq("role", "admin")
 
-const searchableText=[
+      .maybeSingle();
 
-record.id,
+  if (roleError || !roleData) {
 
-record.user_id,
+    showMessage("Access denied. Admin permission is required.");
 
-record.transaction_type,
+    transactionContainer.innerHTML = "";
 
-record.amount,
+    return false;
 
-record.description,
+  }
 
-record.status,
-
-profile.full_name,
-
-profile.email,
-
-profile.phone_number
-
-].join(" ").toLowerCase();
-
-const matchesSearch=searchableText.includes(search);
-
-const matchesStatus=
-
-selectedStatus==="All"||record.status===selectedStatus;
-
-const dateOnly=record.created_at.slice(0,10);
-
-const matchesStartDate=!startDate||dateOnly>=startDate;
-
-const matchesEndDate=!endDate||dateOnly<=endDate;
-
-return matchesSearch&&matchesStatus&&matchesStartDate&&matchesEndDate;
-
-});
+  return true;
 
 }
 
-function displayTransactions(){
+async function loadTransactions() {
 
-container.replaceChildren();
+  showMessage("Loading transactions...");
 
-const filtered=getFilteredTransactions();
+  transactionContainer.innerHTML = "";
 
-document.getElementById("resultCount").textContent=
+  const allowed = await checkAdmin();
 
-"Showing "+filtered.length+" of "+allTransactions.length+" transactions.";
+  if (!allowed) return;
 
-const startDate=document.getElementById("startDate").value;
+  const { data: requests, error } = await db
 
-const endDate=document.getElementById("endDate").value;
+    .from("transaction_requests")
 
-if(startDate&&endDate&&startDate>endDate){
+    .select(
 
-container.className="message";
+      "id,user_id,transaction_type,amount,description,status,created_at"
 
-container.textContent=
+    )
 
-"The From Date cannot be later than the To Date.";
+    .order("created_at", { ascending: false });
 
-return;
+  if (error) {
+
+    showMessage("Unable to load transactions: " + error.message);
+
+    return;
+
+  }
+
+  const rows = requests || [];
+
+  document.getElementById("totalRequests").textContent =
+
+    rows.length;
+
+  document.getElementById("pendingRequests").textContent =
+
+    rows.filter(r => r.status === "Pending").length;
+
+  document.getElementById("approvedRequests").textContent =
+
+    rows.filter(r => r.status === "Approved").length;
+
+  document.getElementById("rejectedRequests").textContent =
+
+    rows.filter(r => r.status === "Rejected").length;
+
+  if (rows.length === 0) {
+
+    showMessage("No transaction requests found.");
+
+    return;
+
+  }
+
+  const customerIds = [
+
+    ...new Set(rows.map(r => r.user_id).filter(Boolean))
+
+  ];
+
+  let profiles = [];
+
+  if (customerIds.length > 0) {
+
+    const { data, error: profileError } = await db
+
+      .from("customer_profiles")
+
+      .select("id,full_name,email,phone_number")
+
+      .in("id", customerIds);
+
+    if (profileError) {
+
+      showMessage(
+
+        "Transactions loaded, but customer information could not be loaded: " +
+
+        profileError.message
+
+      );
+
+    } else {
+
+      profiles = data || [];
+
+    }
+
+  }
+
+  const profileMap = {};
+
+  profiles.forEach(profile => {
+
+    profileMap[profile.id] = profile;
+
+  });
+
+  transactionContainer.innerHTML = "";
+
+  rows.forEach(transaction => {
+
+    const customer = profileMap[transaction.user_id] || {};
+
+    const status = transaction.status || "Pending";
+
+    const statusClass =
+
+      status.toLowerCase() === "approved" ? "approved" :
+
+      status.toLowerCase() === "rejected" ? "rejected" :
+
+      "pending";
+
+    const date = transaction.created_at
+
+      ? new Date(transaction.created_at).toLocaleString("en-NG")
+
+      : "Not available";
+
+    const card = document.createElement("div");
+
+    card.className = "transaction";
+
+    card.innerHTML = `
+
+      <h3>${escapeHTML(transaction.transaction_type || "Transaction")}</h3>
+
+      <div class="customer-info">
+
+        <strong>CUSTOMER INFORMATION</strong><br>
+
+        Full Name: ${escapeHTML(customer.full_name || "Not available")}<br>
+
+        Email Address: ${escapeHTML(customer.email || "Not available")}<br>
+
+        Phone Number: ${escapeHTML(customer.phone_number || "Not available")}<br>
+
+        Customer ID: ${escapeHTML(transaction.user_id || "Not available")}
+
+      </div>
+
+      <div class="amount">
+
+        ${formatMoney(transaction.amount)}
+
+      </div>
+
+      <p><strong>Transaction ID:</strong><br>
+
+        ${escapeHTML(transaction.id)}
+
+      </p>
+
+      <p><strong>Date:</strong> ${escapeHTML(date)}</p>
+
+      <p><strong>Description:</strong><br>
+
+        ${escapeHTML(transaction.description || "No description")}
+
+      </p>
+
+      <p>
+
+        <strong>Current Status:</strong>
+
+        <span class="status ${statusClass}">
+
+          ${escapeHTML(status)}
+
+        </span>
+
+      </p>
+
+      <div class="controls">
+
+        <select class="status-select"
+
+          aria-label="Select transaction status">
+
+          <option value="Pending">Pending</option>
+
+          <option value="Approved">Approved</option>
+
+          <option value="Rejected">Rejected</option>
+
+        </select>
+
+        <button class="update-button">
+
+          Update Status
+
+        </button>
+
+      </div>
+
+    `;
+
+    const select = card.querySelector(".status-select");
+
+    const button = card.querySelector(".update-button");
+
+    select.value = ["Pending", "Approved", "Rejected"].includes(status)
+
+      ? status
+
+      : "Pending";
+
+    button.addEventListener("click", () => {
+
+      updateStatus(transaction.id, select.value, button);
+
+    });
+
+    transactionContainer.appendChild(card);
+
+  });
+
+  showMessage("Transactions loaded successfully.");
 
 }
 
-if(!filtered.length){
+async function updateStatus(id, newStatus, button) {
 
-container.className="message";
+  const allowed = await checkAdmin();
 
-container.textContent="No matching transactions found.";
+  if (!allowed) return;
 
-return;
+  const confirmed = window.confirm(
 
-}
+    "Are you sure you want to change this transaction status to " +
 
-container.className="";
+    newStatus + "?"
 
-filtered.forEach(record=>{
+  );
 
-const card=document.createElement("div");
+  if (!confirmed) return;
 
-card.className="transaction";
+  button.disabled = true;
 
-const heading=document.createElement("h4");
+  button.textContent = "Updating...";
 
-heading.textContent=record.transaction_type;
+  const { error } = await db
 
-card.appendChild(heading);
+    .from("transaction_requests")
 
-const amount=document.createElement("div");
+    .update({ status: newStatus })
 
-amount.className="amount";
+    .eq("id", id);
 
-amount.textContent=formatMoney(record.amount);
+  if (error) {
 
-card.appendChild(amount);
+    alert("Status update failed: " + error.message);
 
-const profile=profileMap[record.user_id];
+    button.disabled = false;
 
-const customer=document.createElement("div");
+    button.textContent = "Update Status";
 
-customer.className="customer";
+    return;
 
-const customerTitle=document.createElement("strong");
+  }
 
-customerTitle.textContent="Customer Information";
+  alert("Transaction status updated successfully.");
 
-customer.appendChild(customerTitle);
-
-detail(customer,"Full Name",profile?.full_name);
-
-detail(customer,"Email Address",profile?.email);
-
-detail(customer,"Phone Number",profile?.phone_number);
-
-detail(customer,"Customer ID",record.user_id);
-
-card.appendChild(customer);
-
-detail(card,"Transaction ID",record.id);
-
-detail(card,"Date",new Date(record.created_at).toLocaleString("en-NG"));
-
-detail(card,"Description",record.description);
-
-const status=document.createElement("span");
-
-status.className="status";
-
-status.textContent="Current Status: "+record.status;
-
-card.appendChild(status);
-
-const controls=document.createElement("div");
-
-const select=document.createElement("select");
-
-["Pending","Approved","Rejected"].forEach(value=>{
-
-const option=document.createElement("option");
-
-option.value=value;
-
-option.textContent=value;
-
-if(value===record.status)option.selected=true;
-
-select.appendChild(option);
-
-});
-
-const save=document.createElement("button");
-
-save.type="button";
-
-save.textContent="Update Status";
-
-save.addEventListener("click",()=>{
-
-updateStatus(record.id,select.value,save);
-
-});
-
-controls.appendChild(select);
-
-controls.appendChild(save);
-
-card.appendChild(controls);
-
-container.appendChild(card);
-
-});
-
-}
-
-function csvCell(value){
-
-let text=String(value??"");
-
-if(/^[\s]*[=+\-@\t\r]/.test(text)){
-
-text="'"+text;
-
-}
-
-return '"'+text.replace(/"/g,'""')+'"';
-
-}
-
-function exportTransactions(){
-
-const filtered=getFilteredTransactions();
-
-if(!filtered.length){
-
-alert("There are no matching transactions to export.");
-
-return;
-
-}
-
-const headers=[
-
-"Transaction ID",
-
-"Customer ID",
-
-"Customer Name",
-
-"Email Address",
-
-"Phone Number",
-
-"Transaction Type",
-
-"Amount (NGN)",
-
-"Description",
-
-"Status",
-
-"Date"
-
-];
-
-const rows=filtered.map(record=>{
-
-const profile=profileMap[record.user_id]||{};
-
-return [
-
-record.id,
-
-record.user_id,
-
-profile.full_name||"Not provided",
-
-profile.email||"Not provided",
-
-profile.phone_number||"Not provided",
-
-record.transaction_type,
-
-record.amount,
-
-record.description||"",
-
-record.status,
-
-new Date(record.created_at).toLocaleString("en-NG")
-
-];
-
-});
-
-const csv="\uFEFF"+
-
-[headers,...rows]
-
-.map(row=>row.map(csvCell).join(","))
-
-.join("\r\n");
-
-const blob=new Blob([csv],{
-
-type:"text/csv;charset=utf-8;"
-
-});
-
-const url=URL.createObjectURL(blob);
-
-const link=document.createElement("a");
-
-link.href=url;
-
-const date=new Date().toISOString().slice(0,10);
-
-link.download="Beeperpay-Transactions-"+date+".csv";
-
-document.body.appendChild(link);
-
-link.click();
-
-link.remove();
-
-setTimeout(()=>URL.revokeObjectURL(url),1000);
-
-}
-
-function clearFilters(){
-
-document.getElementById("search").value="";
-
-document.getElementById("statusFilter").value="All";
-
-document.getElementById("startDate").value="";
-
-document.getElementById("endDate").value="";
-
-displayTransactions();
-
-}
-
-async function updateStatus(id,newStatus,button){
-
-button.disabled=true;
-
-button.textContent="Updating...";
-
-const {error}=await client
-
-.from("transaction_requests")
-
-.update({status:newStatus})
-
-.eq("id",id);
-
-if(error){
-
-alert("Status update failed: "+error.message);
-
-button.disabled=false;
-
-button.textContent="Update Status";
-
-return;
-
-}
-
-alert("Transaction status successfully updated to "+newStatus+".");
-
-await loadTransactions();
+  await loadTransactions();
 
 }
 
