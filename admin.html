@@ -8,59 +8,431 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Admin Transaction Management | Beeperpay</title>
+<title>Beeperpay | Executive Admin Dashboard</title>
 
 <style>
 
 *{box-sizing:border-box}
 
-body{margin:0;padding:20px;background:#f3f5f9;color:#07152e;font-family:Arial,sans-serif}
+:root{
 
-.container{max-width:900px;margin:25px auto;background:white;padding:24px;border-radius:12px;box-shadow:0 4px 18px rgba(0,0,0,.07)}
+  --bg:#080808;
 
-.brand{text-align:center}
+  --panel:#151515;
 
-.brand h2{letter-spacing:2px;margin-bottom:5px}
+  --panel2:#1d1d1d;
 
-.brand p{color:#b58a2b;font-size:12px;margin:5px}
+  --red:#ed3038;
 
-h3{margin-top:28px}
+  --gold:#d6ad55;
 
-.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin:20px 0}
+  --green:#28c985;
 
-.stat{background:#f3f5f9;padding:15px;border-radius:8px;text-align:center;font-size:13px}
+  --amber:#f0b94b;
 
-.stat strong{display:block;font-size:23px;margin-top:8px;color:#071b49}
+  --text:#f5f5f5;
 
-.transaction{border:1px solid #e0e4eb;border-radius:9px;padding:16px;margin:14px 0}
+  --muted:#aaa;
 
-.transaction h4{margin:0 0 10px;color:#071b49}
+  --border:#303030;
 
-.amount{font-size:21px;font-weight:bold;margin:8px 0}
+}
 
-.detail{font-size:13px;color:#555;line-height:1.8;overflow-wrap:anywhere}
+body{
 
-.customer{background:#f3f5f9;padding:12px;border-radius:7px;margin:12px 0}
+  margin:0;
 
-.customer strong{color:#071b49}
+  background:var(--bg);
 
-.status{display:inline-block;background:#fff3d5;color:#76520b;padding:6px 9px;border-radius:5px;font-size:11px;margin:10px 0}
+  color:var(--text);
 
-select,button{padding:11px;border-radius:6px;border:1px solid #ccd2dc;margin:5px 5px 5px 0}
+  font-family:Arial,sans-serif;
 
-button{background:#07152e;color:white;border:0;cursor:pointer}
+}
 
-button:disabled{opacity:.6;cursor:wait}
+button,a{font-family:inherit}
 
-.message{padding:15px;color:#555;text-align:center}
+.layout{display:flex;min-height:100vh}
 
-a{color:#07152e;font-weight:bold}
+.sidebar{
 
-.notice{font-size:12px;color:#666;line-height:1.6;margin-top:20px}
+  width:245px;
 
-@media(max-width:500px){
+  background:#101010;
 
-.container{padding:17px}
+  border-right:1px solid var(--border);
+
+  padding:25px 17px;
+
+  flex-shrink:0;
+
+}
+
+.brand{text-align:center;margin-bottom:35px}
+
+.brand h2{
+
+  margin:0;
+
+  letter-spacing:3px;
+
+  color:var(--red);
+
+  font-size:25px;
+
+}
+
+.brand p{font-size:10px;color:var(--gold);letter-spacing:2px}
+
+.tagline{font-size:10px!important;color:var(--muted)!important;letter-spacing:0!important}
+
+.menu-title{
+
+  color:#777;
+
+  font-size:10px;
+
+  letter-spacing:2px;
+
+  margin:25px 10px 12px;
+
+}
+
+.nav a{
+
+  display:block;
+
+  text-decoration:none;
+
+  color:#ccc;
+
+  padding:13px 12px;
+
+  margin:5px 0;
+
+  border-radius:7px;
+
+  font-size:13px;
+
+  border:1px solid transparent;
+
+}
+
+.nav a:hover,.nav a.active{
+
+  background:#281315;
+
+  color:#ff6268;
+
+  border-color:#542326;
+
+}
+
+.main{flex:1;min-width:0;padding:25px}
+
+.topbar{
+
+  display:flex;
+
+  justify-content:space-between;
+
+  align-items:center;
+
+  gap:15px;
+
+  flex-wrap:wrap;
+
+  border-bottom:1px solid var(--border);
+
+  padding-bottom:20px;
+
+}
+
+.topbar h1{font-size:22px;margin:0;color:var(--red)}
+
+.topbar p{font-size:12px;color:var(--muted);margin:7px 0 0}
+
+.admin-tag{
+
+  border:1px solid #665126;
+
+  color:var(--gold);
+
+  padding:9px 13px;
+
+  border-radius:20px;
+
+  font-size:11px;
+
+}
+
+.welcome{
+
+  margin:24px 0;
+
+  padding:23px;
+
+  border:1px solid #49351c;
+
+  border-radius:12px;
+
+  background:linear-gradient(110deg,#211315,#17130d,#151515);
+
+}
+
+.welcome h2{margin:0 0 9px;font-size:20px}
+
+.welcome h2 span{color:var(--gold)}
+
+.welcome p{margin:0;color:#bbb;font-size:13px;line-height:1.6}
+
+.section-title{
+
+  font-size:15px;
+
+  margin:28px 0 14px;
+
+  color:var(--gold);
+
+}
+
+.stats{
+
+  display:grid;
+
+  grid-template-columns:repeat(4,minmax(0,1fr));
+
+  gap:13px;
+
+}
+
+.stat{
+
+  background:var(--panel);
+
+  border:1px solid var(--border);
+
+  border-radius:10px;
+
+  padding:18px;
+
+  min-height:112px;
+
+}
+
+.stat-label{font-size:12px;color:var(--muted)}
+
+.stat-number{
+
+  display:block;
+
+  margin-top:14px;
+
+  font-size:27px;
+
+  font-weight:bold;
+
+  color:var(--red);
+
+}
+
+.stat small{display:block;color:#777;font-size:10px;margin-top:6px}
+
+.stat.gold .stat-number{color:var(--gold)}
+
+.stat.green .stat-number{color:var(--green)}
+
+.stat.amber .stat-number{color:var(--amber)}
+
+.grid{
+
+  display:grid;
+
+  grid-template-columns:repeat(3,minmax(0,1fr));
+
+  gap:13px;
+
+}
+
+.quick{
+
+  display:block;
+
+  text-decoration:none;
+
+  color:var(--text);
+
+  background:var(--panel);
+
+  border:1px solid var(--border);
+
+  border-radius:10px;
+
+  padding:18px;
+
+  transition:.2s;
+
+}
+
+.quick:hover{border-color:var(--red);transform:translateY(-2px)}
+
+.quick .symbol{font-size:23px;margin-bottom:12px}
+
+.quick strong{display:block;font-size:13px;color:var(--gold)}
+
+.quick span{display:block;color:var(--muted);font-size:11px;margin-top:7px;line-height:1.5}
+
+.activity{
+
+  background:var(--panel);
+
+  border:1px solid var(--border);
+
+  border-radius:10px;
+
+  padding:17px;
+
+  overflow-x:auto;
+
+}
+
+table{width:100%;border-collapse:collapse;min-width:500px}
+
+th,td{
+
+  text-align:left;
+
+  padding:13px 10px;
+
+  border-bottom:1px solid var(--border);
+
+  font-size:12px;
+
+}
+
+th{color:var(--gold);font-weight:bold}
+
+td{color:#ddd}
+
+.pill{
+
+  display:inline-block;
+
+  padding:5px 9px;
+
+  border-radius:20px;
+
+  font-size:10px;
+
+  background:#292929;
+
+}
+
+.pill.pending{color:var(--amber)}
+
+.pill.approved,.pill.verified{color:var(--green)}
+
+.pill.rejected{color:#ff6268}
+
+.refresh{
+
+  background:var(--red);
+
+  border:0;
+
+  color:white;
+
+  padding:11px 16px;
+
+  border-radius:7px;
+
+  cursor:pointer;
+
+  font-weight:bold;
+
+}
+
+.refresh:hover{background:#c9232c}
+
+.message{color:var(--muted);font-size:12px;padding:15px 5px}
+
+.notice{
+
+  margin-top:25px;
+
+  border:1px solid #55451f;
+
+  background:#19160f;
+
+  color:#d9bd7a;
+
+  padding:14px;
+
+  border-radius:8px;
+
+  font-size:11px;
+
+  line-height:1.6;
+
+}
+
+.footer{
+
+  text-align:center;
+
+  color:#666;
+
+  font-size:10px;
+
+  margin-top:30px;
+
+  padding:20px;
+
+  border-top:1px solid var(--border);
+
+}
+
+@media(max-width:950px){
+
+  .stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+
+  .grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+
+}
+
+@media(max-width:650px){
+
+  .layout{display:block}
+
+  .sidebar{width:100%;padding:15px}
+
+  .brand{margin-bottom:15px}
+
+  .nav{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:5px}
+
+  .menu-title{margin-top:15px}
+
+  .nav a{padding:11px 9px;font-size:12px}
+
+  .main{padding:17px}
+
+  .topbar h1{font-size:19px}
+
+  .stats{gap:9px}
+
+  .stat{padding:14px;min-height:100px}
+
+  .stat-number{font-size:23px}
+
+  .grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+
+  .quick{padding:14px}
+
+}
+
+@media(max-width:360px){
+
+  .stats,.grid{grid-template-columns:1fr}
 
 }
 
@@ -70,45 +442,275 @@ a{color:#07152e;font-weight:bold}
 
 <body>
 
-<div class="container">
+<div class="layout">
 
-<div class="brand">
+<aside class="sidebar">
 
-<h2>BEEPERPAY</h2>
+  <div class="brand">
 
-<p>MICROFINANCE BANK</p>
+    <h2>BEEPERPAY</h2>
 
-<p>Your money. Your future. Our priority.</p>
+    <p>MICROFINANCE BANK</p>
 
-</div>
+    <p class="tagline">Your money. Your future. Our priority.</p>
 
-<h3>Admin Transaction Management</h3>
+  </div>
 
-<p>View and manage customer transaction requests.</p>
+  <div class="menu-title">MAIN MENU</div>
 
-<div class="stats">
+  <nav class="nav">
 
-<div class="stat">Total Requests<strong id="total">0</strong></div>
+    <a class="active" href="admin.html">▣ Dashboard</a>
 
-<div class="stat">Pending<strong id="pending">0</strong></div>
+    <a href="customers.html">♙ Customers</a>
 
-<div class="stat">Approved<strong id="approved">0</strong></div>
+    <a href="admin-transactions.html">⇄ Transactions</a>
 
-<div class="stat">Rejected<strong id="rejected">0</strong></div>
+    <a href="verification-management.html">✓ Verification</a>
 
-</div>
+    <a href="customer-reports.html">▤ Reports</a>
 
-<button type="button" onclick="loadTransactions()">Refresh Transactions</button>
+    <a href="customer-activity.html">◷ Activity Logs</a>
 
-<div id="transactions" class="message">Loading transactions...</div>
+    <a href="support-tickets.html">✉ Support Tickets</a>
 
-<p><a href="admin.html">Back to Admin Dashboard</a></p>
+    <a href="profile.html">⚙ My Profile</a>
 
-<p class="notice">
+  </nav>
 
-Demonstration transaction management only. Approving a request does not transfer money or add funds to a customer's wallet.
+  <div class="menu-title">ACCOUNT</div>
 
-</p>
+  <nav class="nav">
+
+    <a href="login.html" id="logout">↪ Logout</a>
+
+  </nav>
+
+</aside>
+
+<main class="main">
+
+  <header class="topbar">
+
+    <div>
+
+      <h1>EXECUTIVE DASHBOARD</h1>
+
+      <p id="today">Beeperpay Administration</p>
+
+    </div>
+
+    <div class="admin-tag">● ADMINISTRATOR</div>
+
+  </header>
+
+  <section class="welcome">
+
+    <h2>Welcome to <span>Beeperpay</span></h2>
+
+    <p>
+
+      Your executive control centre. Monitor customer registrations,
+
+      transaction requests and verification activity from one place.
+
+    </p>
+
+  </section>
+
+  <h3 class="section-title">BUSINESS OVERVIEW</h3>
+
+  <section class="stats">
+
+    <div class="stat">
+
+      <span class="stat-label">Total Customers</span>
+
+      <strong class="stat-number" id="customers">—</strong>
+
+      <small>Registered customer profiles</small>
+
+    </div>
+
+    <div class="stat gold">
+
+      <span class="stat-label">Total Requests</span>
+
+      <strong class="stat-number" id="transactions">—</strong>
+
+      <small>Transaction requests recorded</small>
+
+    </div>
+
+    <div class="stat amber">
+
+      <span class="stat-label">Pending Transactions</span>
+
+      <strong class="stat-number" id="pendingTransactions">—</strong>
+
+      <small>Awaiting review</small>
+
+    </div>
+
+    <div class="stat green">
+
+      <span class="stat-label">Approved Transactions</span>
+
+      <strong class="stat-number" id="approvedTransactions">—</strong>
+
+      <small>Marked as approved</small>
+
+    </div>
+
+    <div class="stat amber">
+
+      <span class="stat-label">Pending Verification</span>
+
+      <strong class="stat-number" id="pendingVerification">—</strong>
+
+      <small>Customer profiles awaiting review</small>
+
+    </div>
+
+    <div class="stat green">
+
+      <span class="stat-label">Verified Customers</span>
+
+      <strong class="stat-number" id="verifiedCustomers">—</strong>
+
+      <small>Profiles marked verified</small>
+
+    </div>
+
+    <div class="stat">
+
+      <span class="stat-label">Active Accounts</span>
+
+      <strong class="stat-number" id="activeCustomers">—</strong>
+
+      <small>Profiles marked active</small>
+
+    </div>
+
+    <div class="stat">
+
+      <span class="stat-label">Rejected Requests</span>
+
+      <strong class="stat-number" id="rejectedTransactions">—</strong>
+
+      <small>Transaction requests rejected</small>
+
+    </div>
+
+  </section>
+
+  <h3 class="section-title">MANAGEMENT CENTRE</h3>
+
+  <section class="grid">
+
+    <a class="quick" href="customers.html">
+
+      <div class="symbol">♙</div>
+
+      <strong>Customer Management</strong>
+
+      <span>View and manage registered customer profiles.</span>
+
+    </a>
+
+    <a class="quick" href="admin-transactions.html">
+
+      <div class="symbol">⇄</div>
+
+      <strong>Transaction Management</strong>
+
+      <span>Review transaction requests and their statuses.</span>
+
+    </a>
+
+    <a class="quick" href="verification-management.html">
+
+      <div class="symbol">✓</div>
+
+      <strong>Customer Verification</strong>
+
+      <span>Review customer verification statuses.</span>
+
+    </a>
+
+    <a class="quick" href="customer-reports.html">
+
+      <div class="symbol">▤</div>
+
+      <strong>Reports & Analytics</strong>
+
+      <span>Open customer and transaction reports.</span>
+
+    </a>
+
+    <a class="quick" href="customer-activity.html">
+
+      <div class="symbol">◷</div>
+
+      <strong>Activity Monitoring</strong>
+
+      <span>Review available customer activity records.</span>
+
+    </a>
+
+    <a class="quick" href="support-tickets.html">
+
+      <div class="symbol">✉</div>
+
+      <strong>Customer Support</strong>
+
+      <span>Manage customer support requests.</span>
+
+    </a>
+
+    <a class="quick" href="profile.html">
+
+      <div class="symbol">⚙</div>
+
+      <strong>Administrator Profile</strong>
+
+      <span>View your administrator profile.</span>
+
+    </a>
+
+  </section>
+
+  <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap">
+
+    <h3 class="section-title">RECENT TRANSACTION ACTIVITY</h3>
+
+    <button class="refresh" onclick="loadDashboard()">↻ Refresh Dashboard</button>
+
+  </div>
+
+  <section class="activity">
+
+    <div id="recentActivity" class="message">Loading recent activity...</div>
+
+  </section>
+
+  <div class="notice">
+
+    DEMONSTRATION SYSTEM: This dashboard displays records stored in the
+
+    Beeperpay development database. It does not connect to a live banking
+
+    core, transfer funds, or confirm real-money transactions.
+
+  </div>
+
+  <footer class="footer">
+
+    BEEPERPAY · ADMINISTRATION PORTAL · Your money. Your future. Our priority.
+
+  </footer>
+
+</main>
 
 </div>
 
@@ -116,303 +718,313 @@ Demonstration transaction management only. Approving a request does not transfer
 
 <script>
 
-const client=window.supabase.createClient(
+const client = window.supabase.createClient(
 
-"https://wrjvcvxswdojpxzcwyqw.supabase.co",
+  "https://wrjvcvxswdojpxzcwyqw.supabase.co",
 
-"sb_publishable_zTksapAhIoJp_0-9w1twlQ_j7WECGcv"
+  "sb_publishable_zTksapAhIoJp_0-9w1twlQ_j7WECGcv"
 
 );
 
-const container=document.getElementById("transactions");
+const recentActivity = document.getElementById("recentActivity");
+
+document.getElementById("today").textContent =
+
+  new Date().toLocaleDateString("en-NG", {
+
+    weekday:"long",
+
+    year:"numeric",
+
+    month:"long",
+
+    day:"numeric"
+
+  });
 
 async function checkAdmin(){
 
-const {data,error}=await client.auth.getUser();
+  const {data,error} = await client.auth.getUser();
 
-if(error||!data.user){
+  if(error || !data.user){
 
-window.location.href="login.html";
+    window.location.href = "login.html";
 
-return false;
+    return false;
 
-}
+  }
 
-const {data:role,error:roleError}=await client
+  const {data:role,error:roleError} = await client
 
-.from("user_roles")
+    .from("user_roles")
 
-.select("role")
+    .select("role")
 
-.eq("user_id",data.user.id)
+    .eq("user_id",data.user.id)
 
-.eq("role","admin")
+    .eq("role","admin")
 
-.maybeSingle();
+    .maybeSingle();
 
-if(roleError||!role){
+  if(roleError || !role){
 
-container.textContent="Administrator access required.";
+    document.querySelector(".main").innerHTML =
 
-return false;
+      '<h2 style="color:#ed3038">Administrator access required.</h2>' +
 
-}
+      '<p style="color:#aaa">Your account does not have the required admin role.</p>';
 
-return true;
+    return false;
 
-}
+  }
 
-function detail(parent,label,value){
-
-const line=document.createElement("div");
-
-line.className="detail";
-
-line.textContent=label+": "+(value||"Not provided");
-
-parent.appendChild(line);
+  return true;
 
 }
 
-async function loadTransactions(){
+function setValue(id,value){
 
-container.textContent="Loading transactions...";
+  document.getElementById(id).textContent =
 
-if(!await checkAdmin())return;
-
-const {data:records,error}=await client
-
-.from("transaction_requests")
-
-.select("id,user_id,transaction_type,amount,description,status,created_at")
-
-.order("created_at",{ascending:false});
-
-if(error){
-
-console.error(error);
-
-container.textContent="Unable to load transactions: "+error.message;
-
-return;
+    Number(value || 0).toLocaleString("en-NG");
 
 }
 
-const customerIds=[...new Set(records.map(r=>r.user_id))];
+function makeCell(row,value){
 
-let profiles=[];
+  const cell = document.createElement("td");
 
-let profileError=null;
+  cell.textContent = value || "Not provided";
 
-if(customerIds.length){
+  row.appendChild(cell);
 
-const result=await client
-
-.from("customer_profiles")
-
-.select("id,full_name,email,phone_number")
-
-.in("id",customerIds);
-
-profiles=result.data||[];
-
-profileError=result.error;
-
-if(profileError){
-
-console.error("Customer profile loading error:",profileError);
+  return cell;
 
 }
 
+async function loadDashboard(){
+
+  recentActivity.textContent = "Loading dashboard records...";
+
+  if(!await checkAdmin()) return;
+
+  const [customerResult,transactionResult] = await Promise.all([
+
+    client
+
+      .from("customer_profiles")
+
+      .select("id,full_name,email,account_status,verification_status,created_at")
+
+      .order("created_at",{ascending:false}),
+
+    client
+
+      .from("transaction_requests")
+
+      .select("id,transaction_type,amount,status,created_at")
+
+      .order("created_at",{ascending:false})
+
+  ]);
+
+  if(customerResult.error){
+
+    console.error("Customer loading error:",customerResult.error);
+
+  }
+
+  if(transactionResult.error){
+
+    console.error("Transaction loading error:",transactionResult.error);
+
+  }
+
+  const customers = customerResult.data || [];
+
+  const transactions = transactionResult.data || [];
+
+  setValue("customers",customers.length);
+
+  setValue("transactions",transactions.length);
+
+  setValue(
+
+    "pendingTransactions",
+
+    transactions.filter(r =>
+
+      String(r.status || "").toLowerCase() === "pending"
+
+    ).length
+
+  );
+
+  setValue(
+
+    "approvedTransactions",
+
+    transactions.filter(r =>
+
+      String(r.status || "").toLowerCase() === "approved"
+
+    ).length
+
+  );
+
+  setValue(
+
+    "rejectedTransactions",
+
+    transactions.filter(r =>
+
+      String(r.status || "").toLowerCase() === "rejected"
+
+    ).length
+
+  );
+
+  setValue(
+
+    "pendingVerification",
+
+    customers.filter(r =>
+
+      String(r.verification_status || "").toLowerCase() === "pending"
+
+    ).length
+
+  );
+
+  setValue(
+
+    "verifiedCustomers",
+
+    customers.filter(r =>
+
+      String(r.verification_status || "").toLowerCase() === "verified"
+
+    ).length
+
+  );
+
+  setValue(
+
+    "activeCustomers",
+
+    customers.filter(r =>
+
+      String(r.account_status || "").toLowerCase() === "active"
+
+    ).length
+
+  );
+
+  recentActivity.replaceChildren();
+
+  if(transactionResult.error){
+
+    recentActivity.textContent =
+
+      "Unable to load transaction activity: " + transactionResult.error.message;
+
+    return;
+
+  }
+
+  if(!transactions.length){
+
+    recentActivity.textContent = "No transaction activity found yet.";
+
+    return;
+
+  }
+
+  const table = document.createElement("table");
+
+  const thead = document.createElement("thead");
+
+  const header = document.createElement("tr");
+
+  ["Transaction Type","Amount","Status","Date"].forEach(label=>{
+
+    makeCell(header,label);
+
+  });
+
+  thead.appendChild(header);
+
+  table.appendChild(thead);
+
+  const tbody = document.createElement("tbody");
+
+  transactions.slice(0,8).forEach(record=>{
+
+    const row = document.createElement("tr");
+
+    makeCell(row,record.transaction_type);
+
+    makeCell(
+
+      row,
+
+      "₦" + Number(record.amount || 0).toLocaleString("en-NG")
+
+    );
+
+    const statusCell = makeCell(row,"");
+
+    const badge = document.createElement("span");
+
+    const status = String(record.status || "Unknown");
+
+    badge.className = "pill " + status.toLowerCase();
+
+    badge.textContent = status;
+
+    statusCell.appendChild(badge);
+
+    makeCell(
+
+      row,
+
+      record.created_at
+
+        ? new Date(record.created_at).toLocaleString("en-NG")
+
+        : "Not provided"
+
+    );
+
+    tbody.appendChild(row);
+
+  });
+
+  table.appendChild(tbody);
+
+  recentActivity.appendChild(table);
+
 }
 
-const profileMap={};
+document.getElementById("logout").addEventListener("click",async function(event){
 
-profiles.forEach(profile=>{
+  event.preventDefault();
 
-profileMap[profile.id]=profile;
+  const {error} = await client.auth.signOut();
+
+  if(error){
+
+    alert("Unable to log out: " + error.message);
+
+    return;
+
+  }
+
+  window.location.href = "login.html";
 
 });
 
-document.getElementById("total").textContent=records.length;
-
-document.getElementById("pending").textContent=
-
-records.filter(r=>r.status==="Pending").length;
-
-document.getElementById("approved").textContent=
-
-records.filter(r=>r.status==="Approved").length;
-
-document.getElementById("rejected").textContent=
-
-records.filter(r=>r.status==="Rejected").length;
-
-container.replaceChildren();
-
-if(!records.length){
-
-container.textContent="No transaction requests found.";
-
-return;
-
-}
-
-if(profileError){
-
-const warning=document.createElement("p");
-
-warning.className="message";
-
-warning.textContent="Customer profile details could not be loaded. Transaction records are still available.";
-
-container.appendChild(warning);
-
-}
-
-records.forEach(record=>{
-
-const card=document.createElement("div");
-
-card.className="transaction";
-
-const profile=profileMap[record.user_id]||{};
-
-const heading=document.createElement("h4");
-
-heading.textContent=record.transaction_type||"Transaction";
-
-card.appendChild(heading);
-
-const customerBox=document.createElement("div");
-
-customerBox.className="customer";
-
-const customerTitle=document.createElement("strong");
-
-customerTitle.textContent="CUSTOMER INFORMATION";
-
-customerBox.appendChild(customerTitle);
-
-detail(customerBox,"Full Name",profile.full_name||"Profile not found");
-
-detail(customerBox,"Email Address",profile.email||"Not available");
-
-detail(customerBox,"Phone Number",profile.phone_number||"Not available");
-
-detail(customerBox,"Customer ID",record.user_id);
-
-card.appendChild(customerBox);
-
-const amount=document.createElement("div");
-
-amount.className="amount";
-
-amount.textContent="₦"+Number(record.amount||0).toLocaleString("en-NG");
-
-card.appendChild(amount);
-
-detail(card,"Transaction ID",record.id);
-
-detail(card,"Date",
-
-record.created_at
-
-?new Date(record.created_at).toLocaleString("en-NG")
-
-:"Not provided"
-
-);
-
-detail(card,"Description",record.description);
-
-const status=document.createElement("span");
-
-status.className="status";
-
-status.textContent="Current Status: "+record.status;
-
-card.appendChild(status);
-
-const controls=document.createElement("div");
-
-const select=document.createElement("select");
-
-["Pending","Approved","Rejected"].forEach(value=>{
-
-const option=document.createElement("option");
-
-option.value=value;
-
-option.textContent=value;
-
-if(value===record.status){
-
-option.selected=true;
-
-}
-
-select.appendChild(option);
-
-});
-
-const save=document.createElement("button");
-
-save.type="button";
-
-save.textContent="Update Status";
-
-save.addEventListener("click",function(){
-
-updateStatus(record.id,select.value,save);
-
-});
-
-controls.appendChild(select);
-
-controls.appendChild(save);
-
-card.appendChild(controls);
-
-container.appendChild(card);
-
-});
-
-}
-
-async function updateStatus(id,newStatus,button){
-
-button.disabled=true;
-
-button.textContent="Updating...";
-
-const {error}=await client
-
-.from("transaction_requests")
-
-.update({status:newStatus})
-
-.eq("id",id);
-
-if(error){
-
-alert("Status update failed: "+error.message);
-
-button.disabled=false;
-
-button.textContent="Update Status";
-
-return;
-
-}
-
-alert("Transaction status successfully updated to "+newStatus+".");
-
-await loadTransactions();
-
-}
-
-loadTransactions();
+loadDashboard();
 
 </script>
 
